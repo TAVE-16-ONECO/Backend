@@ -15,13 +15,13 @@ public class ErrorResponse extends BaseResponse {
 
 	private final String message;
 	private final String code; // 도메인 별 세부 오류 코드를 위한 필드
-	private final Map<String, String> reasons;
+	private final Map<String, Object> reasons;
 
 	public ErrorResponse(
 		HttpStatus status,
 		String message,
 		String code,
-		Map<String, String> reasons
+		Map<String, Object> reasons
 	) {
 		super(status);
 		this.message = message;
@@ -37,7 +37,7 @@ public class ErrorResponse extends BaseResponse {
 		return new ErrorResponse(status, message, code, null);
 	}
 
-	public static ErrorResponse of(ErrorCode errorCode, Map<String, String> reasons) {
+	public static ErrorResponse of(ErrorCode errorCode, Map<String, Object> reasons) {
 		HttpStatus status = errorCode.getHttpStatus();
 		String message = errorCode.getMessage();
 		String code = errorCode.getCode();
