@@ -38,7 +38,8 @@
 ---
 
 ## 4. 아키텍처 흐름
-<img width="1046" height="951" alt="image" src="https://github.com/user-attachments/assets/e1ff79be-f8ef-428e-8be3-1d051465236a" />
+<img width="1117" height="912" alt="image" src="https://github.com/user-attachments/assets/f7da9a47-33f8-4aee-8ec8-2a337d26af00" />
+
 [1단계: 생산자 (Scheduler) 영역]
 
 1. 별도의 스케줄러 스레드가 알림 발송 시간 10분 전에 User 테이블에서 알람 설정 한 유저 정보를 조회한다.
