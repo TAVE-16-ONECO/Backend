@@ -38,7 +38,7 @@
 ---
 
 ## 4. 아키텍처 흐름
-<img width="1117" height="912" alt="image" src="https://github.com/user-attachments/assets/f7da9a47-33f8-4aee-8ec8-2a337d26af00" />
+![Notification_Architecture.png](imgs/Notification_Architecture.png)
 
 [1단계: 생산자 (Scheduler) 영역]
 
