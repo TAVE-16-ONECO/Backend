@@ -1,7 +1,6 @@
 HELP.md
 .gradle
 build/
-!gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
 
@@ -72,3 +71,6 @@ bin/
 # ========================
 .env
 !.env.example
+
+# Gradle wrapper jar은 예외로 포함
+!gradle/wrapper/gradle-wrapper.jar
