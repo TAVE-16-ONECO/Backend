@@ -1,0 +1,12 @@
+.git
+.gitignore
+.gradle
+.mvn
+node_modules
+build
+target
+out
+*.iml
+*.log
+Dockerfile
+docker-compose.yml
