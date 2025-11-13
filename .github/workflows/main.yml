@@ -37,6 +37,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
+      - name: Show files in directory
+        run: ls -al
+
       # --- gradle wrapper 파일에 실행 권한을 부여 ---
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
