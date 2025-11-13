@@ -18,3 +18,7 @@ spring:
 logging:
   level:
     root: info
+
+id:
+  generator:
+    version: v7
