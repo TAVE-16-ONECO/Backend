@@ -1,0 +1,26 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: ${DB_CONTAINER_NAME}
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD} # MySQL 루트 사용자의 비밀번호를 설정합니다.
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    command:
+      - --character-set-server=utf8mb4 # MySQL 서버의 문자 집합을 UTF-8로 설정
+      - --collation-server=utf8mb4_unicode_ci # MySQL 서버의 대조 규칙을 UTF-8로 설정
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"] # MySQL 컨테이너의 상태를 확인하는 헬스체크.
+      interval: 5s # 헬스체크 간격
+      timeout: 3s # 헬스체크 타임아웃
+      retries: 15 # 헬스체크 재시도 횟수
+    networks:
+      - oneco-network # MySQL 컨테이너가 속할 네트워크 지정
+
+volumes:
+  mysql_data:
+    driver: local
+networks:
+  oneco-network:
+    driver: bridge

@@ -1,0 +1,14 @@
+spring:
+  config:
+    import: optional:file:/opt/oneco/.env[.properties]
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: none     # prod는 절대 update/create 금지
+    properties:
+      hibernate:
+        show_sql: false
