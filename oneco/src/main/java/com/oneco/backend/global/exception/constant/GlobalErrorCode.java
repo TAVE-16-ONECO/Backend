@@ -21,7 +21,7 @@ public enum GlobalErrorCode implements ErrorCode {
 	UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "인증이 필요합니다.", "CLIENT_ERROR_401_UNAUTHORIZED"),
 	INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 인증 토큰입니다.", "CLIENT_ERROR_401_INVALID_TOKEN"),
 	EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "만료된 인증 토큰입니다.", "CLIENT_ERROR_401_EXPIRED_TOKEN"),
-
+	INVALID_OAUTH_STATE(HttpStatus.UNAUTHORIZED, "유효하지 않은 OAuth 상태 (state) 값입니다. 다시 로그인 요청을 시도해 주세요.","AUTH_401_INVALID_OAUTH_STATE"),
 	// 403 Forbidden
 	FORBIDDEN(HttpStatus.FORBIDDEN, "접근 권한이 없습니다.", "CLIENT_ERROR_403_FORBIDDEN"),
 

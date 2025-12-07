@@ -31,39 +31,74 @@ import io.swagger.v3.oas.models.responses.ApiResponse;
 		license = @License(name = "Apache 2.0", url = "http://www.apache.org/licenses/LICENSE-2.0")
 	),
 	servers = {
-		@Server(url = "http://localhost:8080", description = "Local"), // 로컬 환경 URL
-		// @Server(url = "https://api.oneco.com", description = "Production") // 운영 환경 URL로 변경 후 주석 해제
+		@Server(url = "http://localhost:8080", description = "Local")
+		// @Server(url = "https://api.oneco.com", description = "Production")
 	},
-	security = @SecurityRequirement(name = "bearerAuth")
+	// ✅ 전역 기본 보안(원하면 아래 줄 삭제)
+	security = @SecurityRequirement(name = "AccessToken")
 )
 @SecurityScheme(
-	name = "bearerAuth",
+	name = "AccessToken",
 	type = SecuritySchemeType.HTTP,
 	scheme = "bearer",
-	bearerFormat = "JWT"
+	bearerFormat = "JWT",
+	description = "일반 API 접근용 Access JWT"
 )
-@Profile({"default", "dev", "staging", "swagger"}) // 운영/로컬/스테이징 + swagger 전용 기동에서 활성화
+@SecurityScheme(
+	name = "RefreshToken",
+	type = SecuritySchemeType.HTTP,
+	scheme = "bearer",
+	bearerFormat = "JWT",
+	description = "토큰 재발급 전용 Refresh JWT"
+)
+@SecurityScheme(
+	name = "OnboardingToken",
+	type = SecuritySchemeType.HTTP,
+	scheme = "bearer",
+	bearerFormat = "JWT",
+	description = "신규 회원 온보딩 완료 전용 JWT"
+)
+@Profile({"default", "dev", "staging", "swagger"})
 @Configuration
 public class SwaggerConfig {
 
-	// === 모듈/도메인별 Grouping ===
+	// === 도메인/모듈별 Grouping (필요한 것만 유지/추가) ===
 	@Bean
 	public GroupedOpenApi authApi() {
 		return GroupedOpenApi.builder()
 			.group("Auth")
 			.displayName("Auth (인증/인가)")
-			// 패키지 기준으로 좁히면 스캔 비용↓, 경로 기준 혼용 가능
 			.packagesToScan("com.oneco.backend.auth.presentation")
 			.pathsToMatch("/api/auth/**")
 			.build();
 	}
 
-	// 추가 도메인별 GroupedOpenApi 빈 정의 가능
+	// 온보딩 컨트롤러 패키지가 따로 있다면 활성화 추천
+	@Bean
+	public GroupedOpenApi onboardingApi() {
+		return GroupedOpenApi.builder()
+			.group("Onboarding")
+			.displayName("Onboarding (신규 가입)")
+			.packagesToScan("com.oneco.backend.onboarding.presentation")
+			.pathsToMatch("/api/onboarding/**")
+			.build();
+	}
 
+	@Bean
+	public GroupedOpenApi memberApi() {
+		return GroupedOpenApi.builder()
+			.group("Member")
+			.displayName("Member (회원)")
+			.packagesToScan("com.oneco.backend.member.presentation")
+			.pathsToMatch("/api/members/**")
+			.build();
+	}
+
+	// === 공통 에러 응답 자동 추가 ===
 	@Bean
 	public OperationCustomizer addGlobalResponses() {
 		return (operation, handlerMethod) -> {
-			io.swagger.v3.oas.models.responses.ApiResponse error = new ApiResponse()
+			ApiResponse error = new ApiResponse()
 				.description("공통 에러 응답")
 				.content(new Content().addMediaType(
 					"application/json",
@@ -75,34 +110,30 @@ public class SwaggerConfig {
 		};
 	}
 
-	// === 전역 응답/스키마/정렬 등 커스터마이징 ===
+	// === 전역 스키마 등록 (ErrorResponse/DataResponse) ===
 	@Bean
 	public OpenApiCustomizer globalOpenApiCustomizer() {
 		return openApi -> {
-			// ===  ErrorResponse 스키마 ===
 			Schema<?> errorSchema = new ObjectSchema()
-				// === BaseResponse 필드 ===
 				.addProperty("status", new StringSchema()
 					.description("HTTP 상태 구분 문자열 (예: Bad Request, Not Found)")
 					.example("Bad Request"))
 				.addProperty("timestamp", new StringSchema()
 					.description("응답 발생 시각 (RFC3339 포맷, Asia/Seoul 기준)")
 					.example("2025-11-11T12:34:56.789+09:00"))
-				// === ErrorResponse 필드 ===
-				.addProperty("message", new StringSchema() // message 필드
+				.addProperty("message", new StringSchema()
 					.description("에러 메시지 (사용자 피드백용)")
 					.example("사용자를 찾을 수 없습니다."))
-				.addProperty("code", new StringSchema() // code 필드
+				.addProperty("code", new StringSchema()
 					.description("도메인 별 세부 오류 코드")
 					.example("USER_ERROR_404_NOT_FOUND"))
-				.addProperty("reasons", new ObjectSchema() // reasons 필드
+				.addProperty("reasons", new ObjectSchema()
 					.description("필드 검증 실패 등의 상세 사유 (Key-Value 구조)")
 					.example(Map.of(
 						"email", "올바른 이메일 형식이 아닙니다.",
 						"age", "최소 1 이상의 값이어야 합니다."
 					)));
 
-			// ===  DataResponse<T> 스키마 ===
 			Schema<?> dataSchema = new ObjectSchema()
 				.addProperty("status", new StringSchema()
 					.description("HTTP 상태 구분 문자열 (예: OK, Created)")
@@ -111,16 +142,13 @@ public class SwaggerConfig {
 					.description("응답 발생 시각 (RFC3339 포맷, Asia/Seoul 기준)")
 					.example("2025-11-11T14:25:01.123+09:00"))
 				.addProperty("data", new ObjectSchema()
-					.description("응답 데이터 (도메인별 DTO 구조)")
-					.example(Map.of(
-						"userId", 1,
-						"email", "user@example.com"
-					)));
+					.description("응답 데이터 (도메인별 DTO 구조)"));
 
-			openApi.getComponents()
-				.addSchemas("ErrorResponse", errorSchema)
-				.addSchemas("DataResponse", dataSchema);
+			if (openApi.getComponents() != null) {
+				openApi.getComponents()
+					.addSchemas("ErrorResponse", errorSchema)
+					.addSchemas("DataResponse", dataSchema);
+			}
 		};
 	}
-
 }

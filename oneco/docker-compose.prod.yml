@@ -9,3 +9,24 @@ services:
         max-size: "50m" # 로그 파일의 최대 크기를 50MB로 설정
         max-file: "5"   # 최대 5개의 로그 파일을 보관
     restart: always # 해당 컨테이너가 종료되면 자동으로 재시작하도록 하는 Docker 재시작 정책입니다.
+  redis:
+    # 운영용: 비밀번호 포함해서 재정의
+    command:
+      [ "redis-server", "--appendonly", "yes", "--requirepass", "${REDIS_PASSWORD}" ]
+
+    # 외부 공개 X, 같은 도커 네트워크에서만 접근
+    expose:
+      - "6379"
+
+    # requirepass 사용 시 기본 ping은 NOAUTH가 날 수 있으므로 교체
+    healthcheck:
+      test: [ "CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping" ]
+      interval: 5s
+      timeout: 3s
+      retries: 15
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
