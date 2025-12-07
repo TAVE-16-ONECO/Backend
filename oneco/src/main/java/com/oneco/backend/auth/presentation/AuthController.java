@@ -134,7 +134,7 @@ public class AuthController {
 		log.info("frontendProperties: {}", frontendUri);
 		URI redirect = UriComponentsBuilder
 			.fromUriString(frontendProperties.getBaseUrl())
-			.path("/auth/login-bridge")
+			.path("/login-bridge")
 			.queryParam("key", key)
 			.build()
 			.toUri();
