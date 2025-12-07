@@ -13,4 +13,7 @@ public record KakaoLoginResponse(
 		return new KakaoLoginResponse(true, null, null, onboardingToken);
 	}
 
+
+
 }
+
