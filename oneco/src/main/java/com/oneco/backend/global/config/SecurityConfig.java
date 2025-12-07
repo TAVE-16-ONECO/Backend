@@ -63,7 +63,7 @@ public class SecurityConfig {
 				.requestMatchers(
 					"/api/auth/kakao/login", //로그인, 회원가입, 토큰 재발급
 					"/api/auth/kakao/callback",
-					"/api/login-result",
+					"/api/auth/login-result",
 					"/swagger-ui/**",
 					"/api/onboarding/**",
 					"/v3/api-docs/**"
