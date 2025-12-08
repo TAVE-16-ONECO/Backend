@@ -1,4 +1,5 @@
 spring:
+
   config:
     import: optional:file:/opt/oneco/.env[.properties]
   datasource:
@@ -54,3 +55,6 @@ feign:
         connect-timeout: 5000
         read-timeout: 5000
         loggerLevel: FULL
+
+server:
+  forward-headers-strategy: framework
