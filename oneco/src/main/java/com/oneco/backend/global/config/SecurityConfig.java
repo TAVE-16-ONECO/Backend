@@ -61,9 +61,9 @@ public class SecurityConfig {
 			.authorizeHttpRequests(auth -> auth
 				//인증 없이 누구나 접근 가능한 URL 패턴
 				.requestMatchers(
-					"/api/auth/kakao/login", //로그인, 회원가입, 토큰 재발급
-					"/api/auth/kakao/callback",
-					"/api/auth/login-result",
+					"/api/auth/kakao/login/**", //로그인, 회원가입, 토큰 재발급
+					"/api/auth/kakao/callback/**",
+					"/api/auth/login-result/**",
 					"/swagger-ui/**",
 					"/api/onboarding/**",
 					"/v3/api-docs/**"
