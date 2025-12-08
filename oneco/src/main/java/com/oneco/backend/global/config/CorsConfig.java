@@ -13,6 +13,9 @@ public class CorsConfig {
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration config = new CorsConfiguration();
+		config.setAllowedOriginPatterns(List.of(
+			"https://one-co.netlify.app"
+		));
 
 		config.setAllowedOrigins(List.of(
 			"http://localhost:5173",

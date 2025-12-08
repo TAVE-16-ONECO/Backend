@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 import com.oneco.backend.global.security.jwt.JwtAccessDeniedHandler;
 import com.oneco.backend.global.security.jwt.JwtAuthenticationEntryPoint;
@@ -34,7 +35,7 @@ public class SecurityConfig {
 	 * 여기서 리턴하는 FilterChain이 모든 요청에 대해 적용된다.
 	 */
 	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http, RefreshTokenFilter refreshTokenFilter,
+	public SecurityFilterChain securityFilterChain(HttpSecurity http, CorsConfigurationSource corsConfigurationSource,RefreshTokenFilter refreshTokenFilter,
 		OnboardingTokenFilter onboardingTokenFilter, AccessTokenFilter accessTokenFilter) throws Exception {
 
 		http
@@ -44,7 +45,7 @@ public class SecurityConfig {
 			// 2️. CORS 설정
 			// - 프론트 도메인과 백엔드 도메인이 다를 때(CORS 이슈) 기본 설정을 사용.
 			// - 필요하면 별도 CorsConfigurationSource 빈으로 상세 설정 가능.
-			.cors(Customizer.withDefaults())
+			.cors(cors -> cors.configurationSource(corsConfigurationSource))
 			// 3️. 세션 관리 전략
 			// - STATELESS: 스프링 시큐리티가 HttpSession을 사용해서 로그인 상태를 저장하지 않음
 			// - 매 요청마다 JWT로부터 다시 인증 정보를 세팅하는 방식(JWT + REST API에 맞는 전략)
