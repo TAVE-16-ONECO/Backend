@@ -2,10 +2,7 @@ package com.oneco.backend.auth.infrastructure.oauth.kakao.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+
 
 /**
  * Kakao 에러 응답(JSON) 파싱용 DTO.

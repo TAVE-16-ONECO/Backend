@@ -5,7 +5,6 @@ import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidatorResult;
 import org.springframework.security.oauth2.jwt.Jwt;
 
-import com.oneco.backend.auth.domain.oauth.KakaoErrorCode;
 import com.oneco.backend.global.exception.BaseException;
 
 /**

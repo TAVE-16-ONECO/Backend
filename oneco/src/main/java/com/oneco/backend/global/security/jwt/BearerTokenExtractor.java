@@ -1,10 +1,8 @@
 package com.oneco.backend.global.security.jwt;
 
-import com.oneco.backend.global.exception.BaseException;
 import com.oneco.backend.global.exception.JwtAuthenticationException;
 import com.oneco.backend.global.exception.constant.JwtErrorCode;
 
-import lombok.NoArgsConstructor;
 
 /**
  * BearerTokenExtractor

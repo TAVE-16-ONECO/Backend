@@ -6,7 +6,6 @@ import org.springframework.security.oauth2.jwt.Jwt;
 
 import com.oneco.backend.auth.domain.oauth.KakaoErrorCode;
 import com.oneco.backend.global.exception.BaseException;
-import com.oneco.backend.global.exception.constant.ErrorCode;
 
 /**
  * 역할
