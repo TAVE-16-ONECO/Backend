@@ -13,3 +13,4 @@ services:
   redis:
     ports:
       - "${REDIS_PORT:-6379}:6379"
+      -
