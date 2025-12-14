@@ -29,6 +29,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "member")
 public class Member extends BaseTimeEntity {
 
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

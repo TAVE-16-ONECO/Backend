@@ -12,4 +12,5 @@ public class MemberController {
 	public String healthCheck() {
 		return "멤버 서비스 정상 작동 중";
 	}
+
 }

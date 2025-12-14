@@ -25,6 +25,7 @@ public class MemberService {
 			.orElseThrow(()-> BaseException.from(UserErrorCode.USER_NOT_FOUND));
 	}
 
+
 	public boolean canCompleteOnboarding(MemberStatus status) {
 		return status == MemberStatus.ONBOARDING;
 	}
