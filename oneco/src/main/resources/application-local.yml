@@ -19,6 +19,7 @@ spring:
       hibernate:
         format_sql: true
 
+
 kakao:
   oauth:
     client-id: ${KAKAO_REST_API_KEY}

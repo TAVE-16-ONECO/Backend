@@ -20,6 +20,7 @@ spring:
       hibernate:
         show_sql: false
 
+
 kakao:
   oauth:
     client-id: ${KAKAO_REST_API_KEY}

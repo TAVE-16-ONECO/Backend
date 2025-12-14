@@ -18,6 +18,7 @@ spring:
     time-zone: UTC
 
 
+
 id:
   generator:
     version: v7
