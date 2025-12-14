@@ -49,20 +49,20 @@ public class Quiz {
 	private QuizOptions options;
 
 	private Quiz(String question, QuestionOrder questionOrder, QuizOptions options, AnswerIndex answerIndex) {
-		if(questionOrder == null) {
+		if (questionOrder == null) {
 			throw new IllegalArgumentException("questionOrder는 null일 수 없습니다.");
 		}
-		if(options == null) {
+		if (options == null) {
 			throw new IllegalArgumentException("options는 null일 수 없습니다.");
 		}
-		if(answerIndex == null) {
+		if (answerIndex == null) {
 			throw new IllegalArgumentException("answerIndex는 null일 수 없습니다.");
 		}
 		if (question == null || question.isBlank()) {
 			throw new IllegalArgumentException("question은 비어 있을 수 없습니다.");
 		}
 		int optionCount = options.getOptions().size();
-		if(answerIndex.getValue()<1 || answerIndex.getValue()> optionCount) {
+		if (answerIndex.getValue() < 1 || answerIndex.getValue() > optionCount) {
 			throw new IllegalArgumentException("answerIndex가 options의 범위를 벗어났습니다.");
 		}
 		this.question = question.trim();
@@ -71,7 +71,8 @@ public class Quiz {
 		this.answerIndex = answerIndex;
 	}
 
-	public static Quiz create(String question, QuestionOrder questionOrder, QuizOptions options, AnswerIndex answerIndex) {
+	public static Quiz create(String question, QuestionOrder questionOrder, QuizOptions options,
+		AnswerIndex answerIndex) {
 		return new Quiz(question, questionOrder, options, answerIndex);
 	}
 

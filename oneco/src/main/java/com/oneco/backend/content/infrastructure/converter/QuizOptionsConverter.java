@@ -13,14 +13,14 @@ import java.util.stream.Collectors;
 
 /**
  * ✅ QuizOptions <-> JSON String 변환기
- *
+ * <p>
  * - DB 저장 시: QuizOptions -> JSON 문자열
  * - DB 조회 시: JSON 문자열 -> QuizOptions
- *
+ * <p>
  * 왜 좋은가?
  * - 엔티티는 "도메인 타입(QuizOptions)"만 다룬다.
  * - JSON 직렬화/역직렬화 책임을 여기로 모아서
- *   도메인이 저장 방식에 오염되지 않는다.
+ * 도메인이 저장 방식에 오염되지 않는다.
  */
 @Converter(autoApply = true)
 public class QuizOptionsConverter implements AttributeConverter<QuizOptions, String> {
@@ -29,10 +29,10 @@ public class QuizOptionsConverter implements AttributeConverter<QuizOptions, Str
 	 * ⚠️ 주의
 	 * JPA Converter는 JPA가 인스턴스를 직접 만들기 때문에
 	 * Spring 의존성 주입이 애매한 경우가 있다.
-	 *
+	 * <p>
 	 * 그래서 가장 안전한 방식은
 	 * ObjectMapper를 Converter 내부에서 고정해 쓰는 것이다.
-	 *
+	 * <p>
 	 * (필요하면 모듈 등록 등 커스터마이징 가능)
 	 */
 	private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -78,7 +78,8 @@ public class QuizOptionsConverter implements AttributeConverter<QuizOptions, Str
 			// ["보기1","보기2","보기3"] 형태의 JSON 문자열 -> List<String>
 			List<String> texts = objectMapper.readValue(
 				dbData,
-				new TypeReference<List<String>>() {}
+				new TypeReference<List<String>>() {
+				}
 			);
 
 			// List<String> -> QuizOptions

@@ -17,7 +17,7 @@ public class AnswerIndex {
 	private int value;
 
 	public AnswerIndex(int value) {
-		if (value <1) {
+		if (value < 1) {
 			throw new IllegalArgumentException("정답 인덱스는 1 이상이어야 합니다.");
 		}
 		this.value = value;

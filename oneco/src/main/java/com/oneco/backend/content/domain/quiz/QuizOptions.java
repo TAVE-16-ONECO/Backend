@@ -1,22 +1,14 @@
 package com.oneco.backend.content.domain.quiz;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
-import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @EqualsAndHashCode
-
-/**
- *
- */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class QuizOptions {
@@ -71,7 +63,7 @@ public class QuizOptions {
 		this.options = List.copyOf(options);
 	}
 
-	public static QuizOptions of(List<QuizOption> options){
+	public static QuizOptions of(List<QuizOption> options) {
 		return new QuizOptions(options);
 	}
 
@@ -80,9 +72,9 @@ public class QuizOptions {
 	 * 문자열 리스트를 받아서 바로 도메인 옵션으로 변환.
 	 * 서비스/컨트롤러에서 더 깔끔하게 사용 가능.
 	 * 예: List<String> texts = List.of("option1", "option2");
-	 *    QuizOptions options = QuizOptions.ofTexts(texts);
-	 *    즉 위의 코드는 다음과 같다.
-	 *    options = new QuizOptions(List<QuizOption.of("option1"), QuizOption.of("option2"));
+	 * QuizOptions options = QuizOptions.ofTexts(texts);
+	 * 즉 위의 코드는 다음과 같다.
+	 * options = new QuizOptions(List<QuizOption.of("option1"), QuizOption.of("option2"));
 	 */
 	public static QuizOptions ofTexts(List<String> texts) {
 		if (texts == null) {

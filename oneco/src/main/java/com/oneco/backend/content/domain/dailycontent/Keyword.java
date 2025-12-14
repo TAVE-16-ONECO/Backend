@@ -17,18 +17,18 @@ public class Keyword {
 	@Column(name = "keyword", nullable = false, length = 100)
 	private String value;
 
-	private Keyword(String value){
-		if(value == null || value.isBlank()){
+	private Keyword(String value) {
+		if (value == null || value.isBlank()) {
 			throw new IllegalArgumentException("키워드는 비어있을 수 없습니다.");
 		}
-		String v= value.trim();
-		if(v.length() > MAX_LENGTH){
-			throw new IllegalArgumentException("키워드는 최대 " + MAX_LENGTH+"자까지 허용됩니다.");
+		String v = value.trim();
+		if (v.length() > MAX_LENGTH) {
+			throw new IllegalArgumentException("키워드는 최대 " + MAX_LENGTH + "자까지 허용됩니다.");
 		}
 		this.value = v;
 	}
 
-	public static Keyword of(String value){
+	public static Keyword of(String value) {
 		return new Keyword(value);
 	}
 }

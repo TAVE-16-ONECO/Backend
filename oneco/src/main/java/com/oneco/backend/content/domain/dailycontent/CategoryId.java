@@ -23,7 +23,7 @@ public class CategoryId {
 		this.value = value;
 	}
 
-	public static CategoryId of(Long value){
+	public static CategoryId of(Long value) {
 		return new CategoryId(value);
 	}
 

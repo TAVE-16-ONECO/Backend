@@ -8,12 +8,12 @@ import jakarta.persistence.Converter;
 @Converter(autoApply = true)
 public class DaySequenceConverter implements AttributeConverter<DaySequence, Integer> {
 	@Override
-	public Integer convertToDatabaseColumn(DaySequence attribute){
+	public Integer convertToDatabaseColumn(DaySequence attribute) {
 		return attribute != null ? attribute.value() : null;
 	}
 
 	@Override
-	public DaySequence convertToEntityAttribute(Integer dbData){
-		return dbData != null ? new DaySequence(dbData): null;
+	public DaySequence convertToEntityAttribute(Integer dbData) {
+		return dbData != null ? new DaySequence(dbData) : null;
 	}
 }

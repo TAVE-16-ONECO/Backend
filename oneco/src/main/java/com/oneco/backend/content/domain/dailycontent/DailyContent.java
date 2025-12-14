@@ -28,17 +28,16 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "daily_contents",
 	uniqueConstraints = {
-	@UniqueConstraint(
-		name= "uk_category_day_sequence",
-		columnNames = {"category_id", "day_sequence"}
-	)
+		@UniqueConstraint(
+			name = "uk_category_day_sequence",
+			columnNames = {"category_id", "day_sequence"}
+		)
 	})
 public class DailyContent {
 
@@ -63,14 +62,14 @@ public class DailyContent {
 	private ImageFile imageFile;
 	/**
 	 * cascade = CascadeType.ALL:
-	 *  DailyContent 엔티티에 대한 모든 영속성 작업(저장, 삭제 등)이
-	 *  관련된 NewsItem 엔티티에도 전파됨을 의미
-	 *  - 즉, 이 컬렉션 안의 자식들은 부모 생명주기에 묶어서 관리하겠다는 뜻
+	 * DailyContent 엔티티에 대한 모든 영속성 작업(저장, 삭제 등)이
+	 * 관련된 NewsItem 엔티티에도 전파됨을 의미
+	 * - 즉, 이 컬렉션 안의 자식들은 부모 생명주기에 묶어서 관리하겠다는 뜻
 	 * orphanRemoval = true:
-	 *  DailyContent 엔티티에서 NewsItem이 제거되면
-	 *  해당 NewsItem 엔티티도 자동으로 삭제됨을 의미
-	 *  - 즉, 부모와 연관이 끊긴 자식은 자동으로 삭제하겠다는 뜻
- 	 */
+	 * DailyContent 엔티티에서 NewsItem이 제거되면
+	 * 해당 NewsItem 엔티티도 자동으로 삭제됨을 의미
+	 * - 즉, 부모와 연관이 끊긴 자식은 자동으로 삭제하겠다는 뜻
+	 */
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "daily_content_id", nullable = false)
 	private List<NewsItem> newsItems = new ArrayList<>();
@@ -84,19 +83,19 @@ public class DailyContent {
 		Keyword keyword,
 		ContentDescription description,
 		ImageFile imageFile) {
-		if(categoryId == null) {
+		if (categoryId == null) {
 			throw new IllegalArgumentException("categoryId는 null일 수 없습니다.");
 		}
-		if(daySequence == null) {
+		if (daySequence == null) {
 			throw new IllegalArgumentException("daySequence는 null일 수 없습니다.");
 		}
-		if(keyword == null) {
+		if (keyword == null) {
 			throw new IllegalArgumentException("keyword는 null일 수 없습니다.");
 		}
-		if(description == null) {
+		if (description == null) {
 			throw new IllegalArgumentException("description는 null일 수 없습니다.");
 		}
-		if(imageFile == null) {
+		if (imageFile == null) {
 			throw new IllegalArgumentException("imageFile는 null일 수 없습니다.");
 		}
 		this.categoryId = categoryId;
@@ -130,7 +129,7 @@ public class DailyContent {
 		this.description = this.description.withSummary(newSummary);
 	}
 
-	public void changeTitle(String newTitle){
+	public void changeTitle(String newTitle) {
 		this.description = this.description.withTitle(newTitle);
 	}
 
@@ -139,7 +138,7 @@ public class DailyContent {
 	}
 
 	// 뉴스 아이템 목록을 불변 리스트로 반환한다.
-	public List<NewsItem> getNewsItems(){
+	public List<NewsItem> getNewsItems() {
 		return List.copyOf(newsItems);
 	}
 
@@ -163,10 +162,11 @@ public class DailyContent {
 
 		target.changeQuestion(newQuestion);
 	}
+
 	/**
 	 * 뉴스 아이템을 추가한다.
-	 *  NewsItem은 DailyContent의 내부 엔티티이므로
-	 *  애그리거트 루트인 DailyContent가 생성해서 추가해야 한다.
+	 * NewsItem은 DailyContent의 내부 엔티티이므로
+	 * 애그리거트 루트인 DailyContent가 생성해서 추가해야 한다.
 	 */
 	public NewsItem addNewsItem(
 		String title,
@@ -186,8 +186,8 @@ public class DailyContent {
 		return item;
 	}
 
-	public void removeNewsItem( NewsItem item) {
-		if (item ==null) {
+	public void removeNewsItem(NewsItem item) {
+		if (item == null) {
 			throw new IllegalArgumentException("뉴스 아이템은 null일 수 없습니다.");
 		}
 		newsItems.remove(item);
@@ -215,14 +215,14 @@ public class DailyContent {
 	}
 
 	// 퀴즈 목록을 불변 리스트로 반환한다.
-	public List<Quiz> getQuizzes(){
+	public List<Quiz> getQuizzes() {
 		return List.copyOf(quizzes);
 	}
 
 	/**
 	 * 퀴즈를 추가한다.
-	 *  Quiz는 DailyContent의 내부 엔티티이므로
-	 *  애그리거트 루트인 DailyContent가 생성해서 추가해야 한다.
+	 * Quiz는 DailyContent의 내부 엔티티이므로
+	 * 애그리거트 루트인 DailyContent가 생성해서 추가해야 한다.
 	 */
 	public Quiz addQuiz(
 		String question,
@@ -242,8 +242,8 @@ public class DailyContent {
 		return quiz;
 	}
 
-	public void removeQuiz( Quiz quiz) {
-		if (quiz ==null) {
+	public void removeQuiz(Quiz quiz) {
+		if (quiz == null) {
 			throw new IllegalArgumentException("퀴즈는 null일 수 없습니다.");
 		}
 		quizzes.remove(quiz);

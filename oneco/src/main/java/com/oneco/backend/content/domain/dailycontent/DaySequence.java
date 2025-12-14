@@ -14,12 +14,12 @@ public class DaySequence extends AbstractSequence implements Comparable<DaySeque
 		super(value);
 	}
 
-	public DaySequence next(){
+	public DaySequence next() {
 		return new DaySequence(nextValue());
 	}
 
 	@Override
-	public int compareTo(DaySequence o){
+	public int compareTo(DaySequence o) {
 		return Integer.compare(this.value(), o.value());
 	}
 }

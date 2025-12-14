@@ -8,11 +8,11 @@ public class NewsItemOrder extends AbstractSequence implements Comparable<NewsIt
 		super(value);
 	}
 
-	public NewsItemOrder next(){
+	public NewsItemOrder next() {
 		return new NewsItemOrder(nextValue());
 	}
 
-	public int compareTo(NewsItemOrder o){
+	public int compareTo(NewsItemOrder o) {
 		return Integer.compare(this.value(), o.value());
 	}
 }
