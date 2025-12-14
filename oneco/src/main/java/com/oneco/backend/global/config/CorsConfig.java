@@ -1,4 +1,5 @@
 package com.oneco.backend.global.config;
+
 import java.util.List;
 
 import org.springframework.context.annotation.Bean;
@@ -21,7 +22,7 @@ public class CorsConfig {
 			"http://localhost:5173",
 			"https://*.netlify.app",
 			"https://*.vercel.app"
-			));
+		));
 
 		config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
 

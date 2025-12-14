@@ -12,6 +12,7 @@ public class JwtAuthenticationException extends AuthenticationException {
 		this.errorCode = errorCode;
 	}
 
+
 	public JwtErrorCode getErrorCode() {
 		return errorCode;
 	}

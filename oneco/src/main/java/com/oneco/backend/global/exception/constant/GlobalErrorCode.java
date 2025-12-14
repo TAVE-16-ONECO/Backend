@@ -32,6 +32,7 @@ public enum GlobalErrorCode implements ErrorCode {
 	// 405 Method Not Allowed
 	METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "허용되지 않은 HTTP 메서드입니다.", "CLIENT_ERROR_405_METHOD_NOT_ALLOWED"),
 
+
 	// 409 Conflict
 	CONFLICT(HttpStatus.CONFLICT, "요청이 현재 리소스 상태와 충돌합니다.", "CLIENT_ERROR_409_CONFLICT"),
 	DUPLICATE_RESOURCE(HttpStatus.CONFLICT, "이미 존재하는 리소스입니다.", "CLIENT_ERROR_409_DUPLICATE_RESOURCE"),

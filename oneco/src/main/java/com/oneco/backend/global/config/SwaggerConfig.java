@@ -73,6 +73,7 @@ public class SwaggerConfig {
 			.build();
 	}
 
+
 	// 온보딩 컨트롤러 패키지가 따로 있다면 활성화 추천
 	@Bean
 	public GroupedOpenApi onboardingApi() {

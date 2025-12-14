@@ -12,4 +12,5 @@ import lombok.Setter;
 @ConfigurationProperties(prefix = "frontend")
 public class FrontendProperties {
 	private String baseUrl;
+
 }

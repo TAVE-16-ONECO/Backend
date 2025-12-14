@@ -31,6 +31,7 @@ public class FeignResponseParser {
 			return new ParsedBody<>("",null);
 		}
 
+
 		// Feign Util을 사용해서 바디를 문자열로 읽어온다.
 		//예시 rawBody:
 		//   "{\"error\":\"invalid_grant\",\"error_description\":\"authorization code not found for this user\"}"

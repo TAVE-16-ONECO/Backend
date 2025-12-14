@@ -29,6 +29,7 @@ public class ErrorResponse extends BaseResponse {
 		this.reasons = reasons;
 	}
 
+
 	public static ErrorResponse from(ErrorCode errorCode) {
 		HttpStatus status = errorCode.getHttpStatus();
 		String message = errorCode.getMessage();

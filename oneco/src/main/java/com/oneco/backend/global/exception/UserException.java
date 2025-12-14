@@ -15,5 +15,6 @@ public class UserException extends BaseException {
 
 	public static UserException from(UserErrorCode errorCode) {
 		return new UserException(errorCode.getMessage(), errorCode.getHttpStatus(), errorCode.getCode());
+
 	}
 }

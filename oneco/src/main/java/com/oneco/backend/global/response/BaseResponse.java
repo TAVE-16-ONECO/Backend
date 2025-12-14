@@ -21,4 +21,5 @@ public abstract class BaseResponse {
 		this.status = status.getReasonPhrase();
 	}
 
+
 }

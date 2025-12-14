@@ -23,4 +23,5 @@ public enum JwtErrorCode implements ErrorCode{
 	private final HttpStatus httpStatus;
 	private final String message;
 	private final String code;
+
 }
