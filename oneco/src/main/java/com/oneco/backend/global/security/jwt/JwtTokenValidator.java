@@ -23,22 +23,22 @@ import lombok.RequiredArgsConstructor;
 
 /**
  * JwtTokenValidator
- *
+ * <p>
  * 역할
  * - 토큰이 유효한지 검증하고,
- *   검증이 완료된 Claims(페이로드)를 안전하게 반환한다.
- *
+ * 검증이 완료된 Claims(페이로드)를 안전하게 반환한다.
+ * <p>
  * 설계 포인트
  * 1. 토큰 목적 (ACCESS/REFRESH/ONBOARDING)을 검증한다.
- *
+ * <p>
  * 2. Header의 alg(서명 알고리즘)도 정책과 일치하는지 검증한다.
- *
+ * <p>
  * 3. 예외(BaseException + JwtErrorCode)
- * 	  - 만료: EXPIRED_TOKEN
- * 	  - 그 외 서명/형식/파싱 오류: INVALID_TOKEN
- * 	  - 토큰 누락/공백: TOKEN_NOT_FOUND
- * 	  - 알고리즘 mismatch: TOKEN_ALG_MISMATCH
- * 	  - 목적 mistmatch : TOKEN_PURPOSE_MISMATCH
+ * - 만료: EXPIRED_TOKEN
+ * - 그 외 서명/형식/파싱 오류: INVALID_TOKEN
+ * - 토큰 누락/공백: TOKEN_NOT_FOUND
+ * - 알고리즘 mismatch: TOKEN_ALG_MISMATCH
+ * - 목적 mistmatch : TOKEN_PURPOSE_MISMATCH
  */
 @RequiredArgsConstructor
 @Component
@@ -47,17 +47,18 @@ public class JwtTokenValidator {
 
 	private final JwtProperties jwtProperties;
 	private final JwtKeyProvider jwtKeyProvider;
-	public Claims validateAndGetClaims(String token, JwtPurpose expectedPurpose){
+
+	public Claims validateAndGetClaims(String token, JwtPurpose expectedPurpose) {
 		// token이 null이 아니고 빈 문자열/공백 문자열이 아닌지 확인
 		requireText(token);
 		// 객체가 null이 아닌지 확인
 		Objects.requireNonNull(expectedPurpose, "expectedPurpose must not be null");
 
-		SecretKey key= jwtKeyProvider.getKey(expectedPurpose);
+		SecretKey key = jwtKeyProvider.getKey(expectedPurpose);
 		JwtProperties.PurposeProps props = jwtProperties.get(expectedPurpose);
 		MacAlgorithm expectedAlg = props.getAlgorithm().toJjwt();
 
-		try{
+		try {
 			// JJWT 파서 구성
 			Jws<Claims> jws = Jwts.parser()
 				.verifyWith(key) // 서명 검증용 키 지정
@@ -72,7 +73,7 @@ public class JwtTokenValidator {
 			if (claimPurpose == null) {
 				throw BaseException.from(JwtErrorCode.INVALID_TOKEN);
 			}
-			if(!expectedPurpose.name().equals(claimPurpose)) {
+			if (!expectedPurpose.name().equals(claimPurpose)) {
 				throw BaseException.from(JwtErrorCode.TOKEN_PURPOSE_MISMATCH);
 			}
 			// header alg 검증
@@ -80,18 +81,18 @@ public class JwtTokenValidator {
 
 			return claims;
 
-		}catch(ExpiredJwtException e){
+		} catch (ExpiredJwtException e) {
 			// 만료는 정상적인 인증 실패 케이스
 			throw BaseException.from(JwtErrorCode.EXPIRED_TOKEN);
-		}catch(JwtException | IllegalArgumentException e){
+		} catch (JwtException | IllegalArgumentException e) {
 			// 서명/형식/파싱 오류
 			throw BaseException.from(JwtErrorCode.INVALID_TOKEN);
 		}
 
 	}
 
-	private void validateHeaderAlgorithm(JwsHeader header, MacAlgorithm expectedAlg){
-		if(header==null){
+	private void validateHeaderAlgorithm(JwsHeader header, MacAlgorithm expectedAlg) {
+		if (header == null) {
 			throw BaseException.from(JwtErrorCode.TOKEN_ALG_MISMATCH);
 		}
 
@@ -101,12 +102,13 @@ public class JwtTokenValidator {
 		//MacAlgorithm의 id
 		String expected = expectedAlg.getId();
 
-		if(actual == null || !expected.equals(actual)){
+		if (actual == null || !expected.equals(actual)) {
 			throw BaseException.from(JwtErrorCode.TOKEN_ALG_MISMATCH);
 		}
 	}
-	private void requireText(String token){
-		if(token == null || token.isBlank()){
+
+	private void requireText(String token) {
+		if (token == null || token.isBlank()) {
 			throw BaseException.from(JwtErrorCode.TOKEN_NOT_FOUND);
 		}
 	}

@@ -32,7 +32,7 @@ public class OnboardingTokenFilter extends OncePerRequestFilter {
 	private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
 	@Override
-	protected boolean shouldNotFilter(HttpServletRequest request){
+	protected boolean shouldNotFilter(HttpServletRequest request) {
 		// 온보딩 토큰이 필요한 특정 API에만 적용
 		String uri = request.getRequestURI();
 		return !uri.startsWith("/api/onboarding/complete");
@@ -43,7 +43,7 @@ public class OnboardingTokenFilter extends OncePerRequestFilter {
 		HttpServletRequest request,
 		HttpServletResponse response,
 		FilterChain filterChain
-	)throws ServletException, IOException {
+	) throws ServletException, IOException {
 		String header = request.getHeader(HttpHeaders.AUTHORIZATION);
 
 		try {
@@ -62,7 +62,7 @@ public class OnboardingTokenFilter extends OncePerRequestFilter {
 			log.info("Onboarding Token Filter 작동 - request attribute에 클레임 저장 완료");
 
 			filterChain.doFilter(request, response);
-		}catch(JwtAuthenticationException e){
+		} catch (JwtAuthenticationException e) {
 			SecurityContextHolder.clearContext();
 			jwtAuthenticationEntryPoint.commence(request, response, e);
 			return;

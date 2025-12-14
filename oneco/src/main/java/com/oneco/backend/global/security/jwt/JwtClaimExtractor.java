@@ -1,4 +1,5 @@
 package com.oneco.backend.global.security.jwt;
+
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
@@ -10,10 +11,10 @@ import com.oneco.backend.global.exception.constant.JwtErrorCode;
 
 /**
  * JwtClaimExtractor
- *
+ * <p>
  * 역할
  * - Claims에서 프로젝트 표준 정보 추출 책임을 전담한다.
- *
+ * <p>
  * 장점
  * - sub 정책이 바뀌어도 이 컴포넌트만 수정하면 된다.
  * - 테스트가 쉽고, 의존성 주입 흐름이 자연스럽다.

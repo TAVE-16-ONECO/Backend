@@ -21,6 +21,7 @@ public final class BearerTokenExtractor {
 	private BearerTokenExtractor() {
 	}
 
+
 	public static String extractOrNull(String authorizationHeader) {
 		if (authorizationHeader == null || authorizationHeader.isBlank()) {
 			return null;

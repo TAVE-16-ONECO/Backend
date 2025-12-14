@@ -18,22 +18,22 @@ import lombok.RequiredArgsConstructor;
  * JwtKeyProvider
  * 역할
  * - ACCESS / REFRESH / ONBOARDING 등 "토큰 목적(JwtPurpose)" 별로
- *   서명에 사용할 키(Key)를 생성하고 캐싱하여 제공한다.
+ * 서명에 사용할 키(Key)를 생성하고 캐싱하여 제공한다.
  * 설계 의도
- *  키 생성 책임과 토큰 생성/검증 책임의 분리(SRP)
- *    - JwtKeyProvider: "키를 어떻게 만들고 관리할지"에만 집중
- *    - JwtTokenProvider: "토큰을 어떻게 만들고 검증할지"에만 집중
- *
- *  목적에 따라 다른 키를 사용하는 이유
- *  - 토큰 목적과 위험도가 다르기 때문에 키를 분리하면 보안 사고 시 피해 범위를 줄일 수 있다.
- *  - 예를 들어 온보딩 로직의 취약점이 Access/Refresh까지 확산되는 것을 막고,
- *    특정 목적 토큰만 독립적으로 키 로테이션할 수 있어 운영에도 유리하다.
- *
- *  GlobalErrorCode가 아닌 IllegalStateException을 쓴 이유
- *  - JWT secret 설정 오류는 클라이언트 문제가 아닌 서버 설정 문제이다.
- *  - 따라서 GlobalException 대신에 IllegalStateException으로 기동 실패시키는 방식이 자연스럽다고 판단했다.
- *    -> IllegalArgumentException: 호출자가 전달한 인자가 유효하지 않을 때 사용
- *    -> IllegalStateException: 인자는 정상일 수 있지만 객체나 시스템의 현재 상태가 해당 동작을 허용하지 않을 때 사용
+ * 키 생성 책임과 토큰 생성/검증 책임의 분리(SRP)
+ * - JwtKeyProvider: "키를 어떻게 만들고 관리할지"에만 집중
+ * - JwtTokenProvider: "토큰을 어떻게 만들고 검증할지"에만 집중
+ * <p>
+ * 목적에 따라 다른 키를 사용하는 이유
+ * - 토큰 목적과 위험도가 다르기 때문에 키를 분리하면 보안 사고 시 피해 범위를 줄일 수 있다.
+ * - 예를 들어 온보딩 로직의 취약점이 Access/Refresh까지 확산되는 것을 막고,
+ * 특정 목적 토큰만 독립적으로 키 로테이션할 수 있어 운영에도 유리하다.
+ * <p>
+ * GlobalErrorCode가 아닌 IllegalStateException을 쓴 이유
+ * - JWT secret 설정 오류는 클라이언트 문제가 아닌 서버 설정 문제이다.
+ * - 따라서 GlobalException 대신에 IllegalStateException으로 기동 실패시키는 방식이 자연스럽다고 판단했다.
+ * -> IllegalArgumentException: 호출자가 전달한 인자가 유효하지 않을 때 사용
+ * -> IllegalStateException: 인자는 정상일 수 있지만 객체나 시스템의 현재 상태가 해당 동작을 허용하지 않을 때 사용
  */
 @Component
 @RequiredArgsConstructor
@@ -53,7 +53,8 @@ public class JwtKeyProvider {
 		// REFRESH 토큰 서명 키 생성 및 캐싱
 		keys.put(JwtPurpose.REFRESH, build(properties.get(JwtPurpose.REFRESH).getSecretKey(), JwtPurpose.REFRESH));
 		// ONBOARDING 토큰 서명 키 생성 및 캐싱
-		keys.put(JwtPurpose.ONBOARDING, build(properties.get(JwtPurpose.ONBOARDING).getSecretKey(), JwtPurpose.ONBOARDING));
+		keys.put(JwtPurpose.ONBOARDING,
+			build(properties.get(JwtPurpose.ONBOARDING).getSecretKey(), JwtPurpose.ONBOARDING));
 
 		// 모든 키가 잘 로딩되었는지 확인
 		if (keys.size() != JwtPurpose.values().length) {
@@ -72,9 +73,9 @@ public class JwtKeyProvider {
 	}
 
 	/**
-	 *build() : 설정에 저장된 Base64 문자열을 실제 HMAC 서명키로 변환
+	 * build() : 설정에 저장된 Base64 문자열을 실제 HMAC 서명키로 변환
 	 *
-	 * @param base64 : 랜덤 바이트 키를 Base64로 인코딩해 저장한 문자열
+	 * @param base64  : 랜덤 바이트 키를 Base64로 인코딩해 저장한 문자열
 	 * @param purpose : 어떤 목적의 키를 만드는지
 	 */
 	private SecretKey build(String base64, JwtPurpose purpose) {

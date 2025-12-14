@@ -13,4 +13,5 @@ public enum JwtMacAlgorithm {
 			case HS512 -> Jwts.SIG.HS512;
 		};
 	}
+
 }

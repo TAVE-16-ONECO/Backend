@@ -4,5 +4,6 @@ public record JwtPrincipal(
 	Long memberId,
 	String subject,
 	String purpose
+
 ) {
 }

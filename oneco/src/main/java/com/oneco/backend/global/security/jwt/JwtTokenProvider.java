@@ -62,7 +62,7 @@ public class JwtTokenProvider {
 
 	public String createOnboardingToken(SocialProvider provider, String socialAccountId) {
 
-		String onboardingId = provider.name()+":"+socialAccountId;
+		String onboardingId = provider.name() + ":" + socialAccountId;
 		// todo: 온보딩 상태 서버 검증(Redis)
 		// -> 만료시간(exp)는 언제까지 유효한가만 보장하고, 지금 이 사람이 정말 온보딩 중인가는 보장 못함
 		// -> 온보딩 중간에 이탈하거나 완료되면 Redis 상태를 만료/삭제/완료 처리해 흐름을 제어하는 게 안전함(PENDING/COMPLETED 등)
@@ -106,7 +106,7 @@ public class JwtTokenProvider {
 			if (extraClaims.containsKey(CLAIM_PURPOSE) || extraClaims.containsKey(CLAIM_ROLE)) {
 				throw new IllegalArgumentException("extraClaims에 이미 있는 claim을 넣을 수 없습니다.");
 			}
-			for(Map.Entry<String,Object> entry : extraClaims.entrySet()){
+			for (Map.Entry<String, Object> entry : extraClaims.entrySet()) {
 				builder.claim(entry.getKey(), entry.getValue());
 			}
 		}
@@ -118,7 +118,7 @@ public class JwtTokenProvider {
 
 	// Claims 기반 Authentication 생성
 	// ACCESS 토큰일때만 접근 가능
-	public Authentication getAuthentication(Claims claims){
+	public Authentication getAuthentication(Claims claims) {
 		// 객체가 null이면 안됨
 		Objects.requireNonNull(claims, "claims must not be null");
 		log.info("JwtTokenProvider.getAuthentication called with claims: {}", claims);
@@ -128,7 +128,7 @@ public class JwtTokenProvider {
 		 * - subject가 없으면 토큰 구조/발급 정책 위반으로 간주한다.
 		 */
 		String subject = claims.getSubject();
-		if(subject == null || subject.isBlank()){
+		if (subject == null || subject.isBlank()) {
 			throw BaseException.from(JwtErrorCode.INVALID_TOKEN);
 		}
 
@@ -136,7 +136,7 @@ public class JwtTokenProvider {
 		 * 2) 목적 클레임이 ACCESS가 아니면 예외
 		 */
 		String purpose = claims.get(CLAIM_PURPOSE, String.class);
-		if(!JwtPurpose.ACCESS.name().equals(purpose)){
+		if (!JwtPurpose.ACCESS.name().equals(purpose)) {
 			throw BaseException.from(JwtErrorCode.TOKEN_PURPOSE_MISMATCH);
 		}
 
@@ -145,13 +145,13 @@ public class JwtTokenProvider {
 		 * 만약 sub을 memberId로 안두고 따로 둔다면 건너뛰기
 		 */
 		Long memberId;
-		try{
+		try {
 			memberId = Long.parseLong(subject);
-		}catch(NumberFormatException e){
+		} catch (NumberFormatException e) {
 			throw BaseException.from(JwtErrorCode.INVALID_TOKEN);
 		}
 
-		JwtPrincipal principal= new JwtPrincipal(memberId, subject, "ACCESS");
+		JwtPrincipal principal = new JwtPrincipal(memberId, subject, "ACCESS");
 
 		/**
 		 * 권한(Authorities) 구성
@@ -168,11 +168,11 @@ public class JwtTokenProvider {
 	}
 
 	// 권한 추출 로직
-	private List<SimpleGrantedAuthority> extractAuthorities(Claims claims){
+	private List<SimpleGrantedAuthority> extractAuthorities(Claims claims) {
 		Object rolesObj = claims.get(CLAIM_ROLE);
 
 		String role = claims.get(CLAIM_ROLE, String.class);
-		if(role != null && !role.isBlank()){
+		if (role != null && !role.isBlank()) {
 			return Collections.singletonList(
 				new SimpleGrantedAuthority(normalizeRole(role))
 			);
@@ -181,12 +181,11 @@ public class JwtTokenProvider {
 		return Collections.emptyList();
 	}
 
-
-	private String normalizeRole(String role){
+	private String normalizeRole(String role) {
 		String trimmed = role.trim();
-		if(trimmed.startsWith("ROLE_")){
+		if (trimmed.startsWith("ROLE_")) {
 			return trimmed;
 		}
-		return "ROLE_"+trimmed;
+		return "ROLE_" + trimmed;
 	}
 }

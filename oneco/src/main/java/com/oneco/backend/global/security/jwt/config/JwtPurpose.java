@@ -9,4 +9,5 @@ public enum JwtPurpose {
 	ACCESS,
 	REFRESH,
 	ONBOARDING
+
 }

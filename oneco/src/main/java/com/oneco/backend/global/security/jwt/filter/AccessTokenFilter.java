@@ -1,6 +1,7 @@
 package com.oneco.backend.global.security.jwt.filter;
 
 import java.io.IOException;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,15 +22,15 @@ import lombok.RequiredArgsConstructor;
 
 /**
  * JwtAuthenticationFilter (ACCESS 전용)
- *
+ * <p>
  * 역할
  * - 매 요청마다 Authorization 헤더에서 Bearer 토큰을 꺼낸다.
  * - 토큰이 존재하면 "ACCESS 목적" 기준으로 JwtTokenValidator로 검증한다.
  * - 검증 성공 시 Authentication을 생성해 SecurityContext에 저장한다.
- *
+ * <p>
  * 설계 의도
  * - Access/Refresh/Onboarding 목적을 섞지 않기 위해
- *   이 필터는 "ACCESS 인증"만 담당한다.
+ * 이 필터는 "ACCESS 인증"만 담당한다.
  * - Refresh/Onboarding은 해당 전용 엔드포인트에서 별도 검증한다.
  */
 @Component
@@ -38,18 +39,21 @@ public class AccessTokenFilter extends OncePerRequestFilter {
 
 	private final JwtTokenValidator jwtTokenValidator;
 	private final JwtTokenProvider jwtTokenProvider;
+
 	/**
 	 * Access 인증이 필요 없는 경로는 필터를 스킵한다.
-	 *
+	 * <p>
 	 * - 온보딩/리프레시 같은 "특수 목적 토큰" 엔드포인트는
-	 *   Access 필터에서 먼저 막지 않도록 제외하는 것이 안전하다.
+	 * Access 필터에서 먼저 막지 않도록 제외하는 것이 안전하다.
 	 */
 	@Override
 	protected boolean shouldNotFilter(HttpServletRequest request) {
 		String uri = request.getRequestURI();
 
-		if (uri.startsWith("/api/auth/refresh")) return true;
-		if (uri.startsWith("/api/onboarding")) return true;
+		if (uri.startsWith("/api/auth/refresh"))
+			return true;
+		if (uri.startsWith("/api/onboarding"))
+			return true;
 
 		return false;
 	}
@@ -59,14 +63,14 @@ public class AccessTokenFilter extends OncePerRequestFilter {
 		HttpServletRequest request,
 		HttpServletResponse response,
 		FilterChain filterChain
-	)throws ServletException, IOException {
+	) throws ServletException, IOException {
 		String token = BearerTokenExtractor.extractOrNull(request.getHeader(HttpHeaders.AUTHORIZATION));
 
 		// 토큰이 없으면 그냥 다음 필터로
 		// 토큰이 없으면 SecurityContext에 Authentication이 안 들어가고,
 		// 그 상태로 인증이 필요한 엔드포인트에 접근하면
 		// Spring Security가 에러를 낸다
-		if(token == null){
+		if (token == null) {
 			filterChain.doFilter(request, response);
 			return;
 		}
@@ -80,7 +84,7 @@ public class AccessTokenFilter extends OncePerRequestFilter {
 		Claims claims = jwtTokenValidator.validateAndGetClaims(token, JwtPurpose.ACCESS);
 
 		/**
-         *   JwtTokenProvider가 "Claims 기반 Authentication 생성" 오버로드를 제공하는 것.
+		 *   JwtTokenProvider가 "Claims 기반 Authentication 생성" 오버로드를 제공하는 것.
 		 */
 		Authentication authentication = jwtTokenProvider.getAuthentication(claims);
 

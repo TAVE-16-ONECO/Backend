@@ -1,10 +1,12 @@
 package com.oneco.backend.global.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -31,17 +33,16 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
 	 * @param request  : 현재 들어온 HTTP 요청 정보
 	 * @param response : 우리가 작성해서 돌려줄 HTTP 응답 객체
 	 * @param ex       : 발생한 AccessDeniedException (권한 부족 예외)
-	 *
-	 * 사용자가 JWT로 인증된 상태(Authentication 있음)
-	 *
-	 *  @PreAuthorize("hasRole('ADMIN')") 같은 권한 조건을 만족 못하면 AccessDeniedException 발생
-	 *
+	 *                 <p>
+	 *                 사용자가 JWT로 인증된 상태(Authentication 있음)
+	 * @PreAuthorize("hasRole('ADMIN')") 같은 권한 조건을 만족 못하면 AccessDeniedException 발생
+	 * <p>
 	 * ExceptionTranslationFilter가 이 예외를 잡아서
 	 * AccessDeniedHandler에게 넘김
-	 *
+	 * <p>
 	 * 우리가 등록해 둔 JwtAccessDeniedHandler가 호출됨
 	 * 로그 남기고, 403 상태 코드 설정, JSON 형태의 에러 응답 바디를 내려줌
-	 *
+	 * <p>
 	 * 반대로 아예 인증이 안 된 상태(=익명 사용자)에서 보호된 리소스에 접근하면
 	 * AccessDeniedHandler가 아니라 AuthenticationEntryPoint가 호출돼서
 	 * 401 Unauthorized 응답을 내려줌
@@ -51,13 +52,13 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
 		HttpServletRequest request,
 		HttpServletResponse response,
 		AccessDeniedException ex
-	)throws IOException {
+	) throws IOException {
 
 		//  누가/어디로 요청하다가 권한 거부가 되었는지 파악하기 위한 로그
-		log.warn("[ACCESS DENIED] uri={}, message={}",request.getRequestURI(), ex.getMessage());
+		log.warn("[ACCESS DENIED] uri={}, message={}", request.getRequestURI(), ex.getMessage());
 
 		// 클라이언트에게 내려줄 에러 응답 바디 생성
-		ErrorResponse errorResponse  = ErrorResponse.from(GlobalErrorCode.FORBIDDEN);
+		ErrorResponse errorResponse = ErrorResponse.from(GlobalErrorCode.FORBIDDEN);
 
 		// HTTP 응답 상태코드 설정
 		// 403 Forbidden (인증은 됐지만, 이 리소스에 접근할 권한이 없음)

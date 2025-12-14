@@ -23,6 +23,7 @@ public class JwtProperties {
 		private long validityInSeconds;
 	}
 
+
 	public PurposeProps get(JwtPurpose purpose) {
 		return switch (purpose) {
 			case ACCESS -> access;
