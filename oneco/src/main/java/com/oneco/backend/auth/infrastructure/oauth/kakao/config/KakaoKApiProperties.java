@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Component
-@ConfigurationProperties(prefix= "kakao.kapi")
+@ConfigurationProperties(prefix = "kakao.kapi")
 public class KakaoKApiProperties {
 	private String baseUrl;
 }

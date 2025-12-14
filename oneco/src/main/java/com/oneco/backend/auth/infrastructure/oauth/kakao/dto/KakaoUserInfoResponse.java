@@ -10,24 +10,22 @@ import lombok.ToString;
 /**
  * 응답 json 예
  * {
- *         "id":1399634384,
- *         "connected_at":"2020-07-06T09:55:51Z",
- *         "kakao_account":{
- *             "profile_needs_agreement":false,
- *             "profile":{
- *                 "nickname":"춘식이",
- *                 "thumbnail_image_url":"http://k.kakaocdn.net/dn/zK7QA/btqzpE4aqO1/pl2HpfVBUI9s1SSrstperq/img_110x110.jpg",
- *                 "profile_image_url":"http://k.kakaocdn.net/dn/zK7QA/btqzpE4aqO1/pl2HpfVBUI9s1wqsgrEAVk/img_640x640.jpg",
- *                 "is_default_image":false
- *             },
- *             "email_needs_agreement":false,
- *             "is_email_valid":true,
- *             "is_email_verified":true,
- *             "email":"sweetpotato@kakao.com"
- *         }
- *     },
- *
- *
+ * "id":1399634384,
+ * "connected_at":"2020-07-06T09:55:51Z",
+ * "kakao_account":{
+ * "profile_needs_agreement":false,
+ * "profile":{
+ * "nickname":"춘식이",
+ * "thumbnail_image_url":"http://k.kakaocdn.net/dn/zK7QA/btqzpE4aqO1/pl2HpfVBUI9s1SSrstperq/img_110x110.jpg",
+ * "profile_image_url":"http://k.kakaocdn.net/dn/zK7QA/btqzpE4aqO1/pl2HpfVBUI9s1wqsgrEAVk/img_640x640.jpg",
+ * "is_default_image":false
+ * },
+ * "email_needs_agreement":false,
+ * "is_email_valid":true,
+ * "is_email_verified":true,
+ * "email":"sweetpotato@kakao.com"
+ * }
+ * },
  */
 @Getter
 @NoArgsConstructor
@@ -74,13 +72,15 @@ public class KakaoUserInfoResponse {
 	public static record KakaoAccount(
 		String email,
 		Profile profile
-	){}
+	) {
+	}
 
 	@JsonIgnoreProperties(ignoreUnknown = true)
 	public static record Profile(
 		String nickname,
 		@JsonProperty("profile_image_url")
 		String profileImageUrl
-	){}
+	) {
+	}
 
 }

@@ -17,15 +17,14 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * 역할:
- *  - KakaoAuthFeignClient 전용 Feign 설정 클래스
- *  - 카카오 서버가 4xx / 5xx 에러를 반환했을 때,
- *  - 서비스 레이어는 FeignException, HTTP 상태 코드, 카카오 error 문자열 등을 직접 보지 않고,
- *    KakaoErrorCode 중심으로만 에러를 처리할 수 있게 해준다.
+ * - KakaoAuthFeignClient 전용 Feign 설정 클래스
+ * - 카카오 서버가 4xx / 5xx 에러를 반환했을 때,
+ * - 서비스 레이어는 FeignException, HTTP 상태 코드, 카카오 error 문자열 등을 직접 보지 않고,
+ * KakaoErrorCode 중심으로만 에러를 처리할 수 있게 해준다.
  * 전체 동작 흐름
  * 1. 애플리케이션 기동 시
- *    - @Configuration 이기 때문에 스프링이 이 클래스를 스캔한다.
- *    - @Bean
- *
+ * - @Configuration 이기 때문에 스프링이 이 클래스를 스캔한다.
+ * - @Bean
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -33,13 +32,14 @@ import lombok.extern.slf4j.Slf4j;
 public class KakaoOAuthFeignConfig {
 
 	/**
-	 *카카오 에러 응답(JSON)을 파싱하기 위한 ObjectMapper
+	 * 카카오 에러 응답(JSON)을 파싱하기 위한 ObjectMapper
 	 * 카카오 에러 응답 예시:
 	 * {
-	 *     "error": "invalid_grant",
-	 *     "error_description": "authorization code not found for this user"
+	 * "error": "invalid_grant",
+	 * "error_description": "authorization code not found for this user"
 	 * }
 	 */
+
 	private final ObjectMapper objectMapper;
 
 	@Bean
@@ -109,7 +109,6 @@ public class KakaoOAuthFeignConfig {
 				// =====================================================================
 				if (status == 400) {
 
-
 					// 사례 1) 잘못된 authorization_code 사용
 					// → 사용자는 카카오 로그인 화면에서 다시 로그인을 시도해야 하는 케이스
 					if ("invalid_grant".equals(kakaoError)) {
@@ -130,10 +129,10 @@ public class KakaoOAuthFeignConfig {
 				// =====================================================================
 				// 2. 401 Unauthorized: 클라이언트 인증/토큰 관련 문제
 				// =====================================================================
-				if(status == 401) {
+				if (status == 401) {
 					// 사례 3) 잘못된 client_id / client_secret
 					// -> REST API 키를 잘못 입력했거나, client_secret이 틀린 경우
-					if("invalid_client".equals(kakaoError)){
+					if ("invalid_client".equals(kakaoError)) {
 						return BaseException.from(KakaoErrorCode.INVALID_CLIENT);
 					}
 

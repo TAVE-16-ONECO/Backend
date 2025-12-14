@@ -23,4 +23,5 @@ public record KakaoTokenResponse(
 
 	@JsonProperty("scope")
 	String scope
-) {}
+) {
+}

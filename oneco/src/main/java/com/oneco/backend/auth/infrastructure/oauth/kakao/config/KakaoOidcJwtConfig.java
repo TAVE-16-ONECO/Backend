@@ -21,7 +21,7 @@ public class KakaoOidcJwtConfig {
 	private final KakaoOAuthProperties kakaoOAuthProperties;
 
 	@Bean
-	public JwtDecoder  kakaoIdTokenDecoder(){
+	public JwtDecoder kakaoIdTokenDecoder() {
 
 		/**
 		 * 1) NimbusJwtDecoder 생성
@@ -46,7 +46,7 @@ public class KakaoOidcJwtConfig {
 		 *   - iss(발급자) 검증
 		 * 즉, 시간적으로 유효하고, 발급자가 카카오가 맞는지를 검증한다.
 		 */
-		OAuth2TokenValidator<Jwt> withIssuer=
+		OAuth2TokenValidator<Jwt> withIssuer =
 			JwtValidators.createDefaultWithIssuer(kakaoOIDCProperties.getIssuer());
 
 		/**
@@ -66,7 +66,7 @@ public class KakaoOidcJwtConfig {
 		 * - 하나라도 실패하면 전체 실패 처리
 		 */
 		OAuth2TokenValidator<Jwt> validator =
-			 new DelegatingOAuth2TokenValidator<>(withIssuer, withAudience);
+			new DelegatingOAuth2TokenValidator<>(withIssuer, withAudience);
 
 		/**
 		 * 5) decoder에 validator 연결

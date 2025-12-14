@@ -15,4 +15,5 @@ public class KakaoOAuthProperties {
 	private String redirectUri;
 	private String clientSecret;
 	private String baseUrl;
+
 }

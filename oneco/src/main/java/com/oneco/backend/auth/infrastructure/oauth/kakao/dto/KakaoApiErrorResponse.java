@@ -7,8 +7,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 // 	"msg": "this access token does not exist"
 // 	}
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record KakaoApiErrorResponse (
+public record KakaoApiErrorResponse(
 	Integer code,
 	String msg
-){
+) {
 }

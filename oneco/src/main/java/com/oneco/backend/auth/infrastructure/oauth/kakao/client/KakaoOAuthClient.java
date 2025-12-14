@@ -1,7 +1,5 @@
 package com.oneco.backend.auth.infrastructure.oauth.kakao.client;
 
-
-
 import org.springframework.stereotype.Component;
 
 import com.oneco.backend.auth.domain.oauth.KakaoErrorCode;
@@ -22,14 +20,14 @@ public class KakaoOAuthClient {
 	private final KakaoAuthFeignClient kakaoAuthFeignClient;
 	private final KakaoUserInfoFeignClient kakaoUserInfoFeignClient;
 
-	public KakaoTokenResponse requestAccessToken(String authorizationCode){
+	public KakaoTokenResponse requestAccessToken(String authorizationCode) {
 
 		log.info("Requesting Kakao access token with authorization code: {}", authorizationCode);
 		log.info("Kakao OAuth Properties - Client ID: {}, Client Secret: {}, Redirect URI: {}",
 			kakaoOAuthProperties.getClientId(),
 			kakaoOAuthProperties.getClientSecret(),
 			kakaoOAuthProperties.getRedirectUri()
-			);
+		);
 
 		KakaoTokenResponse response = kakaoAuthFeignClient.requestAccessToken(
 			"authorization_code",
@@ -38,9 +36,9 @@ public class KakaoOAuthClient {
 			kakaoOAuthProperties.getRedirectUri(),
 			authorizationCode
 		);
-		log.info("Kakao Token Response received: {}",response);
+		log.info("Kakao Token Response received: {}", response);
 
-		if(response == null || response.accessToken()==null)	{
+		if (response == null || response.accessToken() == null) {
 			throw BaseException.from(KakaoErrorCode.OAUTH_FAILED);
 		}
 

@@ -2,9 +2,11 @@ package com.oneco.backend.auth.domain.oauth;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 
 import com.oneco.backend.global.exception.constant.ErrorCode;
+
 @Getter
 @RequiredArgsConstructor
 public enum KakaoErrorCode implements ErrorCode {
@@ -41,12 +43,14 @@ public enum KakaoErrorCode implements ErrorCode {
 		"KAKAO_OIDC_401_AUTH_FAILED"
 	),
 
-	/** * 액세스 토큰이 만료 or 잘못된 경우
-	 * * - 401 + error=invalid_token (API 호출 시) */
+	/**
+	 * 액세스 토큰이 만료 or 잘못된 경우
+	 * * - 401 + error=invalid_token (API 호출 시)
+	 */
 	INVALID_ACCESS_TOKEN(
 		HttpStatus.UNAUTHORIZED,
 		"유효하지 않은 카카오 액세스 토큰입니다.",
-		"KAKAO_401_INVALID_ACCESS_TOKEN" ),
+		"KAKAO_401_INVALID_ACCESS_TOKEN"),
 
 	// ============================
 	// 3. 공통 서버/파싱 에러

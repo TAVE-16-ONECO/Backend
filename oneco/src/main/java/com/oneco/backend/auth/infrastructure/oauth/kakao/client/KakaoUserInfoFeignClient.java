@@ -9,7 +9,7 @@ import com.oneco.backend.auth.infrastructure.oauth.kakao.config.KakaoApiFeignCon
 import com.oneco.backend.auth.infrastructure.oauth.kakao.dto.KakaoUserInfoResponse;
 
 @FeignClient(
-	url="${kakao.kapi.base-url}",
+	url = "${kakao.kapi.base-url}",
 	name = "KakaoUserInfoFeignClient",
 	configuration = KakaoApiFeignConfig.class
 )

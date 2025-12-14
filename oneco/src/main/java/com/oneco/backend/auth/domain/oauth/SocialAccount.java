@@ -28,11 +28,11 @@ import lombok.NoArgsConstructor;
 	name = "social_account",
 	uniqueConstraints = {
 		@UniqueConstraint(
-		name= "unq_provider_social",
-		columnNames = {"provider","social_account_id"}
+			name = "unq_provider_social",
+			columnNames = {"provider", "social_account_id"}
 		),
 		@UniqueConstraint(
-			name= "unq_member_provider",
+			name = "unq_member_provider",
 			columnNames = {"member_id", "provider"}
 		)
 	}
@@ -48,7 +48,7 @@ public class SocialAccount extends BaseTimeEntity {
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(
 		name = "member_id",
-		nullable=false,
+		nullable = false,
 		foreignKey = @ForeignKey(name = "fk_social_account_member")
 	)
 	private Member member;
@@ -67,11 +67,11 @@ public class SocialAccount extends BaseTimeEntity {
 		this.socialAccountId = socialAccountId;
 	}
 
-	public static SocialAccount create(Member member, SocialProvider provider,String socialAccountId){
+	public static SocialAccount create(Member member, SocialProvider provider, String socialAccountId) {
 		SocialAccount socialAccount = new SocialAccount();
-		socialAccount.member= member;
-		socialAccount.provider =provider;
-		socialAccount.socialAccountId =socialAccountId;
+		socialAccount.member = member;
+		socialAccount.provider = provider;
+		socialAccount.socialAccountId = socialAccountId;
 		return socialAccount;
 	}
 }

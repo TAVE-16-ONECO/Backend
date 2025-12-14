@@ -17,9 +17,9 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * 역할:
- *  - KakaoUserInfoFeignClient 등 KAPI(https://kapi.kakao.com) 전용 Feign 설정 클래스
- *  - 카카오 사용자 정보 조회 등에서 4xx / 5xx 에러가 발생했을 때,
- *    카카오 API 에러 JSON(code, msg)을 파싱해 우리 도메인 예외로 변환한다.
+ * - KakaoUserInfoFeignClient 등 KAPI(https://kapi.kakao.com) 전용 Feign 설정 클래스
+ * - 카카오 사용자 정보 조회 등에서 4xx / 5xx 에러가 발생했을 때,
+ * 카카오 API 에러 JSON(code, msg)을 파싱해 우리 도메인 예외로 변환한다.
  */
 @Slf4j
 @RequiredArgsConstructor

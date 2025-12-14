@@ -22,9 +22,9 @@ public class KakaoOidcService {
 	/**
 	 *
 	 */
-	public KakaoOidcClaims verifyAndParse(String idToken){
-		try{
-			if(idToken == null || idToken.isBlank()){
+	public KakaoOidcClaims verifyAndParse(String idToken) {
+		try {
+			if (idToken == null || idToken.isBlank()) {
 				throw BaseException.from(KakaoErrorCode.OIDC_AUTH_FAILED);
 			}
 
@@ -38,7 +38,7 @@ public class KakaoOidcService {
 				claims.sub(), claims.nickname());
 
 			return claims;
-		}catch(JwtException exception){
+		} catch (JwtException exception) {
 			log.warn("[KakaoOIDC] Invalid ID token. message={}", exception.getMessage(), exception);
 			throw BaseException.from(KakaoErrorCode.OIDC_AUTH_FAILED);
 		}
