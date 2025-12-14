@@ -50,23 +50,21 @@ public class OnboardingService {
 		Long memberId = member.getId();
 
 		// 온보딩 완료 가능 상태인지 점검
-		if(!memberService.canCompleteOnboarding(member.getStatus())){
+		if (!memberService.canCompleteOnboarding(member.getStatus())) {
 			throw BaseException.from(UserErrorCode.ONBOARDING_NOT_ALLOWED);
 		}
 
 		/**
 		 * 여기서 실제 추가정보를 반영
 		 */
-		if(request.familyRole()==null){
+		if (request.familyRole() == null) {
 			throw BaseException.from(UserErrorCode.INVALID_ONBOARDING_DATA);
 		}
 		member.completeOnboarding(request.familyRole());
 
-		String access = jwtTokenProvider.createAccessToken(memberId,"ROLE_USER");
+		String access = jwtTokenProvider.createAccessToken(memberId, "ROLE_USER");
 		// redis 관리 정책 세우기
 		String refresh = jwtTokenProvider.createRefreshToken(memberId);
-
-
 
 		return new TokensResponse(access, refresh);
 	}

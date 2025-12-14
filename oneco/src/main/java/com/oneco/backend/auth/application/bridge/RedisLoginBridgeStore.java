@@ -36,6 +36,6 @@ public class RedisLoginBridgeStore implements LoginBridgeStore {
 		if (value == null) {
 			return null;
 		}
-		return (KakaoLoginResponse) value;
+		return (KakaoLoginResponse)value;
 	}
 }

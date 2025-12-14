@@ -13,10 +13,10 @@ import lombok.RequiredArgsConstructor;
 
 /**
  * TokenReissueService
- *
+ * <p>
  * 역할
  * - Refresh Claims 기반으로 새 Access Token 발급
- *
+ * <p>
  * 설계 의도
  * - Refresh 흐름은 "재발급 전용"
  * - SecurityContext에 Authentication을 굳이 세팅하지 않는다.
@@ -29,7 +29,7 @@ public class TokenReissueService {
 	// private final MemberRepository memberRepository;
 
 	@Transactional(readOnly = true)
-	public TokenReissueResponse reissue(Claims refreshClaims){
+	public TokenReissueResponse reissue(Claims refreshClaims) {
 
 		// sub에서 사용자 식별자(memberId) 추출
 		String subject = refreshClaims.getSubject();
@@ -40,9 +40,9 @@ public class TokenReissueService {
 		Long memberId;
 
 		// subject(String) -> memberId(Long) 파싱
-		try{
+		try {
 			memberId = Long.parseLong(subject);
-		}catch(NumberFormatException e){
+		} catch (NumberFormatException e) {
 			throw BaseException.from(JwtErrorCode.INVALID_TOKEN);
 		}
 

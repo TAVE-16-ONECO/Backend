@@ -55,9 +55,9 @@ public class AuthController {
 	@Operation(
 		summary = "카카오 로그인 시작(Authorize로 리다이렉트)",
 		description = """
-        카카오 OAuth 인가 페이지로 302 리다이렉트한다.
-        서버에서 state를 생성해 세션(또는 Redis)에 저장한 뒤 authorize URL에 포함한다.
-        """
+			카카오 OAuth 인가 페이지로 302 리다이렉트한다.
+			서버에서 state를 생성해 세션(또는 Redis)에 저장한 뒤 authorize URL에 포함한다.
+			"""
 	)
 	@ApiResponses({
 		@ApiResponse(responseCode = "302", description = "카카오 인가 페이지로 리다이렉트"),
@@ -65,8 +65,8 @@ public class AuthController {
 	})
 	@GetMapping("/kakao/login")
 	public ResponseEntity<Void> redirectTokKakao(
-		@Parameter(hidden=true) HttpSession session,
-		@Parameter(hidden=true) HttpServletRequest request){
+		@Parameter(hidden = true) HttpSession session,
+		@Parameter(hidden = true) HttpServletRequest request) {
 		String redirectUri = kakaoOAuthProperties.getRedirectUri();
 
 		// state 생성 + 서버에 저장 (세션 or Redis)
@@ -80,7 +80,7 @@ public class AuthController {
 		);
 		//log.info("생성한 state {}",state);
 		// TODO: 추후 레디스 or jwt로 state 검증
-		session.setAttribute(KAKAO_OAUTH_STATE_SESSION_KEY,state);
+		session.setAttribute(KAKAO_OAUTH_STATE_SESSION_KEY, state);
 
 		// scope 구성
 		String scope = "openid profile_nickname profile_image";
@@ -90,11 +90,11 @@ public class AuthController {
 		URI kakaoAuthorizeUri = UriComponentsBuilder
 			.fromUriString(kakaoOAuthProperties.getBaseUrl()) //https://kauth.kakao.com
 			.path("/oauth/authorize")
-			.queryParam("response_type","code")
-			.queryParam("client_id",kakaoOAuthProperties.getClientId())
-			.queryParam("redirect_uri",redirectUri)
-			.queryParam("scope",scope)
-			.queryParam("state",state)
+			.queryParam("response_type", "code")
+			.queryParam("client_id", kakaoOAuthProperties.getClientId())
+			.queryParam("redirect_uri", redirectUri)
+			.queryParam("scope", scope)
+			.queryParam("state", state)
 			.build()
 			.encode() // redirectUri에 특수문자/한글 들어가도 안전하게
 			.toUri();
@@ -119,18 +119,18 @@ public class AuthController {
 		@Parameter(description = "카카오 인가 코드", required = true)
 		@RequestParam("code") String code,
 		@Parameter(description = "CSRF 방지용 state", required = true)
-		@RequestParam("state")String state,
+		@RequestParam("state") String state,
 		@Parameter(hidden = true) HttpSession session
-	){
-		String expectedState = (String) session.getAttribute(KAKAO_OAUTH_STATE_SESSION_KEY);
+	) {
+		String expectedState = (String)session.getAttribute(KAKAO_OAUTH_STATE_SESSION_KEY);
 		log.info("받은 state: {}", state);
-		log.info("생성한 state: {}",expectedState);
+		log.info("생성한 state: {}", expectedState);
 		session.removeAttribute(KAKAO_OAUTH_STATE_SESSION_KEY);
 		KakaoLoginResponse response = authService.loginWithKakao(code, state, expectedState);
 
 		// ✅ 로그인 결과를 브릿지 저장소에 30~60초 단위로 저장하고 key 발급
 		String key = loginBridgeStore.save(response);
-		String frontendUri= frontendProperties.getBaseUrl();
+		String frontendUri = frontendProperties.getBaseUrl();
 		log.info("frontendProperties: {}", frontendUri);
 		URI redirect = UriComponentsBuilder
 			.fromUriString(frontendProperties.getBaseUrl())
@@ -153,9 +153,9 @@ public class AuthController {
 	@Operation(
 		summary = "카카오 로그인 결과 조회 (Bridge Key 소비)",
 		description = """
-          프론트엔드 브릿지 페이지에서 전달받은 임시 Key를 사용하여 실제 로그인 결과(Access/Refresh Token, 유저 정보)를 조회한다.
-          이 Key는 단 한 번만 조회 가능하며, 조회 즉시 저장소에서 삭제(Consume)된다.
-          """
+			프론트엔드 브릿지 페이지에서 전달받은 임시 Key를 사용하여 실제 로그인 결과(Access/Refresh Token, 유저 정보)를 조회한다.
+			이 Key는 단 한 번만 조회 가능하며, 조회 즉시 저장소에서 삭제(Consume)된다.
+			"""
 	)
 	@ApiResponses({
 		@ApiResponse(responseCode = "200", description = "로그인 결과 조회 성공"),
@@ -165,7 +165,7 @@ public class AuthController {
 	public DataResponse<KakaoLoginResponse> loginResult(
 		@Parameter(description = "리다이렉트 URL로 전달받은 1회용 임시 Key", required = true)
 		@RequestParam("key") String key
-	){
+	) {
 
 		KakaoLoginResponse response = loginBridgeStore.consume(key);
 		log.info("브릿지 로그인 결과 조회:  response={}", response);
@@ -186,7 +186,7 @@ public class AuthController {
 	public DataResponse<TokenReissueResponse> refresh(
 		@Parameter(hidden = true)
 		@RequestAttribute(ATTR_REFRESH_CLAIMS) Claims refreshClaims
-	){
+	) {
 		TokenReissueResponse response = tokenReissueService.reissue(refreshClaims);
 		return DataResponse.from(response);
 	}

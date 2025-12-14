@@ -27,10 +27,10 @@ public class OnboardingController {
 
 	/**
 	 * 온보딩 완료 엔드포인트.
-	 *
+	 * <p>
 	 * - 이 엔드포인트는 Access 인증 필터 대상이 아니다.
 	 * - Onboarding 목적 토큰을 받아 목적/서명/만료를 검증한 뒤
-	 *   회원을 최종 생성하고 Access/Refresh를 발급한다.
+	 * 회원을 최종 생성하고 Access/Refresh를 발급한다.
 	 */
 	@Operation(
 		summary = "온보딩 완료",
@@ -42,7 +42,7 @@ public class OnboardingController {
 		@Parameter(hidden = true)
 		@RequestAttribute(ATTR_ONBOARDING_CLAIMS) Claims claims,
 		@RequestBody OnboardingRequest request
-	){
+	) {
 		TokensResponse response = onboardingService.complete(claims, request);
 		return DataResponse.from(response);
 	}

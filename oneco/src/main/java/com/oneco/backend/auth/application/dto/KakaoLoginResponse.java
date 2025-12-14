@@ -5,15 +5,14 @@ public record KakaoLoginResponse(
 	String accessToken,
 	String refreshToken,
 	String onboardingToken
-){
-	public static KakaoLoginResponse existing(String accessToken, String refreshToken){
+) {
+	public static KakaoLoginResponse existing(String accessToken, String refreshToken) {
 		return new KakaoLoginResponse(false, accessToken, refreshToken, null);
 	}
-	public static KakaoLoginResponse onboarding(String onboardingToken){
+
+	public static KakaoLoginResponse onboarding(String onboardingToken) {
 		return new KakaoLoginResponse(true, null, null, onboardingToken);
 	}
-
-
 
 }
 

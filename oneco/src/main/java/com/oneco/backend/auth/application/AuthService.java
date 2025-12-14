@@ -35,12 +35,12 @@ public class AuthService {
 	private final JwtTokenProvider jwtTokenProvider;
 
 	@Transactional
-	public KakaoLoginResponse loginWithKakao(String code, String state, String expectedState){
+	public KakaoLoginResponse loginWithKakao(String code, String state, String expectedState) {
 		// 1. state 검증
 		validateState(state, expectedState);
 
 		// 2. 인가코드 -> 토큰
-		KakaoTokenResponse kakaoTokenResponse= kakaoOAuthClient.requestAccessToken(code);
+		KakaoTokenResponse kakaoTokenResponse = kakaoOAuthClient.requestAccessToken(code);
 
 		// 3. kakao idToken 토큰 검증 및 파싱
 		KakaoOidcClaims claims = kakaoOidcService.verifyAndParse(kakaoTokenResponse.idToken());
@@ -73,7 +73,8 @@ public class AuthService {
 				//       -> 추후 레디스를 이용한 임시 저장소 분리하기 (온보딩 완료 전에는 DB에 영구 저장하지 않는 방식)
 				//       -> 지금은 간단히 Member 엔티티를 바로 생성하는 방식으로 구현
 				//       -> MemberStatus.ONBOARDING 상태로 변경 (따로 ttl은 안둠)
-				Member member = Member.createForOnboarding(claims.profileImageUrl(), claims.nickname(), SystemRole.USER); // 최소 필드만 채운 팩토리
+				Member member = Member.createForOnboarding(claims.profileImageUrl(), claims.nickname(),
+					SystemRole.USER); // 최소 필드만 채운 팩토리
 				memberRepository.save(member);
 
 				SocialAccount social = SocialAccount.create(
@@ -86,14 +87,14 @@ public class AuthService {
 				// 상태가 있다면 ONBOARDING 명시
 				member.changeStatus(MemberStatus.ONBOARDING);
 
-				String onboardingToken = jwtTokenProvider.createOnboardingToken(SocialProvider.KAKAO,kakaoSub);
+				String onboardingToken = jwtTokenProvider.createOnboardingToken(SocialProvider.KAKAO, kakaoSub);
 
 				return KakaoLoginResponse.onboarding(onboardingToken);
 			});
 	}
 
-	private void validateState(String state, String expectedState){
-		if(expectedState ==null|| !expectedState.equals(state)){
+	private void validateState(String state, String expectedState) {
+		if (expectedState == null || !expectedState.equals(state)) {
 			throw BaseException.from(GlobalErrorCode.INVALID_OAUTH_STATE);
 		}
 	}
