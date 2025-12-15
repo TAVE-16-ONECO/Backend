@@ -60,8 +60,8 @@ public class SocialAccount extends BaseTimeEntity {
 	@Column(name = "social_account_id", nullable = false, length = 255)
 	private String socialAccountId;
 
-	@Builder
-	public SocialAccount(Member member, SocialProvider provider, String socialAccountId, String profileImageUrl) {
+
+	private SocialAccount(Member member, SocialProvider provider, String socialAccountId, String profileImageUrl) {
 		this.member = member;
 		this.provider = provider;
 		this.socialAccountId = socialAccountId;
