@@ -17,10 +17,28 @@ services:
       retries: 15 # 헬스체크 재시도 횟수
     networks:
       - oneco-network # MySQL 컨테이너가 속할 네트워크 지정
+  redis:
+    image: redis:7.0
+    container_name: ${REDIS_CONTAINER_NAME}
+    command: ["redis-server", "--appendonly", "yes"]
+    # 데이터 영속화
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"] # Redis 컨테이너의 상태를 확인하는 헬스체크.
+      interval: 5s # 헬스체크 간격
+      timeout: 3s # 헬스체크 타임아웃
+      retries: 15 # 헬스체크 재시도 횟수
+    networks:
+      - oneco-network # Redis 컨테이너가 속할 네트워크 지정
 
 volumes:
   mysql_data:
     driver: local
+  redis_data:
+    driver: local
 networks:
   oneco-network:
     driver: bridge
+
+

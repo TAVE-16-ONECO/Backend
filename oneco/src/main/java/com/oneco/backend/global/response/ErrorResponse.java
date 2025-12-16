@@ -29,6 +29,7 @@ public class ErrorResponse extends BaseResponse {
 		this.reasons = reasons;
 	}
 
+
 	public static ErrorResponse from(ErrorCode errorCode) {
 		HttpStatus status = errorCode.getHttpStatus();
 		String message = errorCode.getMessage();
@@ -36,6 +37,7 @@ public class ErrorResponse extends BaseResponse {
 
 		return new ErrorResponse(status, message, code, null);
 	}
+
 
 	public static ErrorResponse of(ErrorCode errorCode, Map<String, Object> reasons) {
 		HttpStatus status = errorCode.getHttpStatus();
