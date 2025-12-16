@@ -2,7 +2,9 @@ package com.oneco.backend.content.domain.news;
 
 import com.oneco.backend.content.domain.common.ImageFile;
 import com.oneco.backend.content.domain.common.WebLink;
+import com.oneco.backend.content.domain.exception.constant.ContentErrorCode;
 import com.oneco.backend.content.infrastructure.converter.NewsItemOrderConverter;
+import com.oneco.backend.global.exception.BaseException;
 
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
@@ -53,17 +55,21 @@ public class NewsItem {
 
 	private NewsItem(String title, WebLink webLink, NewsItemOrder newsItemOrder, ImageFile imageFile) {
 		if (title == null || title.isBlank()) {
-			throw new IllegalArgumentException("뉴스 title은 비어 있을 수 없습니다.");
+			throw BaseException.from(ContentErrorCode.NEWS_TITLE_EMPTY);
 		}
+
 		if (webLink == null) {
-			throw new IllegalArgumentException("뉴스 webLink는 null일 수 없습니다.");
+			throw BaseException.from(ContentErrorCode.NEWS_WEBLINK_REQUIRED);
 		}
+
 		if (newsItemOrder == null) {
-			throw new IllegalArgumentException("뉴스 newsItemOrder는 null일 수 없습니다.");
+			throw BaseException.from(ContentErrorCode.NEWS_ITEM_ORDER_REQUIRED);
 		}
+
 		if (imageFile == null) {
-			throw new IllegalArgumentException("뉴스 imageFile는 null일 수 없습니다.");
+			throw BaseException.from(ContentErrorCode.NEWS_IMAGE_REQUIRED);
 		}
+
 		this.title = title.trim();
 		this.webLink = webLink;
 		this.newsItemOrder = newsItemOrder;
@@ -76,7 +82,7 @@ public class NewsItem {
 
 	public void changeTitle(String newTitle) {
 		if (newTitle == null || newTitle.isBlank()) {
-			throw new IllegalArgumentException("뉴스 title은 비어 있을 수 없습니다.");
+			throw BaseException.from(ContentErrorCode.NEWS_TITLE_EMPTY);
 		}
 		this.title = newTitle.trim();
 	}

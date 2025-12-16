@@ -1,7 +1,9 @@
 package com.oneco.backend.content.domain.quiz;
 
+import com.oneco.backend.content.domain.exception.constant.ContentErrorCode;
 import com.oneco.backend.content.infrastructure.converter.QuestionOrderConverter;
 import com.oneco.backend.content.infrastructure.converter.QuizOptionsConverter;
+import com.oneco.backend.global.exception.BaseException;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -50,20 +52,24 @@ public class Quiz {
 
 	private Quiz(String question, QuestionOrder questionOrder, QuizOptions options, AnswerIndex answerIndex) {
 		if (questionOrder == null) {
-			throw new IllegalArgumentException("questionOrder는 null일 수 없습니다.");
+			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING);
 		}
+
 		if (options == null) {
-			throw new IllegalArgumentException("options는 null일 수 없습니다.");
+			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING);
 		}
+
 		if (answerIndex == null) {
-			throw new IllegalArgumentException("answerIndex는 null일 수 없습니다.");
+			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING);
 		}
+
 		if (question == null || question.isBlank()) {
-			throw new IllegalArgumentException("question은 비어 있을 수 없습니다.");
+			throw BaseException.from(ContentErrorCode.QUIZ_QUESTION_EMPTY);
 		}
+
 		int optionCount = options.getOptions().size();
 		if (answerIndex.getValue() < 1 || answerIndex.getValue() > optionCount) {
-			throw new IllegalArgumentException("answerIndex가 options의 범위를 벗어났습니다.");
+			throw BaseException.from(ContentErrorCode.ANSWER_INDEX_OUT_OF_RANGE);
 		}
 		this.question = question.trim();
 		this.questionOrder = questionOrder;
@@ -78,7 +84,7 @@ public class Quiz {
 
 	public void changeQuestion(String newQuestion) {
 		if (newQuestion == null || newQuestion.isBlank()) {
-			throw new IllegalArgumentException("question은 비어 있을 수 없습니다.");
+			throw BaseException.from(ContentErrorCode.QUIZ_QUESTION_EMPTY);
 		}
 		this.question = newQuestion.trim();
 	}

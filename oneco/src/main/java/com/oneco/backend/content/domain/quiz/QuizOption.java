@@ -1,5 +1,8 @@
 package com.oneco.backend.content.domain.quiz;
 
+import com.oneco.backend.content.domain.exception.constant.ContentErrorCode;
+import com.oneco.backend.global.exception.BaseException;
+
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -20,7 +23,7 @@ public class QuizOption {
 
 	private QuizOption(String text) {
 		if (text == null || text.isBlank()) {
-			throw new IllegalArgumentException("QuizOption의 text는 비어 있을 수 없습니다.");
+			throw BaseException.from(ContentErrorCode.QUIZ_OPTION_TEXT_EMPTY);
 		}
 		this.text = text.trim();
 	}

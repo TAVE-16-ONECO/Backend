@@ -1,5 +1,8 @@
 package com.oneco.backend.content.domain.dailycontent;
 
+import com.oneco.backend.content.domain.exception.constant.ContentErrorCode;
+import com.oneco.backend.global.exception.BaseException;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
@@ -19,12 +22,12 @@ public class Keyword {
 
 	private Keyword(String value) {
 		if (value == null || value.isBlank()) {
-			throw new IllegalArgumentException("키워드는 비어있을 수 없습니다.");
+			throw BaseException.from(ContentErrorCode.KEYWORD_EMPTY);
 		}
 		String v = value.trim();
 		if (v.length() > MAX_LENGTH) {
-			throw new IllegalArgumentException("키워드는 최대 " + MAX_LENGTH + "자까지 허용됩니다.");
-		}
+			throw BaseException.from(ContentErrorCode.KEYWORD_TOO_LONG, "maxLength:"+ MAX_LENGTH+", actualLength:"+ v.length());
+			}
 		this.value = v;
 	}
 
