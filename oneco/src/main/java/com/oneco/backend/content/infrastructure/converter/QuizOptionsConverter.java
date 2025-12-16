@@ -2,8 +2,10 @@ package com.oneco.backend.content.infrastructure.converter;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.oneco.backend.content.domain.exception.constant.ContentErrorCode;
 import com.oneco.backend.content.domain.quiz.QuizOption;
 import com.oneco.backend.content.domain.quiz.QuizOptions;
+import com.oneco.backend.global.exception.BaseException;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
@@ -40,7 +42,7 @@ public class QuizOptionsConverter implements AttributeConverter<QuizOptions, Str
 	@Override
 	public String convertToDatabaseColumn(QuizOptions attribute) {
 		if (attribute == null) {
-			throw new IllegalArgumentException("QuizOptions가 null일 수 없습니다.");
+			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING, "QuizOptions가 null일 수 없습니다.");
 		}
 
 		try {
@@ -58,14 +60,14 @@ public class QuizOptionsConverter implements AttributeConverter<QuizOptions, Str
 			return objectMapper.writeValueAsString(texts);
 
 		} catch (Exception e) {
-			throw new IllegalStateException("QuizOptions를 JSON으로 변환하는 데 실패했습니다.", e);
+			throw BaseException.from(ContentErrorCode.QUIZ_OPTIONS_JSON_SERIALIZE_FAIL);
 		}
 	}
 
 	@Override
 	public QuizOptions convertToEntityAttribute(String dbData) {
 		if (dbData == null || dbData.isBlank()) {
-			throw new IllegalArgumentException("DB 데이터가 null이거나 비어있습니다.");
+			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING, "DB 데이터가 null이거나 비어있습니다.");
 		}
 
 		try {
@@ -86,7 +88,7 @@ public class QuizOptionsConverter implements AttributeConverter<QuizOptions, Str
 			return QuizOptions.ofTexts(texts);
 
 		} catch (Exception e) {
-			throw new IllegalStateException("JSON을 QuizOptions로 변환하는 데 실패했습니다.", e);
+			throw BaseException.from(ContentErrorCode.QUIZ_OPTIONS_JSON_DESERIALIZE_FAIL);
 		}
 	}
 }

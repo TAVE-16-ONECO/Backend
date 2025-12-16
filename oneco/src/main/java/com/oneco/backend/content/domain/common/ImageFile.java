@@ -1,5 +1,8 @@
 package com.oneco.backend.content.domain.common;
 
+import com.oneco.backend.content.domain.exception.constant.ContentErrorCode;
+import com.oneco.backend.global.exception.BaseException;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
@@ -18,7 +21,7 @@ public class ImageFile {
 
 	private ImageFile(String url) {
 		if (url == null || url.isBlank()) {
-			throw new IllegalArgumentException("이미지 URL은 비어있을 수 없습니다.");
+			throw BaseException.from(ContentErrorCode.IMAGE_URL_EMPTY);
 		}
 		this.url = url.trim();
 	}

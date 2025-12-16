@@ -1,5 +1,8 @@
 package com.oneco.backend.content.domain.quiz;
 
+import com.oneco.backend.content.domain.exception.constant.ContentErrorCode;
+import com.oneco.backend.global.exception.BaseException;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
@@ -18,7 +21,7 @@ public class AnswerIndex {
 
 	public AnswerIndex(int value) {
 		if (value < 1) {
-			throw new IllegalArgumentException("정답 인덱스는 1 이상이어야 합니다.");
+			throw BaseException.from(ContentErrorCode.ANSWER_INDEX_INVALID);
 		}
 		this.value = value;
 	}

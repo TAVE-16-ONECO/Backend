@@ -1,5 +1,8 @@
 package com.oneco.backend.content.domain.dailycontent;
 
+import com.oneco.backend.content.domain.exception.constant.ContentErrorCode;
+import com.oneco.backend.global.exception.BaseException;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
@@ -18,7 +21,7 @@ public class CategoryId {
 
 	private CategoryId(Long value) {
 		if (value == null || value <= 0) {
-			throw new IllegalArgumentException("categoryId는 양수여야 합니다.");
+			throw BaseException.from(ContentErrorCode.CATEGORY_ID_INVALID, "입력값=" + value);
 		}
 		this.value = value;
 	}

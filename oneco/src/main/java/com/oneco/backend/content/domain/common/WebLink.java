@@ -1,5 +1,8 @@
 package com.oneco.backend.content.domain.common;
 
+import com.oneco.backend.content.domain.exception.constant.ContentErrorCode;
+import com.oneco.backend.global.exception.BaseException;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
@@ -18,11 +21,11 @@ public class WebLink {
 
 	private WebLink(String url) {
 		if (url == null || url.isBlank()) {
-			throw new IllegalArgumentException("weblink url은 비어 있을 수 없습니다.");
+			throw BaseException.from(ContentErrorCode.WEBLINK_URL_EMPTY);
 		}
 		String v = url.trim();
 		if (!(v.startsWith("http://") || v.startsWith("https://"))) {
-			throw new IllegalArgumentException("weblink는 http/https만 허용됩니다.");
+			throw BaseException.from(ContentErrorCode.WEBLINK_SCHEME_INVALID, "입력값=" + v);
 		}
 
 		this.url = url.trim();

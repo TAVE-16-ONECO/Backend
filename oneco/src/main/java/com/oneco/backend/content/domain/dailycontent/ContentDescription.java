@@ -1,5 +1,8 @@
 package com.oneco.backend.content.domain.dailycontent;
 
+import com.oneco.backend.content.domain.exception.constant.ContentErrorCode;
+import com.oneco.backend.global.exception.BaseException;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
@@ -40,10 +43,12 @@ public class ContentDescription {
 		this.summary = require(summary, "summary");
 		this.bodyText = require(body, "body");
 		if (this.title.length() > TITLE_MAX_LENGTH) {
-			throw new IllegalArgumentException("title은 최대 " + TITLE_MAX_LENGTH + "자까지 허용됩니다.");
+			throw BaseException.from(ContentErrorCode.TITLE_TOO_LONG,
+				"TITLE_MAX_LENGTH:" + TITLE_MAX_LENGTH + "CURRENT_LENGTH:" + this.title.length());
 		}
 		if (this.summary.length() > SUMMARY_MAX_LENGTH) {
-			throw new IllegalArgumentException("summary는 최대 " + SUMMARY_MAX_LENGTH + "자까지 허용됩니다.");
+			throw BaseException.from(ContentErrorCode.SUMMARY_TOO_LONG,
+				"SUMMARY_MAX_LENGTH:" + SUMMARY_MAX_LENGTH + "CURRENT_LENGTH:" + this.summary.length());
 		}
 	}
 
@@ -51,9 +56,14 @@ public class ContentDescription {
 		return new ContentDescription(title, summary, body);
 	}
 
-	private String require(String value, String feildName) {
+	private String require(String value, String fieldName) {
 		if (value == null || value.isBlank()) {
-			throw new IllegalArgumentException(feildName + "는 비어있을 수 없습니다.");
+			switch (fieldName) {
+				case "title" -> throw BaseException.from(ContentErrorCode.TITLE_EMPTY);
+				case "summary" -> throw BaseException.from(ContentErrorCode.SUMMARY_EMPTY);
+				case "body" -> throw BaseException.from(ContentErrorCode.BODY_EMPTY);
+				default -> throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING, fieldName);
+			}
 		}
 		return value.trim();
 	}

@@ -3,6 +3,10 @@ package com.oneco.backend.content.domain.quiz;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import com.oneco.backend.content.domain.exception.constant.ContentErrorCode;
+import com.oneco.backend.global.exception.BaseException;
+
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -19,17 +23,18 @@ public class QuizOptions {
 
 	private QuizOptions(List<QuizOption> options) {
 		if (options == null || options.isEmpty()) {
-			throw new IllegalArgumentException("QuizOptions는 비어 있을 수 없습니다.");
+			throw BaseException.from(ContentErrorCode.QUIZ_OPTIONS_EMPTY);
 		}
 
 		// null 원소 방지
 		if (options.stream().anyMatch(Objects::isNull)) {
-			throw new IllegalArgumentException("QuizOptions에 null 보기는 포함될 수 없습니다.");
+			throw BaseException.from(ContentErrorCode.QUIZ_OPTIONS_NULL_ELEMENT);
 		}
 
 		// 최소 개수 규칙
 		if (options.size() != OPTION_COUNT) {
-			throw new IllegalArgumentException("QuizOptions는 정확히 " + OPTION_COUNT + "개여야 합니다.");
+			throw BaseException.from(ContentErrorCode.QUIZ_OPTIONS_COUNT_INVALID,
+				"{expected=" + OPTION_COUNT + ", actual=" + options.size() + "}");
 		}
 
 		// 중복 텍스트 방지
@@ -40,7 +45,7 @@ public class QuizOptions {
 			.count(); // 남아있는 원소 개수
 
 		if (distinctCount != options.size()) {
-			throw new IllegalArgumentException("퀴즈 보기 텍스트는 중복될 수 없습니다.");
+			throw BaseException.from(ContentErrorCode.QUIZ_OPTIONS_DUPLICATE_TEXT);
 		}
 
 		/**
@@ -78,7 +83,7 @@ public class QuizOptions {
 	 */
 	public static QuizOptions ofTexts(List<String> texts) {
 		if (texts == null) {
-			throw new IllegalArgumentException("texts는 null일 수 없습니다.");
+			throw BaseException.from(ContentErrorCode.QUIZ_OPTIONS_EMPTY);
 		}
 
 		List<QuizOption> list = texts.stream()

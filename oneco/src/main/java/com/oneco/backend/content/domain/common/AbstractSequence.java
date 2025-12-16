@@ -2,6 +2,9 @@ package com.oneco.backend.content.domain.common;
 
 import java.util.Objects;
 
+import com.oneco.backend.content.domain.exception.constant.ContentErrorCode;
+import com.oneco.backend.global.exception.BaseException;
+
 import lombok.Getter;
 
 /**
@@ -50,7 +53,8 @@ public class AbstractSequence {
 	 */
 	protected AbstractSequence(int value) {
 		if (value < 1) {
-			throw new IllegalArgumentException(this.getClass().getSimpleName() + "은(는) 1 이상의 값이어야 합니다: " + value);
+			throw BaseException.from(ContentErrorCode.INVALID_SEQUENCE_VALUE,
+				this.getClass().getSimpleName() + "은(는) 1 이상의 값이어야 합니다: " + value);
 		}
 		this.value = value;
 	}
