@@ -43,10 +43,12 @@ public class ContentDescription {
 		this.summary = require(summary, "summary");
 		this.bodyText = require(body, "body");
 		if (this.title.length() > TITLE_MAX_LENGTH) {
-			throw BaseException.from(ContentErrorCode.TITLE_TOO_LONG,"TITLE_MAX_LENGTH:"+TITLE_MAX_LENGTH+ "CURRENT_LENGTH:" + this.title.length());
+			throw BaseException.from(ContentErrorCode.TITLE_TOO_LONG,
+				"TITLE_MAX_LENGTH:" + TITLE_MAX_LENGTH + "CURRENT_LENGTH:" + this.title.length());
 		}
 		if (this.summary.length() > SUMMARY_MAX_LENGTH) {
-			throw BaseException.from(ContentErrorCode.SUMMARY_TOO_LONG,"SUMMARY_MAX_LENGTH:"+SUMMARY_MAX_LENGTH+ "CURRENT_LENGTH:" + this.summary.length());
+			throw BaseException.from(ContentErrorCode.SUMMARY_TOO_LONG,
+				"SUMMARY_MAX_LENGTH:" + SUMMARY_MAX_LENGTH + "CURRENT_LENGTH:" + this.summary.length());
 		}
 	}
 

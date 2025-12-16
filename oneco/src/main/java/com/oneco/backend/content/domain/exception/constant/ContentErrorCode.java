@@ -54,13 +54,13 @@ public enum ContentErrorCode implements ErrorCode {
 	QUIZ_OPTIONS_DUPLICATE_TEXT(HttpStatus.BAD_REQUEST, "퀴즈 보기 텍스트는 중복될 수 없습니다.", "CONTENT_400_208"),
 
 	// ===== Persistence / Converter =====
-	QUIZ_OPTIONS_JSON_SERIALIZE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "퀴즈 보기를 JSON으로 변환하는 데 실패했습니다.", "CONTENT_500_001"),
-	QUIZ_OPTIONS_JSON_DESERIALIZE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "JSON을 퀴즈 보기로 변환하는 데 실패했습니다.", "CONTENT_500_002");
+	QUIZ_OPTIONS_JSON_SERIALIZE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "퀴즈 보기를 JSON으로 변환하는 데 실패했습니다.",
+		"CONTENT_500_001"),
+	QUIZ_OPTIONS_JSON_DESERIALIZE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "JSON을 퀴즈 보기로 변환하는 데 실패했습니다.",
+		"CONTENT_500_002");
 
 	private final HttpStatus httpStatus;
 	private final String message;
 	private final String code;
-
-
 
 }

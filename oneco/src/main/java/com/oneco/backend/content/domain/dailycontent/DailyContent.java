@@ -31,6 +31,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(
@@ -80,19 +81,19 @@ public class DailyContent {
 		ImageFile imageFile
 	) {
 		if (categoryId == null) {
-			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING,"categoryId is null");
+			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING, "categoryId is null");
 		}
 		if (daySequence == null) {
-			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING,"daySequence is null");
+			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING, "daySequence is null");
 		}
 		if (keyword == null) {
-			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING,"keyword is null");
+			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING, "keyword is null");
 		}
 		if (description == null) {
-			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING,"description is null");
+			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING, "description is null");
 		}
 		if (imageFile == null) {
-			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING,"imageFile is null");
+			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING, "imageFile is null");
 		}
 
 		this.categoryId = categoryId;
@@ -114,7 +115,7 @@ public class DailyContent {
 
 	public void updateDescription(ContentDescription newDescription) {
 		if (newDescription == null) {
-			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING,"newDescription is null");
+			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING, "newDescription is null");
 		}
 		this.description = newDescription;
 	}
@@ -138,7 +139,7 @@ public class DailyContent {
 
 	public void updateNewsTitle(NewsItemOrder order, String newTitle) {
 		if (order == null) {
-			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING,"order is null");
+			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING, "order is null");
 		}
 
 		NewsItem target = this.newsItems.stream()
@@ -152,7 +153,7 @@ public class DailyContent {
 
 	public void updateQuizQuestion(QuestionOrder order, String newQuestion) {
 		if (order == null) {
-			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING,"order is null");
+			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING, "order is null");
 		}
 
 		Quiz target = this.quizzes.stream()
@@ -171,16 +172,16 @@ public class DailyContent {
 		ImageFile imageFile
 	) {
 		if (title == null) {
-			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING,"title is null");
+			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING, "title is null");
 		}
 		if (order == null) {
-			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING,"order is null");
+			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING, "order is null");
 		}
 		if (link == null) {
-			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING,"link is null");
+			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING, "link is null");
 		}
 		if (imageFile == null) {
-			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING,"imageFile is null");
+			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING, "imageFile is null");
 		}
 
 		validateNewsOrderDuplicate(order);
@@ -193,14 +194,14 @@ public class DailyContent {
 
 	public void removeNewsItem(NewsItem item) {
 		if (item == null) {
-			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING,"item is null");
+			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING, "item is null");
 		}
 		newsItems.remove(item);
 	}
 
 	public void removeNewsItemByOrder(NewsItemOrder order) {
 		if (order == null) {
-			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING,"order is null");
+			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING, "order is null");
 		}
 
 		boolean removed = this.newsItems.removeIf(item -> item.getNewsItemOrder().equals(order));
@@ -211,21 +212,21 @@ public class DailyContent {
 
 	public void changeKeyword(Keyword newKeyword) {
 		if (newKeyword == null) {
-			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING,"newKeyword is null");
+			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING, "newKeyword is null");
 		}
 		this.keyword = newKeyword;
 	}
 
 	public void changeImage(ImageFile newImageFile) {
 		if (newImageFile == null) {
-			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING,"newImageFile is null");
+			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING, "newImageFile is null");
 		}
 		this.imageFile = newImageFile;
 	}
 
 	public boolean isSameCategory(CategoryId other) {
 		if (other == null) {
-			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING,"other is null");
+			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING, "other is null");
 		}
 		return this.categoryId.equals(other);
 	}
@@ -241,16 +242,16 @@ public class DailyContent {
 		AnswerIndex answerIndex
 	) {
 		if (question == null) {
-			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING,"question is null");
+			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING, "question is null");
 		}
 		if (order == null) {
-			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING,"order is null");
+			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING, "order is null");
 		}
 		if (options == null) {
-			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING,"options is null");
+			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING, "options is null");
 		}
 		if (answerIndex == null) {
-			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING,"answerIndex is null");
+			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING, "answerIndex is null");
 		}
 
 		validateQuizOrderDuplicate(order);
@@ -263,14 +264,14 @@ public class DailyContent {
 
 	public void removeQuiz(Quiz quiz) {
 		if (quiz == null) {
-			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING,"quiz is null");
+			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING, "quiz is null");
 		}
 		quizzes.remove(quiz);
 	}
 
 	public void removeQuizByOrder(QuestionOrder order) {
 		if (order == null) {
-			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING,"order is null");
+			throw BaseException.from(ContentErrorCode.REQUIRED_VALUE_MISSING, "order is null");
 		}
 
 		boolean removed = this.quizzes.removeIf(q -> q.getQuestionOrder().equals(order));

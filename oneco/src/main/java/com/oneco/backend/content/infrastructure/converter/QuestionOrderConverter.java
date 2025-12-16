@@ -9,13 +9,13 @@ import jakarta.persistence.Converter;
 public class QuestionOrderConverter implements AttributeConverter<QuestionOrder, Integer> {
 
 	@Override
-	public Integer convertToDatabaseColumn(QuestionOrder attribute){
-		return attribute != null ? attribute.value(): null;
+	public Integer convertToDatabaseColumn(QuestionOrder attribute) {
+		return attribute != null ? attribute.value() : null;
 	}
 
 	@Override
-	public QuestionOrder convertToEntityAttribute(Integer dbData){
-		return dbData != null ? new QuestionOrder(dbData): null;
+	public QuestionOrder convertToEntityAttribute(Integer dbData) {
+		return dbData != null ? new QuestionOrder(dbData) : null;
 	}
 }
 

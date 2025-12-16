@@ -26,8 +26,9 @@ public class Keyword {
 		}
 		String v = value.trim();
 		if (v.length() > MAX_LENGTH) {
-			throw BaseException.from(ContentErrorCode.KEYWORD_TOO_LONG, "maxLength:"+ MAX_LENGTH+", actualLength:"+ v.length());
-			}
+			throw BaseException.from(ContentErrorCode.KEYWORD_TOO_LONG,
+				"maxLength:" + MAX_LENGTH + ", actualLength:" + v.length());
+		}
 		this.value = v;
 	}
 
