@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.oneco.backend.global.exception.BaseException;
-import com.oneco.backend.global.exception.constant.MemberErrorCode;
+import com.oneco.backend.member.domain.exception.constant.MemberErrorCode;
 import com.oneco.backend.member.domain.Member;
 import com.oneco.backend.member.domain.MemberRepository;
 import com.oneco.backend.member.domain.MemberStatus;

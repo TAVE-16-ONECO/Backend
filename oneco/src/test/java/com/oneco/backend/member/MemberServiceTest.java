@@ -12,7 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.oneco.backend.global.exception.BaseException;
-import com.oneco.backend.global.exception.constant.MemberErrorCode;
+import com.oneco.backend.member.domain.exception.constant.MemberErrorCode;
 import com.oneco.backend.member.application.MemberService;
 import com.oneco.backend.member.domain.Member;
 import com.oneco.backend.member.domain.MemberRepository;

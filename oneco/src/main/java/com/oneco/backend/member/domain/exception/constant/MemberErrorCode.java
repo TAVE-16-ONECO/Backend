@@ -1,6 +1,8 @@
-package com.oneco.backend.global.exception.constant;
+package com.oneco.backend.member.domain.exception.constant;
 
 import org.springframework.http.HttpStatus;
+
+import com.oneco.backend.global.exception.constant.ErrorCode;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

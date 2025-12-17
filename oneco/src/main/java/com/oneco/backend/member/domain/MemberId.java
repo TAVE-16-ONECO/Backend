@@ -1,7 +1,7 @@
 package com.oneco.backend.member.domain;
 
 import com.oneco.backend.global.exception.BaseException;
-import com.oneco.backend.global.exception.constant.MemberErrorCode;
+import com.oneco.backend.member.domain.exception.constant.MemberErrorCode;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
