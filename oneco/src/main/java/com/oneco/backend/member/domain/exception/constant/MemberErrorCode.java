@@ -22,7 +22,7 @@ public enum MemberErrorCode implements ErrorCode {
 	INVALID_ONBOARDING_DATA(
 		HttpStatus.BAD_REQUEST,
 		"온보딩 데이터가 유효하지 않습니다.",
-		"CLIENT_ERROR_400_INVALID_ONBOARDING_DATA"
+		"MEMBER_ERROR_400_INVALID_ONBOARDING_DATA"
 	),
 
 	INVALID_MEMBER_ID(
@@ -33,7 +33,8 @@ public enum MemberErrorCode implements ErrorCode {
 
 	// === 401 UNAUTHORIZED ===
 
-	INVALID_PASSWORD(HttpStatus.UNAUTHORIZED,
+	INVALID_PASSWORD(
+		HttpStatus.UNAUTHORIZED,
 		"비밀번호가 올바르지 않습니다.",
 		"MEMBER_ERROR_401_INVALID_PASSWORD"
 	),
@@ -46,7 +47,7 @@ public enum MemberErrorCode implements ErrorCode {
 		"MEMBER_ERROR_403_INVALID_ACCOUNT_STATUS"
 	),
 
-	// === 404 NOT FOUND ===,
+	// === 404 NOT FOUND ===
 	MEMBER_NOT_FOUND(
 		HttpStatus.NOT_FOUND,
 		"사용자를 찾을 수 없습니다.",
@@ -59,13 +60,14 @@ public enum MemberErrorCode implements ErrorCode {
 		"MEMBER_ERROR_404_SOCIAL_ACCOUNT_NOT_FOUND"
 	),
 
-	// === 409 CONFLICT ===,
+	// === 409 CONFLICT ===
 
 	ONBOARDING_NOT_ALLOWED(
 		HttpStatus.CONFLICT,
 		"온보딩을 완료할 수 없는 상태입니다.",
-		"CLIENT_ERROR_409_ONBOARDING_NOT_ALLOWED"
+		"MEMBER_ERROR_409_ONBOARDING_NOT_ALLOWED"
 	);
+
 
 	private final HttpStatus httpStatus;
 	private final String message;
