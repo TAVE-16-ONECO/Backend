@@ -48,7 +48,7 @@ public class TokenReissueService {
 
 		// 만약 사용자 상태 검증할 시 사용( 탈퇴/정지/휴면 여부 확인 등)
 		// Member member = memberRepository.findById(memberId)
-		// 	.orElseThrow(()-> Member.from(MemberErrorCode.USER_NOT_FOUND));
+		// 	.orElseThrow(()-> BaseException.from(MemberErrorCode.USER_NOT_FOUND));
 
 		// 새 Access Token 발급
 		String newAccessToken = jwtTokenProvider.createAccessToken(memberId, "ROLE_USER");
