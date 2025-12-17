@@ -1,8 +1,8 @@
-package com.oneco.backend.Category.domain.Category;
+package com.oneco.backend.category.domain.category;
 
 import com.oneco.backend.global.exception.BaseException;
 
-import com.oneco.backend.Category.domain.exception.constant.CategoryErrorCode;
+import com.oneco.backend.category.domain.exception.constant.CategoryErrorCode;
 
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
@@ -15,16 +15,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode
 public class CategorySummary {
-	String value;
+	private String value;
 	public static final int MAX_LENGTH = 100;
 
 	private CategorySummary(String value) {
 		if (value == null || value.isBlank()) {
 			throw BaseException.from(CategoryErrorCode.CATEGORY_SUMMARY_INVALID);
 		}
+		String v = value.trim();
 		if (value.length() > MAX_LENGTH) {
 			throw BaseException.from(CategoryErrorCode.CATEGORY_SUMMARY_INVALID,
-				"MAX_LENGTH:" + MAX_LENGTH + "CURRENT_LENGTH:" + value.length());
+				"MAX_LENGTH:" + MAX_LENGTH + " CURRENT_LENGTH:" + value.length());
 		}
 		this.value = value;
 	}

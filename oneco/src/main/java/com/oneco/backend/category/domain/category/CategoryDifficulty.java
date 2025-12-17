@@ -1,4 +1,4 @@
-package com.oneco.backend.Category.domain.Category;
+package com.oneco.backend.category.domain.category;
 
 public enum CategoryDifficulty {
 	EASY, NORMAL, HARD

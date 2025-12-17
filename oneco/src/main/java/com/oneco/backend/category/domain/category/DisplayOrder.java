@@ -1,6 +1,6 @@
-package com.oneco.backend.Category.domain.Category;
+package com.oneco.backend.category.domain.category;
 
-import com.oneco.backend.Category.domain.exception.constant.CategoryErrorCode;
+import com.oneco.backend.category.domain.exception.constant.CategoryErrorCode;
 import com.oneco.backend.global.exception.BaseException;
 
 import jakarta.persistence.Embeddable;
