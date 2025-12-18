@@ -20,7 +20,7 @@ import com.oneco.backend.auth.domain.oauth.SocialAccount;
 import com.oneco.backend.auth.domain.oauth.SocialAccountRepository;
 import com.oneco.backend.auth.domain.oauth.SocialProvider;
 import com.oneco.backend.global.exception.BaseException;
-import com.oneco.backend.global.exception.constant.UserErrorCode;
+import com.oneco.backend.member.domain.exception.constant.MemberErrorCode;
 import com.oneco.backend.global.security.jwt.JwtClaimExtractor;
 import com.oneco.backend.global.security.jwt.JwtTokenProvider;
 import com.oneco.backend.member.application.MemberService;
@@ -96,7 +96,7 @@ class OnboardingServiceTest {
 		// then: 허용되지 않는 상태에서는 예외로 흐름이 차단된다.
 		BaseException ex = assertThrows(BaseException.class,
 			() -> onboardingService.complete(claims, new OnboardingRequest(FamilyRole.CHILD)));
-		assertEquals(UserErrorCode.ONBOARDING_NOT_ALLOWED.getCode(), ex.getCode());
+		assertEquals(MemberErrorCode.ONBOARDING_NOT_ALLOWED.getCode(), ex.getCode());
 	}
 
 	private void setId(Member member, long id) throws Exception {

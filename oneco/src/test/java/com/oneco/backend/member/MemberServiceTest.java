@@ -12,7 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.oneco.backend.global.exception.BaseException;
-import com.oneco.backend.global.exception.constant.UserErrorCode;
+import com.oneco.backend.member.domain.exception.constant.MemberErrorCode;
 import com.oneco.backend.member.application.MemberService;
 import com.oneco.backend.member.domain.Member;
 import com.oneco.backend.member.domain.MemberRepository;
@@ -43,7 +43,7 @@ class MemberServiceTest {
 		when(memberRepository.findById(10L)).thenReturn(Optional.empty());
 
 		BaseException ex = assertThrows(BaseException.class, () -> memberService.findByIdOrThrow(10L));
-		assertEquals(UserErrorCode.USER_NOT_FOUND.getCode(), ex.getCode());
+		assertEquals(MemberErrorCode.MEMBER_NOT_FOUND.getCode(), ex.getCode());
 	}
 
 
