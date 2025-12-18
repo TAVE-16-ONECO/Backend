@@ -22,7 +22,7 @@ public class MissionDays {
 			throw BaseException.from(CategoryErrorCode.CATEGORY_MISSION_DAYS_INVALID);
 		}
 		if (value > MAX_DAYS) {
-			throw BaseException.from(CategoryErrorCode.CATEGORY_MISSION_DAYS_INVALID,
+			throw BaseException.from(CategoryErrorCode.CATEGORY_MISSION_DAYS_OUT_OF_RANGE,
 				"MAX_DAYS:" + MAX_DAYS + " CURRENT_DAYS:" + value);
 		}
 		this.value = value;

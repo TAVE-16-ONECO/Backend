@@ -22,12 +22,12 @@ public class CategoryTitle {
 			throw BaseException.from(CategoryErrorCode.CATEGORY_TITLE_INVALID);
 		}
 		String v = value.trim();
-		if (value.length() > MAX_LENGTH) {
+		if (v.length() > MAX_LENGTH) {
 			throw BaseException.from(CategoryErrorCode.CATEGORY_TITLE_INVALID,
-				"MAX_LENGTH:" + MAX_LENGTH + " CURRENT_LENGTH:" + value.length());
+				"MAX_LENGTH:" + MAX_LENGTH + " CURRENT_LENGTH:" + v.length());
 		}
 
-		this.value = value;
+		this.value = v;
 	}
 
 	public static CategoryTitle of(String value) {

@@ -23,11 +23,11 @@ public class CategorySummary {
 			throw BaseException.from(CategoryErrorCode.CATEGORY_SUMMARY_INVALID);
 		}
 		String v = value.trim();
-		if (value.length() > MAX_LENGTH) {
+		if (v.length() > MAX_LENGTH) {
 			throw BaseException.from(CategoryErrorCode.CATEGORY_SUMMARY_INVALID,
-				"MAX_LENGTH:" + MAX_LENGTH + " CURRENT_LENGTH:" + value.length());
+				"MAX_LENGTH:" + MAX_LENGTH + " CURRENT_LENGTH:" + v.length());
 		}
-		this.value = value;
+		this.value = v;
 	}
 
 	public static CategorySummary of(String value) {
