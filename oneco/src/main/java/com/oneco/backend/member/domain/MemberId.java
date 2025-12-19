@@ -18,7 +18,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberId implements Serializable {
 
-	@Column(name = "member_id", nullable = false)
 	private Long value;
 
 	private MemberId(Long value) {
