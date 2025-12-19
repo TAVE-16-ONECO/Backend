@@ -54,6 +54,20 @@ public class FamilyRelation extends BaseTimeEntity {
 	private RelationStatus status; // CONNECTED, DISCONNECTED
 
 	private FamilyRelation(MemberId parentId, MemberId childId) {
+		// 부모와 자녀의 멤버 ID가 null 인지 검증
+		if (parentId == null) {
+			throw BaseException.from(
+				FamilyErrorCode.MEMBER_ID_INVALID,
+				"부모 ID가 null 입니다."
+			);
+		}
+		if (childId == null) {
+			throw BaseException.from(
+				FamilyErrorCode.MEMBER_ID_INVALID,
+				"자녀 ID가 null 입니다."
+			);
+		}
+
 		// 부모와 자녀가 동일한 멤버인지 검증
 		if (parentId.equals(childId)) {
 			throw BaseException.from(FamilyErrorCode.FAMILY_RELATION_INVALID_SAME_MEMBER);
