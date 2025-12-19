@@ -1,5 +1,7 @@
 package com.oneco.backend.member.domain;
 
+import java.io.Serializable;
+
 import com.oneco.backend.global.exception.BaseException;
 import com.oneco.backend.member.domain.exception.constant.MemberErrorCode;
 
@@ -14,7 +16,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MemberId {
+public class MemberId implements Serializable {
 
 	@Column(name = "member_id", nullable = false)
 	private Long value;

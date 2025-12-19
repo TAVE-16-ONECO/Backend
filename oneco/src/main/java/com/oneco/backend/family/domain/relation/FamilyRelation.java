@@ -7,7 +7,6 @@ import com.oneco.backend.global.exception.BaseException;
 import com.oneco.backend.member.domain.MemberId;
 import com.oneco.backend.global.entity.BaseTimeEntity;
 
-import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Embedded;
@@ -43,11 +42,11 @@ public class FamilyRelation extends BaseTimeEntity {
 	private FamilyRelationId id;
 
 	@Embedded
-	@AttributeOverride(name = "value", column = @Column(name = "parent_id", nullable = false))
+	@Column(name = "parent_id", nullable = false)
 	private MemberId parentId;
 
 	@Embedded
-	@AttributeOverride(name = "value", column = @Column(name = "child_id", nullable = false))
+	@Column(name = "child_id", nullable = false)
 	private MemberId childId;
 
 	@Enumerated(EnumType.STRING)
