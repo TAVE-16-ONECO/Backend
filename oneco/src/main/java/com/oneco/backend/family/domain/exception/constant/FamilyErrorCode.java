@@ -11,12 +11,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum FamilyErrorCode implements ErrorCode {
 
-	MEMBER_ID_INVALID(
-		HttpStatus.BAD_REQUEST,
-		"회원 ID가 유효하지 않습니다.",
-		"FAMILY_ERROR_400_MEMBER_ID_INVALID"
-	),
-
 	// === Family Relation Errors ===
 	INVALID_FAMILY_RELATION_ID(
 		HttpStatus.BAD_REQUEST,
@@ -40,6 +34,11 @@ public enum FamilyErrorCode implements ErrorCode {
 		HttpStatus.BAD_REQUEST,
 		"이미 해제된 가족 관계입니다.",
 		"FAMILY_ERROR_400_FAMILY_RELATION_ALREADY_DISCONNECTED"
+	),
+
+	FAMILY_REQUIRED_VALUE_MISSING(HttpStatus.BAD_REQUEST,
+		"가족 필수 값이 누락되었습니다.",
+		"FAMILY_ERROR_400_REQUIRED_VALUE_MISSING"
 	);
 
 	private final HttpStatus httpStatus;

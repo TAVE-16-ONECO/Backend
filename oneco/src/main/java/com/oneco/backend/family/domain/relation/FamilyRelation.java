@@ -55,18 +55,8 @@ public class FamilyRelation extends BaseTimeEntity {
 
 	private FamilyRelation(MemberId parentId, MemberId childId) {
 		// 부모와 자녀의 멤버 ID가 null 인지 검증
-		if (parentId == null) {
-			throw BaseException.from(
-				FamilyErrorCode.MEMBER_ID_INVALID,
-				"부모 ID가 null 입니다."
-			);
-		}
-		if (childId == null) {
-			throw BaseException.from(
-				FamilyErrorCode.MEMBER_ID_INVALID,
-				"자녀 ID가 null 입니다."
-			);
-		}
+		requireNonNull(parentId, "부모 ID가 null 입니다.");
+		requireNonNull(childId, "자녀 ID가 null 입니다.");
 
 		// 부모와 자녀가 동일한 멤버인지 검증
 		if (parentId.equals(childId)) {
@@ -92,9 +82,7 @@ public class FamilyRelation extends BaseTimeEntity {
 		// todo: (3) FamilyRelation의 status가 DISCONNECTED 인지 검증한다.
 
 		// (1) actor가 null 인지 검증한다.
-		if (actor == null) {
-			throw BaseException.from(FamilyErrorCode.MEMBER_ID_INVALID);
-		}
+		requireNonNull(actor, "가족연결 해제 요청자(actor)가 null 입니다.");
 
 		// (2) actor가 FamilyRelation에 속한 멤버인지 검증한다.
 		if (!this.parentId.equals(actor) && !this.childId.equals(actor)) {
@@ -107,6 +95,12 @@ public class FamilyRelation extends BaseTimeEntity {
 		}
 
 		this.status = RelationStatus.DISCONNECTED;
+	}
+
+	private <T> void requireNonNull(T value, String msg) {
+		if (value == null) {
+			throw BaseException.from(FamilyErrorCode.FAMILY_REQUIRED_VALUE_MISSING, msg);
+		}
 	}
 
 }
