@@ -66,53 +66,37 @@ public class Category {
 		CategorySummary summary,
 		MissionDays defaultMissionDays
 	) {
-		if (title == null) {
-			throw BaseException.from(CategoryErrorCode.CATEGORY_REQUIRED_VALUE_MISSING, "title is null");
-		}
-		if (summary == null) {
-			throw BaseException.from(CategoryErrorCode.CATEGORY_REQUIRED_VALUE_MISSING, "summary is null");
-		}
-		// 현재 단계에서는 displayOrder는 null 허용
-		// if (displayOrder == null) {
-		// 	throw BaseException.from(CategoryErrorCode.CATEGORY_REQUIRED_VALUE_MISSING, "displayOrder is null");
-		// }
-		if (defaultMissionDays == null) {
-			throw BaseException.from(CategoryErrorCode.CATEGORY_REQUIRED_VALUE_MISSING, "defaultMissionDays is null");
-		}
+		return new Category(title, summary, defaultMissionDays);
+	}
 
-		Category category = new Category();
-		category.title = title;
-		category.summary = summary;
-		category.defaultMissionDays = defaultMissionDays;
-		return category;
+	private Category(CategoryTitle title, CategorySummary summary, MissionDays defaultMissionDays){
+		this.title = requireNonNull(title, "title");
+		this.summary = requireNonNull(summary, "summary");
+		this.defaultMissionDays = requireNonNull(defaultMissionDays, "defaultMissionDays");
+	}
+
+	private static <T> T requireNonNull(T value, String field) {
+		if (value == null) {
+			throw BaseException.from(CategoryErrorCode.CATEGORY_REQUIRED_VALUE_MISSING, field);
+
+		}
+		return value;
 	}
 
 	public void renameCategoryTitle(CategoryTitle newTitle) {
-		if (newTitle == null) {
-			throw BaseException.from(CategoryErrorCode.CATEGORY_REQUIRED_VALUE_MISSING, "newTitle is null");
-		}
-		this.title = newTitle;
+		this.title = requireNonNull(newTitle, "newTitle");
 	}
 
 	public void updateSummary(CategorySummary newSummary) {
-		if (newSummary == null) {
-			throw BaseException.from(CategoryErrorCode.CATEGORY_REQUIRED_VALUE_MISSING, "newSummary is null");
-		}
-		this.summary = newSummary;
+		this.summary = requireNonNull(newSummary, "newSummary");
 	}
 
-	public void changeDisplayOrder(DisplayOrder newDisplayOrder) {
-		if (newDisplayOrder == null) {
-			throw BaseException.from(CategoryErrorCode.CATEGORY_REQUIRED_VALUE_MISSING, "newDisplayOrder is null");
-		}
-		this.displayOrder = newDisplayOrder;
+	public void changeDisplayOrder(DisplayOrder displayOrder) {
+		this.displayOrder = requireNonNull(displayOrder, "displayOrder");
 	}
 
-	public void changeDefaultMissionDays(MissionDays newMissionDays) {
-		if (newMissionDays == null) {
-			throw BaseException.from(CategoryErrorCode.CATEGORY_REQUIRED_VALUE_MISSING, "newMissionDays is null");
-		}
-		this.defaultMissionDays = newMissionDays;
+	public void changeDefaultMissionDays(MissionDays defaultMissionDays) {
+		this.defaultMissionDays = requireNonNull(defaultMissionDays, "defaultMissionDays");
 	}
 
 	public void hideCategory() {
