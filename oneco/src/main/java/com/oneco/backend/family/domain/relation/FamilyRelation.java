@@ -38,14 +38,11 @@ public class FamilyRelation extends BaseTimeEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	@Convert(converter = FamilyRelationIdConverter.class) // autoApply=true로 생략 가능하지만 명시적으로 작성
-	private FamilyRelationId id;
+	private Long id;
 
-	@Embedded
 	@Column(name = "parent_id", nullable = false)
 	private MemberId parentId;
 
-	@Embedded
 	@Column(name = "child_id", nullable = false)
 	private MemberId childId;
 
