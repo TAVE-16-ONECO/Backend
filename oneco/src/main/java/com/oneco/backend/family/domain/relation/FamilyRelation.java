@@ -7,8 +7,8 @@ import com.oneco.backend.global.exception.BaseException;
 import com.oneco.backend.member.domain.MemberId;
 import com.oneco.backend.global.entity.BaseTimeEntity;
 
+import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -40,10 +40,12 @@ public class FamilyRelation extends BaseTimeEntity {
 	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "parent_id", nullable = false)
+	@Embedded
+	@AttributeOverride(name = "value", column = @Column(name = "parent_id", nullable = false))
 	private MemberId parentId;
 
-	@Column(name = "child_id", nullable = false)
+	@Embedded
+	@AttributeOverride(name = "value", column = @Column(name = "child_id", nullable = false))
 	private MemberId childId;
 
 	@Enumerated(EnumType.STRING)
@@ -70,6 +72,13 @@ public class FamilyRelation extends BaseTimeEntity {
 
 	public static FamilyRelation connect(MemberId parentId, MemberId childId) {
 		return new FamilyRelation(parentId, childId);
+	}
+
+	public void reconnect() {
+		if (this.status == RelationStatus.CONNECTED) {
+			throw BaseException.from(FamilyErrorCode.FAMILY_RELATION_ALREADY_EXISTS);
+		}
+		this.status = RelationStatus.CONNECTED;
 	}
 
 	public void disconnect(MemberId actor) {
