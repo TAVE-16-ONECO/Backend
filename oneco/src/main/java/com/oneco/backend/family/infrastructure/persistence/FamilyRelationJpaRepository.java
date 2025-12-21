@@ -4,6 +4,8 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.Lock;
+import jakarta.persistence.LockModeType;
 
 import com.oneco.backend.family.domain.relation.FamilyRelation;
 import com.oneco.backend.member.domain.MemberId;
@@ -21,5 +23,6 @@ public interface FamilyRelationJpaRepository extends JpaRepository<FamilyRelatio
 	int countActiveParentsByChildId(MemberId childId);
 
 	// 부모 ID와 자녀 ID를 이용하여 해당하는 FamilyRelation 엔티티를 반환하는 쿼리 메서드
+	@Lock(LockModeType.PESSIMISTIC_WRITE) // 낙관적 잠금 설정
 	Optional<FamilyRelation> findByParentIdAndChildId(MemberId parentId, MemberId childId);
 }

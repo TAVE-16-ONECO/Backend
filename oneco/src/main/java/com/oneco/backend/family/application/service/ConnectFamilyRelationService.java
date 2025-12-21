@@ -1,6 +1,8 @@
 package com.oneco.backend.family.application.service;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.oneco.backend.family.application.dto.command.ConnectFamilyRelationCommand;
@@ -28,6 +30,7 @@ public class ConnectFamilyRelationService implements ConnectFamilyRelationUseCas
 	private final MemberLookupPort memberLookupPort;
 
 	@Override
+	@Transactional(isolation = Isolation.SERIALIZABLE)
 	public FamilyRelationResult connect(ConnectFamilyRelationCommand command) {
 		MemberId parentId = MemberId.of(command.parentId());
 		MemberId childId = MemberId.of(command.childId());
@@ -48,7 +51,12 @@ public class ConnectFamilyRelationService implements ConnectFamilyRelationUseCas
 			.orElseGet(() -> {
 				// 없으면 새로운 가족 관계 생성
 				FamilyRelation newRelation = FamilyRelation.connect(parentId, childId);
-				return relationPort.save(newRelation);
+				try {
+					return relationPort.save(newRelation);
+				} catch (DataIntegrityViolationException e) {
+					// 동시성으로 인한 유니크 제약 위반을 도메인 예외로 변환
+					throw BaseException.from(FamilyErrorCode.FAMILY_RELATION_ALREADY_EXISTS);
+				}
 			});
 
 		return FamilyRelationResult.of(
