@@ -17,13 +17,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.oneco.backend.global.exception.BaseException;
 import com.oneco.backend.mission.application.dto.RequestMissionCommand;
 import com.oneco.backend.mission.application.dto.MissionResult;
 import com.oneco.backend.mission.application.port.out.MissionRepository;
 import com.oneco.backend.mission.domain.Mission;
 import com.oneco.backend.mission.domain.MissionStatus;
 import com.oneco.backend.mission.domain.exception.MissionErrorCode;
-import com.oneco.backend.mission.domain.exception.MissionException;
 
 @ExtendWith(MockitoExtension.class)
 class RequestMissionServiceTest {
@@ -84,7 +84,7 @@ class RequestMissionServiceTest {
 		);
 
 		assertThatThrownBy(() -> requestMissionService.request(command))
-			.isInstanceOf(MissionException.class)
+			.isInstanceOf(BaseException.class)
 			.hasFieldOrPropertyWithValue("code", MissionErrorCode.MISSION_REWARD_CANNOT_BE_BLANK.getCode());
 	}
 
@@ -101,7 +101,7 @@ class RequestMissionServiceTest {
 		);
 
 		assertThatThrownBy(() -> requestMissionService.request(command))
-			.isInstanceOf(MissionException.class)
+			.isInstanceOf(BaseException.class)
 			.hasFieldOrPropertyWithValue("code", MissionErrorCode.INVALID_MISSION_TIME_ORDER.getCode());
 	}
 }

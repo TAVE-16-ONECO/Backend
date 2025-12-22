@@ -3,6 +3,7 @@ package com.oneco.backend.mission.application;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.oneco.backend.family.domain.relation.FamilyRelationId;
 import com.oneco.backend.mission.application.dto.RequestMissionCommand;
 import com.oneco.backend.mission.application.dto.MissionResult;
 import com.oneco.backend.mission.application.port.in.RequestMissionUseCase;
@@ -35,7 +36,7 @@ public class RequestMissionService implements RequestMissionUseCase {
 		Reward reward = Reward.of(command.title(), command.title());
 
 		Mission mission = Mission.create(
-			command.familyRelationId(), // 지금은 id만 그대로 사용 TODO: 관계 검증 후 변경 예정 -> relation.id()
+			FamilyRelationId.of(command.familyRelationId()), // 지금은 id만 그대로 사용 TODO: 관계 검증 후 변경 예정 -> relation.id()
 			period,
 			reward
 		);
