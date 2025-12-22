@@ -30,8 +30,9 @@ public class AcceptInvitationService implements AcceptInvitationUseCase {
 	public FamilyRelationResult accept(AcceptInvitationCommand command) {
 		// === AcceptInvitationService의 책임 ===
 		// (1) 초대코드 검증
-		// (2) 부모/자녀 역할 기반으로 가족 관계 연결 커맨드 생성
-		// (3) 가족 관계 연결 커맨드 실행
+		// (2)초대자와 초대받는자가 동일인인지 검증
+		// (3) 부모/자녀 역할 기반으로 가족 관계 연결 커맨드 생성
+		// (4) 가족 관계 연결 커맨드 실행
 		// =======================================
 
 		// (1) 초대코드 검증
@@ -42,7 +43,12 @@ public class AcceptInvitationService implements AcceptInvitationUseCase {
 		MemberId inviterId = MemberId.of(info.getInviterId());
 		MemberId inviteeId = MemberId.of(command.inviteeId());
 
-		// (2) 부모/자녀 역할 기반으로 가족 관계 연결 커맨드 생성
+		// (2) 초대자와 초대받는자가 동일인인지 검증
+		if (inviterId.equals(inviteeId)) {
+			throw BaseException.from(FamilyErrorCode.FAMILY_RELATION_INVALID_SAME_MEMBER);
+		}
+
+		// (3) 부모/자녀 역할 기반으로 가족 관계 연결 커맨드 생성
 		Long parentId;
 		Long childId;
 		if (memberLookupPort.isParent(inviterId) && memberLookupPort.isChild(inviteeId)) {
@@ -58,7 +64,7 @@ public class AcceptInvitationService implements AcceptInvitationUseCase {
 			);
 		}
 
-		// (3) 가족 관계 연결 커맨드 실행
+		// (4) 가족 관계 연결 커맨드 실행
 		return connectUseCase.connect(new ConnectFamilyRelationCommand(parentId, childId));
 	}
 }
