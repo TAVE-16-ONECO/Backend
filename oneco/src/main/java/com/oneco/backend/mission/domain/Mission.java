@@ -1,9 +1,14 @@
 package com.oneco.backend.mission.domain;
 
+import static lombok.AccessLevel.*;
+
+import com.oneco.backend.family.domain.relation.FamilyRelationId;
 import com.oneco.backend.global.entity.BaseTimeEntity;
 import com.oneco.backend.mission.domain.exception.MissionErrorCode;
 import com.oneco.backend.mission.domain.exception.MissionException;
 
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -12,9 +17,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Entity
 @Getter
+@Entity
+@NoArgsConstructor(access = PROTECTED)
 public class Mission extends BaseTimeEntity {
 
 	@Id
@@ -22,7 +29,9 @@ public class Mission extends BaseTimeEntity {
 	private Long id;
 
 	// 가족 관계 ID (외래 키)
-	private Long familyRelationId;
+	@Embedded
+	@AttributeOverride(name = "value", column = @Column(name = "family_relation_id", nullable = false))
+	private FamilyRelationId familyRelationId;
 
 	@Embedded
 	private MissionPeriod period;
@@ -33,10 +42,7 @@ public class Mission extends BaseTimeEntity {
 	@Enumerated(EnumType.STRING)
 	private MissionStatus status; // default: APPROVAL_REQUEST
 
-	protected Mission() {
-	} // JPA 기본 생성자
-
-	private Mission(Long familyRelationId, MissionPeriod period, Reward reward) {
+	private Mission(FamilyRelationId familyRelationId, MissionPeriod period, Reward reward) {
 
 		// 미션 생성 시 가족을 선택하지 않은 경우 예외 처리
 		if (familyRelationId == null) {
@@ -50,7 +56,7 @@ public class Mission extends BaseTimeEntity {
 	}
 
 	// 미션 생성 메서드
-	public static Mission create(Long familyRelationId, MissionPeriod period, Reward reward) {
+	public static Mission create(FamilyRelationId familyRelationId, MissionPeriod period, Reward reward) {
 		return new Mission(familyRelationId, period, reward);
 	}
 
