@@ -1,4 +1,4 @@
-package com.oneco.backend.mission.domain;
+package com.oneco.backend.mission.domain.mission;
 
 import lombok.Getter;
 

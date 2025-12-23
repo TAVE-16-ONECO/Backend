@@ -7,10 +7,10 @@ import com.oneco.backend.family.domain.relation.FamilyRelationId;
 import com.oneco.backend.mission.application.dto.RequestMissionCommand;
 import com.oneco.backend.mission.application.dto.MissionResult;
 import com.oneco.backend.mission.application.port.in.RequestMissionUseCase;
-import com.oneco.backend.mission.domain.Mission;
-import com.oneco.backend.mission.domain.MissionPeriod;
+import com.oneco.backend.mission.domain.mission.Mission;
+import com.oneco.backend.mission.domain.mission.MissionPeriod;
 import com.oneco.backend.mission.application.port.out.MissionRepository;
-import com.oneco.backend.mission.domain.Reward;
+import com.oneco.backend.mission.domain.mission.Reward;
 
 import lombok.RequiredArgsConstructor;
 

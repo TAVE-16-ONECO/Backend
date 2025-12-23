@@ -21,8 +21,8 @@ import com.oneco.backend.global.exception.BaseException;
 import com.oneco.backend.mission.application.dto.RequestMissionCommand;
 import com.oneco.backend.mission.application.dto.MissionResult;
 import com.oneco.backend.mission.application.port.out.MissionRepository;
-import com.oneco.backend.mission.domain.Mission;
-import com.oneco.backend.mission.domain.MissionStatus;
+import com.oneco.backend.mission.domain.mission.Mission;
+import com.oneco.backend.mission.domain.mission.MissionStatus;
 import com.oneco.backend.mission.domain.exception.MissionErrorCode;
 
 @ExtendWith(MockitoExtension.class)

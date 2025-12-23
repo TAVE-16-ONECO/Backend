@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
-import com.oneco.backend.mission.domain.Mission;
+import com.oneco.backend.mission.domain.mission.Mission;
 import com.oneco.backend.mission.application.port.out.MissionRepository;
 
 import lombok.RequiredArgsConstructor;
