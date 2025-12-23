@@ -1,4 +1,4 @@
-package com.oneco.backend.mission.domain;
+package com.oneco.backend.mission.domain.mission;
 
 import static lombok.AccessLevel.*;
 
@@ -34,6 +34,7 @@ public class Mission extends BaseTimeEntity {
 	private FamilyRelationId familyRelationId;
 
 	@Embedded
+	@Column(nullable = false)
 	private MissionPeriod period;
 
 	@Embedded
@@ -44,9 +45,13 @@ public class Mission extends BaseTimeEntity {
 
 	private Mission(FamilyRelationId familyRelationId, MissionPeriod period, Reward reward) {
 
-		// 미션 생성 시 가족을 선택하지 않은 경우 예외 처리
+		// familyRelationId가 null인 경우 예외 처리
 		if (familyRelationId == null) {
 			throw BaseException.from(MissionErrorCode.FAMILY_RELATION_ID_CANNOT_BE_NULL);
+		}
+
+		if (period == null) {
+			throw BaseException.from(MissionErrorCode.MISSION_PERIOD_CANNOT_BE_NULL);
 		}
 
 		this.familyRelationId = familyRelationId;
@@ -64,7 +69,7 @@ public class Mission extends BaseTimeEntity {
 
 	// 미션 승인 요청
 	public void requestApproval() {
-		// TODO: 상태 전환 가능 여부 검증 로직 추가
+		// TODO: 상태 전환 가능 여부 검증 로직 추가 ->
 		this.status = MissionStatus.APPROVAL_REQUEST;
 	}
 
@@ -72,7 +77,10 @@ public class Mission extends BaseTimeEntity {
 	public void acceptApproval() {
 		// 미션 승인 수락은 승인 요청 상태에서만 가능
 		if (this.status != MissionStatus.APPROVAL_REQUEST) {
-			throw BaseException.from(MissionErrorCode.INVALID_UPDATE_MISSION_STATUS);
+			throw BaseException.from(
+				MissionErrorCode.INVALID_UPDATE_MISSION_STATUS,
+				"미션 승인 수락은 승인 요청 상태에서만 가능합니다."
+			);
 		}
 		this.status = MissionStatus.APPROVAL_ACCEPTED;
 	}
@@ -81,7 +89,10 @@ public class Mission extends BaseTimeEntity {
 	public void rejectApproval() {
 		// 미션 승인 거절은 승인 요청 상태에서만 가능
 		if (this.status != MissionStatus.APPROVAL_REQUEST) {
-			throw BaseException.from(MissionErrorCode.INVALID_UPDATE_MISSION_STATUS);
+			throw BaseException.from(
+				MissionErrorCode.INVALID_UPDATE_MISSION_STATUS,
+				"미션 승인 거절은 승인 요청 상태에서만 가능합니다."
+			);
 		}
 		this.status = MissionStatus.APPROVAL_REJECTED;
 	}
@@ -90,7 +101,9 @@ public class Mission extends BaseTimeEntity {
 	public void markInProgress() {
 		// 승인 수락 상태에서만 진행중으로 변경 가능하다.
 		if (this.status != MissionStatus.APPROVAL_ACCEPTED) {
-			throw BaseException.from(MissionErrorCode.INVALID_UPDATE_MISSION_STATUS);
+			throw BaseException.from(
+				MissionErrorCode.INVALID_UPDATE_MISSION_STATUS,
+				"미션 진행은 승인 수락 상태에서만 가능합니다.");
 		}
 		this.status = MissionStatus.IN_PROGRESS;
 	}
@@ -99,7 +112,10 @@ public class Mission extends BaseTimeEntity {
 	public void markCompleted() {
 		// 미션 완료는 진행 중 상태에서만 가능하다.
 		if (this.status != MissionStatus.IN_PROGRESS) {
-			throw BaseException.from(MissionErrorCode.INVALID_UPDATE_MISSION_STATUS);
+			throw BaseException.from(
+				MissionErrorCode.INVALID_UPDATE_MISSION_STATUS,
+				"미션 완료는 진행 중 상태에서만 가능합니다."
+			);
 		}
 		this.status = MissionStatus.COMPLETED;
 	}
@@ -108,7 +124,10 @@ public class Mission extends BaseTimeEntity {
 	public void markFailed() {
 		// 미션 실패는 진행 중 상태에서만 가능하다.
 		if (this.status != MissionStatus.IN_PROGRESS) {
-			throw BaseException.from(MissionErrorCode.INVALID_UPDATE_MISSION_STATUS);
+			throw BaseException.from(
+				MissionErrorCode.INVALID_UPDATE_MISSION_STATUS,
+				"미션 실패는 진행 중 상태에서만 가능합니다."
+			);
 		}
 		this.status = MissionStatus.FAILED;
 	}
@@ -117,7 +136,9 @@ public class Mission extends BaseTimeEntity {
 	public void requestReward() {
 		// 보상 요청은 미션 완료 상태에서만 가능하다.
 		if (this.status != MissionStatus.COMPLETED) {
-			throw BaseException.from(MissionErrorCode.INVALID_UPDATE_MISSION_STATUS);
+			throw BaseException.from(
+				MissionErrorCode.INVALID_UPDATE_MISSION_STATUS,
+				"보상 요청은 미션 완료 상태에서만 가능합니다.");
 		}
 		this.status = MissionStatus.REWARD_REQUESTED;
 	}
@@ -126,7 +147,9 @@ public class Mission extends BaseTimeEntity {
 	public void completeReward() {
 		// 보상 완료는 보상 요청 상태에서만 가능하다.
 		if (this.status != MissionStatus.REWARD_REQUESTED) {
-			throw BaseException.from(MissionErrorCode.INVALID_UPDATE_MISSION_STATUS);
+			throw BaseException.from(
+				MissionErrorCode.INVALID_UPDATE_MISSION_STATUS,
+				"보상 완료는 보상 요청 상태에서만 가능합니다.");
 		}
 		this.status = MissionStatus.REWARD_COMPLETED;
 	}
