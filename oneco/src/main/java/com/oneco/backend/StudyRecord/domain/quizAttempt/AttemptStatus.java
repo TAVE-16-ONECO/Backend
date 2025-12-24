@@ -1,4 +1,4 @@
-package com.oneco.backend.StudyRecord.domain.QuizAttempt;
+package com.oneco.backend.StudyRecord.domain.quizAttempt;
 
 public enum AttemptStatus {
 	IN_PROGRESS, // 시작만 하고 아직 제출 안 함

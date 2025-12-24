@@ -1,4 +1,4 @@
-package com.oneco.backend.StudyRecord.domain.QuizAttempt;
+package com.oneco.backend.StudyRecord.domain.quizAttempt;
 
 import java.util.HashSet;
 import java.util.List;
@@ -30,7 +30,7 @@ import lombok.NoArgsConstructor;
 	name = "quiz_attempt",
 	uniqueConstraints = {
 		// 같은 학습 기록에서 동일한 시도 번호가 중복되지 않도록 설정
-		@UniqueConstraint(name = "uk_quiz_attempt_unique", columnNames = {"attemp_no", "study_record_id"})
+		@UniqueConstraint(name = "uk_quiz_attempt_unique", columnNames = {"attempt_no", "study_record_id"})
 	}
 )
 @Entity
@@ -61,14 +61,14 @@ public class QuizAttempt {
 	 * 시도 상태 (SUBMITTED / IN_PROGRESS)
 	 */
 	@Enumerated(EnumType.STRING)
-	@Column(name = "attemptStatus", nullable = false, length = 20)
+	@Column(name = "attempt_status", nullable = false, length = 20)
 	private AttemptStatus attemptStatus;
 
 	/**
 	 * 몇 번째 시도인지 나타내는 번호 (1부터 시작)
 	 */
 	@Embedded
-	@AttributeOverride(name = "value", column = @Column(name = "attemp_no", nullable = false))
+	@AttributeOverride(name = "value", column = @Column(name = "attempt_no", nullable = false))
 	private AttemptNo attemptNo;
 
 	/**
@@ -77,7 +77,7 @@ public class QuizAttempt {
 	 * - DB에 저장된 문제와 비교 검증이 필요
 	 */
 	@Convert(converter = LongListJsonConverter.class)
-	@Column(name = " quiz_ids", nullable = false, columnDefinition = "TEXT")
+	@Column(name = "quiz_ids", nullable = false, columnDefinition = "TEXT")
 	private List<Long> quizIds;
 
 	/**
@@ -154,6 +154,10 @@ public class QuizAttempt {
 			if (e.getValue() == null) {
 				throw BaseException.from(StudyErrorCode.INVALID_OPTION_INDEX);
 			}
+			if (e.getValue() < 0) {
+				throw BaseException.from(StudyErrorCode.INVALID_OPTION_INDEX);
+			}
+
 		}
 
 		// 4) "출제된 문제 3개"와 "제출된 문제 3개"가 정확히 일치해야 함
@@ -180,6 +184,11 @@ public class QuizAttempt {
 		// 5) 상태 반영
 		this.answers = Map.copyOf(answers); // 방어적 복사
 		this.correctCount = correctCount;
+
+		// 6) 결과 계산
+		this.attemptResult = correctCount.isPerfect() ? AttemptResult.PASS : AttemptResult.FAIL;
+
+		// 7) 상태 전이
 		this.attemptStatus = AttemptStatus.SUBMITTED;
 	}
 

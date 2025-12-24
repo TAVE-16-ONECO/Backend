@@ -1,4 +1,4 @@
-package com.oneco.backend.StudyRecord.domain.StudyRecord;
+package com.oneco.backend.StudyRecord.domain.studyRecord;
 
 /**
  * 학습 진행 상태(서버가 강제하는 상태 머신)

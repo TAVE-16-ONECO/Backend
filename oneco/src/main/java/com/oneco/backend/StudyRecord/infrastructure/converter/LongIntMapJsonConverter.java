@@ -68,7 +68,7 @@ public class LongIntMapJsonConverter implements AttributeConverter<Map<Long, Int
 	@Override
 	public Map<Long, Integer> convertToEntityAttribute(String dbData) {
 		try {
-			return dbData == null ? Map.of() : om.readValue(dbData, TYPE);
+			return dbData == null ? null : om.readValue(dbData, TYPE);
 		} catch (Exception e) {
 			throw new IllegalArgumentException("answers 역직렬화 실패", e);
 		}

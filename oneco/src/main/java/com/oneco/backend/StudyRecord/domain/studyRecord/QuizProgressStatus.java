@@ -1,4 +1,4 @@
-package com.oneco.backend.StudyRecord.domain.StudyRecord;
+package com.oneco.backend.StudyRecord.domain.studyRecord;
 
 public enum QuizProgressStatus {
 	READY,           // 아직 시작 안 함

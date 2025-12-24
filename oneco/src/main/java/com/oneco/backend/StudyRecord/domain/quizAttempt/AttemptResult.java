@@ -1,4 +1,4 @@
-package com.oneco.backend.StudyRecord.domain.QuizAttempt;
+package com.oneco.backend.StudyRecord.domain.quizAttempt;
 
 /**
  * 퀴즈 시도 결과

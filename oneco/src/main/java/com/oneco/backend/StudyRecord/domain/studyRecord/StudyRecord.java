@@ -1,13 +1,13 @@
-package com.oneco.backend.StudyRecord.domain.StudyRecord;
+package com.oneco.backend.StudyRecord.domain.studyRecord;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.oneco.backend.StudyRecord.domain.QuizAttempt.AttemptNo;
-import com.oneco.backend.StudyRecord.domain.QuizAttempt.AttemptResult;
-import com.oneco.backend.StudyRecord.domain.QuizAttempt.CorrectCount;
-import com.oneco.backend.StudyRecord.domain.QuizAttempt.QuizAttempt;
+import com.oneco.backend.StudyRecord.domain.quizAttempt.AttemptNo;
+import com.oneco.backend.StudyRecord.domain.quizAttempt.AttemptResult;
+import com.oneco.backend.StudyRecord.domain.quizAttempt.CorrectCount;
+import com.oneco.backend.StudyRecord.domain.quizAttempt.QuizAttempt;
 import com.oneco.backend.StudyRecord.domain.exception.constant.StudyErrorCode;
 import com.oneco.backend.category.domain.category.CategoryId;
 import com.oneco.backend.content.domain.dailycontent.DailyContentId;

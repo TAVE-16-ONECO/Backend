@@ -1,4 +1,4 @@
-package com.oneco.backend.StudyRecord.domain.QuizAttempt;
+package com.oneco.backend.StudyRecord.domain.quizAttempt;
 
 import com.oneco.backend.StudyRecord.domain.exception.constant.StudyErrorCode;
 import com.oneco.backend.global.exception.BaseException;
