@@ -8,4 +8,6 @@ public interface MissionPersistencePort {
 	Mission save(Mission mission);
 
 	boolean existsByFamilyRelationAndCategory(FamilyRelationId familyRelationId, CategoryId categoryId);
+
+	Mission findById(Long missionId);
 }

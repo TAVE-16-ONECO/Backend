@@ -87,8 +87,19 @@ public enum MissionErrorCode implements ErrorCode {
 		HttpStatus.BAD_REQUEST,
 		"요청자와 수신자가 해당 가족 관계에 속하지 않습니다.",
 		"MISSION_ERROR_400_INVALID_FAMILY_MEMBERS"
-	)
-	;
+	),
+
+	MISSION_NOT_FOUND(
+		HttpStatus.NOT_FOUND,
+		"요청한 미션을 찾을 수 없습니다.",
+		"MISSION_ERROR_404_NOT_FOUND"
+	),
+
+	MISSION_APPROVAL_FORBIDDEN(
+		HttpStatus.FORBIDDEN,
+		"해당 미션의 승인/거절 권한이 없습니다.",
+		"MISSION_ERROR_403_APPROVAL_FORBIDDEN"
+	);
 
 	private final HttpStatus httpStatus;
 	private final String message;
