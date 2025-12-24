@@ -73,7 +73,6 @@ public class SwaggerConfig {
 			.build();
 	}
 
-
 	// 온보딩 컨트롤러 패키지가 따로 있다면 활성화 추천
 	@Bean
 	public GroupedOpenApi onboardingApi() {
@@ -92,6 +91,16 @@ public class SwaggerConfig {
 			.displayName("Member (회원)")
 			.packagesToScan("com.oneco.backend.member.presentation")
 			.pathsToMatch("/api/members/**")
+			.build();
+	}
+
+	@Bean
+	public GroupedOpenApi familyApi() {
+		return GroupedOpenApi.builder()
+			.group("Family")
+			.displayName("Family (가족)")
+			.packagesToScan("com.oneco.backend.family.presentation")
+			.pathsToMatch("/api/family/**")
 			.build();
 	}
 
@@ -145,11 +154,12 @@ public class SwaggerConfig {
 				.addProperty("data", new ObjectSchema()
 					.description("응답 데이터 (도메인별 DTO 구조)"));
 
-			if (openApi.getComponents() != null) {
-				openApi.getComponents()
-					.addSchemas("ErrorResponse", errorSchema)
-					.addSchemas("DataResponse", dataSchema);
+			if (openApi.getComponents() == null) {
+				openApi.setComponents(new io.swagger.v3.oas.models.Components()); // Components 객체가 null인 경우 초기화
 			}
+			openApi.getComponents()
+				.addSchemas("ErrorResponse", errorSchema)
+				.addSchemas("DataResponse", dataSchema);
 		};
 	}
 }

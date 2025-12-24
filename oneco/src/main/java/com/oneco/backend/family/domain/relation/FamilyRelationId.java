@@ -1,9 +1,9 @@
-package com.oneco.backend.member.domain;
+package com.oneco.backend.family.domain.relation;
 
 import java.io.Serializable;
 
+import com.oneco.backend.family.domain.exception.constant.FamilyErrorCode;
 import com.oneco.backend.global.exception.BaseException;
-import com.oneco.backend.member.domain.exception.constant.MemberErrorCode;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -16,19 +16,19 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MemberId implements Serializable {
+public class FamilyRelationId implements Serializable {
 
+	@Column(name = "family_relation_id", nullable = false)
 	private Long value;
 
-	private MemberId(Long value) {
+	private FamilyRelationId(Long value) {
 		if (value == null || value <= 0) {
-			throw BaseException.from(MemberErrorCode.INVALID_MEMBER_ID);
+			throw BaseException.from(FamilyErrorCode.INVALID_FAMILY_RELATION_ID);
 		}
 		this.value = value;
 	}
 
-	public static MemberId of(Long value) {
-		return new MemberId(value);
+	public static FamilyRelationId of(Long value) {
+		return new FamilyRelationId(value);
 	}
 }
-
