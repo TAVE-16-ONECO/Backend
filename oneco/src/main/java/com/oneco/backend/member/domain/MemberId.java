@@ -5,7 +5,6 @@ import java.io.Serializable;
 import com.oneco.backend.global.exception.BaseException;
 import com.oneco.backend.member.domain.exception.constant.MemberErrorCode;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
