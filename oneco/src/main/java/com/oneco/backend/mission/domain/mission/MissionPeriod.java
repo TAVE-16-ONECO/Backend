@@ -1,5 +1,7 @@
 package com.oneco.backend.mission.domain.mission;
 
+import static lombok.AccessLevel.*;
+
 import java.time.LocalDate;
 
 import com.oneco.backend.global.exception.BaseException;
@@ -7,19 +9,17 @@ import com.oneco.backend.mission.domain.exception.MissionErrorCode;
 
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Embeddable
+@NoArgsConstructor(access = PROTECTED)
 public class MissionPeriod {
 
 	private LocalDate startDate;
 	private LocalDate endDate;
 
-	protected MissionPeriod() {
-	}
-
 	private MissionPeriod(LocalDate startDate, LocalDate endDate) {
-
 
 		// 미션 시작일이나 종료일이 null인 경우 예외 처리
 		if (startDate == null || endDate == null) {
