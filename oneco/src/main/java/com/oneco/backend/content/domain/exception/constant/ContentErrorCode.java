@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ContentErrorCode implements ErrorCode {
 
+	INVALID_DAILYCONTENT_ID(HttpStatus.BAD_REQUEST, "콘텐츠 ID가 유효하지 않습니다.","CONTENT_ERROR_401_INVALID_CONTENT_ID"),
+
 	// ===== Common / Validation =====
 	INVALID_SEQUENCE_VALUE(HttpStatus.BAD_REQUEST, "순번 값이 올바르지 않습니다.", "CONTENT_400_001"),
 	REQUIRED_VALUE_MISSING(HttpStatus.BAD_REQUEST, "필수 값이 누락되었습니다.", "CONTENT_400_002"),

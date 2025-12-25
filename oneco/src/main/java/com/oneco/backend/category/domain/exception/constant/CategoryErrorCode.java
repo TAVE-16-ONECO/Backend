@@ -32,7 +32,8 @@ public enum CategoryErrorCode implements ErrorCode {
 	CATEGORY_ALREADY_VISIBLE(HttpStatus.BAD_REQUEST, "카테고리가 이미 보이고 있습니다.",
 		"CATEGORY_400_007"),
 	CATEGORY_MISSION_DAYS_OUT_OF_RANGE(HttpStatus.BAD_REQUEST, "정해진 일자에서 벗어났습니다.",
-		"CATEGORY_400_008");
+		"CATEGORY_400_008"),
+	INVALID_CATEGORY_ID(HttpStatus.BAD_REQUEST, "카테고리 ID가 유효하지 않습니다.","CATEGORY_ERROR_401_INVALID_CATEGORY_ID");
 
 	private final HttpStatus httpStatus;
 	private final String message;

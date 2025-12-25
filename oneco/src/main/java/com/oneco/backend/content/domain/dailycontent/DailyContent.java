@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.oneco.backend.category.domain.category.CategoryId;
 import com.oneco.backend.content.domain.common.ImageFile;
 import com.oneco.backend.content.domain.common.WebLink;
 import com.oneco.backend.content.domain.exception.constant.ContentErrorCode;
