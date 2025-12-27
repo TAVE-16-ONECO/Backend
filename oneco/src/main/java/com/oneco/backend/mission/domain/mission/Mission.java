@@ -2,7 +2,7 @@ package com.oneco.backend.mission.domain.mission;
 
 import static lombok.AccessLevel.*;
 
-import com.oneco.backend.content.domain.dailycontent.CategoryId;
+import com.oneco.backend.category.domain.category.CategoryId;
 import com.oneco.backend.family.domain.relation.FamilyRelationId;
 import com.oneco.backend.global.entity.BaseTimeEntity;
 import com.oneco.backend.global.exception.BaseException;

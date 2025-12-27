@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
-import com.oneco.backend.content.domain.dailycontent.CategoryId;
+import com.oneco.backend.category.domain.category.CategoryId;
 import com.oneco.backend.family.domain.relation.FamilyRelationId;
 import com.oneco.backend.global.exception.BaseException;
 import com.oneco.backend.mission.application.port.out.MissionPersistencePort;

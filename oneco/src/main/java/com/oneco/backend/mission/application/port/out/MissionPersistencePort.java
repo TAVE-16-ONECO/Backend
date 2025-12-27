@@ -3,7 +3,7 @@ package com.oneco.backend.mission.application.port.out;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.oneco.backend.content.domain.dailycontent.CategoryId;
+import com.oneco.backend.category.domain.category.CategoryId;
 import com.oneco.backend.family.domain.relation.FamilyRelationId;
 import com.oneco.backend.mission.domain.mission.Mission;
 

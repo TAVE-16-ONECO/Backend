@@ -2,9 +2,9 @@ package com.oneco.backend.mission.infrastructure;
 
 import org.springframework.stereotype.Component;
 
+import com.oneco.backend.category.domain.category.CategoryId;
 import com.oneco.backend.category.domain.category.MissionDays;
-import com.oneco.backend.content.domain.dailycontent.CategoryId;
-import com.oneco.backend.member.domain.MemberRepository;
+
 import com.oneco.backend.mission.application.port.out.CategoryLookupPort;
 
 import lombok.RequiredArgsConstructor;
