@@ -104,6 +104,16 @@ public class SwaggerConfig {
 			.build();
 	}
 
+	@Bean
+	public GroupedOpenApi missionApi() {
+		return GroupedOpenApi.builder()
+			.group("Mission")
+			.displayName("Mission (미션)")
+			.packagesToScan("com.oneco.backend.mission.presentation")
+			.pathsToMatch("/api/missions/**")
+			.build();
+	}
+
 	// === 공통 에러 응답 자동 추가 ===
 	@Bean
 	public OperationCustomizer addGlobalResponses() {

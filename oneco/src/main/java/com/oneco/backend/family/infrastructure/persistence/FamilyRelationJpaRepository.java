@@ -25,4 +25,10 @@ public interface FamilyRelationJpaRepository extends JpaRepository<FamilyRelatio
 	// 부모 ID와 자녀 ID를 이용하여 해당하는 FamilyRelation 엔티티를 반환하는 쿼리 메서드
 	@Lock(LockModeType.PESSIMISTIC_WRITE) // 낙관적 잠금 설정
 	Optional<FamilyRelation> findByParentIdAndChildId(MemberId parentId, MemberId childId);
+
+	// 멤버가 속한 가족 관계 조회 (부모 또는 자녀)
+	@Query("select f from FamilyRelation f " +
+		"where (f.parentId = :memberId or f.childId = :memberId) " +
+		"and f.status = 'CONNECTED'")
+	Optional<FamilyRelation> findConnectedRelationByMemberId(MemberId memberId);
 }
