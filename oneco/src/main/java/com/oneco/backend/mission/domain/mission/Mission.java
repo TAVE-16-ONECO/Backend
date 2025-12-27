@@ -48,7 +48,6 @@ public class Mission extends BaseTimeEntity {
 	private CategoryId categoryId;
 
 	@Embedded
-	@Column(nullable = false)
 	private MissionPeriod period;
 
 	@Embedded

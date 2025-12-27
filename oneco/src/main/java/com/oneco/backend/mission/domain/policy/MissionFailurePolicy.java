@@ -21,7 +21,8 @@ public class MissionFailurePolicy {
 		validateTotalQuestions(totalQuestions);
 		validateUserAnswers(userWrongAnswers);
 
-		int requiredCorrectAnswers = calculateRequiredCorrectAnswers(userWrongAnswers);
+		// 필요 정답 수 계산
+		int requiredCorrectAnswers = calculateRequiredCorrectAnswers(totalQuestions);
 
 		int allowedWrongAnswers = totalQuestions - requiredCorrectAnswers;
 		int remainingWrongAnswers = allowedWrongAnswers - userWrongAnswers;
