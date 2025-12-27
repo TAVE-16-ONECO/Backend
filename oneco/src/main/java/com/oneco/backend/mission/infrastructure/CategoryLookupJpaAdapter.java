@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class CategoryLookupJpaAdapter implements CategoryLookupPort {
-	 //private final CategoryRepository repository;
+	//private final CategoryRepository repository;
 
 	@Override
 	public MissionDays getDefaultMissionDays(CategoryId categoryId) {

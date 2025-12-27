@@ -7,6 +7,8 @@ import com.oneco.backend.family.domain.relation.FamilyRelationId;
 import com.oneco.backend.family.domain.relation.RelationStatus;
 import com.oneco.backend.family.infrastructure.persistence.FamilyRelationJpaRepository;
 import com.oneco.backend.member.domain.MemberId;
+import com.oneco.backend.global.exception.BaseException;
+import com.oneco.backend.family.domain.exception.constant.FamilyErrorCode;
 import com.oneco.backend.mission.application.port.out.FamilyRelationLookupPort;
 
 import lombok.RequiredArgsConstructor;
@@ -30,5 +32,12 @@ public class FamilyRelationLookupAdapter implements FamilyRelationLookupPort {
 	private boolean isMembersMatched(FamilyRelation relation, MemberId requesterId, MemberId recipientId) {
 		return (relation.getParentId().equals(requesterId) && relation.getChildId().equals(recipientId))
 			|| (relation.getParentId().equals(recipientId) && relation.getChildId().equals(requesterId));
+	}
+
+	@Override
+	public FamilyRelationId findRelationIdByMemberId(MemberId memberId) {
+		return repository.findConnectedRelationByMemberId(memberId)
+			.map(relation -> FamilyRelationId.of(relation.getId()))
+			.orElseThrow(() -> BaseException.from(FamilyErrorCode.FAMILY_RELATION_NOT_FOUND));
 	}
 }

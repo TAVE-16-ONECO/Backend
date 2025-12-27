@@ -1,5 +1,9 @@
 package com.oneco.backend.mission.infrastructure;
 
+import java.time.LocalDate;
+import java.util.List;
+
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import com.oneco.backend.content.domain.dailycontent.CategoryId;
@@ -8,6 +12,7 @@ import com.oneco.backend.global.exception.BaseException;
 import com.oneco.backend.mission.application.port.out.MissionPersistencePort;
 import com.oneco.backend.mission.domain.exception.MissionErrorCode;
 import com.oneco.backend.mission.domain.mission.Mission;
+import com.oneco.backend.mission.domain.mission.MissionStatus;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,11 +29,46 @@ public class MissionPersistenceAdapter implements MissionPersistencePort {
 
 	@Override
 	public boolean existsByFamilyRelationAndCategory(FamilyRelationId familyRelationId, CategoryId categoryId) {
-		return repository.existsByFamilyRelationIdValueAndCategoryIdValue(familyRelationId.getValue(), categoryId.getValue());
+		return repository.existsByFamilyRelationIdValueAndCategoryIdValue(familyRelationId.getValue(),
+			categoryId.getValue());
 	}
 
 	@Override
 	public Mission findById(Long missionId) {
 		return repository.findById(missionId).orElseThrow(() -> BaseException.from(MissionErrorCode.MISSION_NOT_FOUND));
+	}
+
+	// 진행중인 미션들 중, 마감기한이 지난 미션들을 모두 조회한다.
+	@Override
+	public List<Mission> findAllOverdueMissions(LocalDate today) {
+		return repository.findAllOverdueMissions(MissionStatus.IN_PROGRESS, today);
+	}
+
+	// 상태는 IN_PROGRESS, APPROVAL_ACCEPTED, APPROVAL_REQUEST일 때 조회
+	@Override
+	public List<Mission> findByFamilyRelationAndInProgressStatus(FamilyRelationId relationId, Long lastId, int size) {
+		return repository.findByFamilyRelationAndInProgressStatus(
+			relationId.getValue(),
+			MissionStatus.IN_PROGRESS,
+			MissionStatus.APPROVAL_ACCEPTED,
+			MissionStatus.APPROVAL_REQUEST,
+			lastId,
+			PageRequest.of(0, size)
+		);
+	}
+
+	// 상태는 APPROVAL_REJECTED, COMPLETED, FAILED, REWARD_REQUESTED, REWARD_COMPLETED 일 때 조회
+	@Override
+	public List<Mission> findByFamilyRelationAndFinishedStatus(FamilyRelationId relationId, Long lastId, int size) {
+		return repository.findByFamilyRelationAndFinishedStatus(
+			relationId.getValue(),
+			MissionStatus.APPROVAL_REJECTED,
+			MissionStatus.COMPLETED,
+			MissionStatus.FAILED,
+			MissionStatus.REWARD_REQUESTED,
+			MissionStatus.REWARD_COMPLETED,
+			lastId,
+			PageRequest.of(0, size)
+		);
 	}
 }
