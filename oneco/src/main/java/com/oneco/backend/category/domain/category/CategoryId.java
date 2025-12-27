@@ -1,9 +1,7 @@
-package com.oneco.backend.member.domain;
+package com.oneco.backend.category.domain.category;
 
-import java.io.Serializable;
-
+import com.oneco.backend.category.domain.exception.constant.CategoryErrorCode;
 import com.oneco.backend.global.exception.BaseException;
-import com.oneco.backend.member.domain.exception.constant.MemberErrorCode;
 
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
@@ -11,23 +9,25 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Embeddable
 @EqualsAndHashCode
+@Embeddable
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MemberId implements Serializable {
+public class CategoryId {
 
 	private Long value;
 
-	private MemberId(Long value) {
+	private CategoryId(Long value) {
 		if (value == null || value <= 0) {
-			throw BaseException.from(MemberErrorCode.INVALID_MEMBER_ID);
+			throw BaseException.from(CategoryErrorCode.INVALID_CATEGORY_ID, "입력값=" + value);
 		}
 		this.value = value;
 	}
 
-	public static MemberId of(Long value) {
-		return new MemberId(value);
+	public static CategoryId of(Long value) {
+		return new CategoryId(value);
 	}
+
 }
+
 
