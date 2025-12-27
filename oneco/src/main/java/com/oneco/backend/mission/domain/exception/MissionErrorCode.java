@@ -99,6 +99,17 @@ public enum MissionErrorCode implements ErrorCode {
 		HttpStatus.FORBIDDEN,
 		"해당 미션의 승인/거절 권한이 없습니다.",
 		"MISSION_ERROR_403_APPROVAL_FORBIDDEN"
+	),
+
+	INVALID_MISSION_JUDGE(
+		HttpStatus.BAD_REQUEST,
+		"미션 승인/거절 판단이 유효하지 않습니다.",
+		"MISSION_ERROR_400_INVALID_MISSION_JUDGE"
+	),
+	INVALID_MISSION_ID(
+		HttpStatus.BAD_REQUEST,
+		"미션 ID가 유효하지 않습니다.",
+		"MISSION_ERROR_400_INVALID_MISSION_ID"
 	);
 
 	private final HttpStatus httpStatus;
