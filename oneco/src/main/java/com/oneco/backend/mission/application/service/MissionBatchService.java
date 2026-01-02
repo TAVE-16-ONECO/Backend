@@ -29,33 +29,47 @@ public class MissionBatchService {
 	@Scheduled(cron = "0 0 0 * * *") // 매일 자정
 	public void failOverdueMissions() {
 		LocalDate now = LocalDate.now(); // 현재 날짜
-		long ErrorCount = 0; // 실패 처리 중 오류 발생 건수
+		long successCount = 0;
+		long errorCount = 0; // 실패 처리 중 오류 발생 건수
 
 		// 1. 마감기한이 지났고, 아직 완료되지 않은 (진행중인) 미션들을 조회한다.
 		List<Mission> overdueMissions = missionPort.findAllOverdueMissions(now);
 
+		// =============================
+		// 스케줄러 로그 출력
+		// =============================
+
 		if (overdueMissions.isEmpty()) {
-			// 처리할 미션이 없다면 종료
+			// 1. 처리할 미션이 없다면 종료
 			log.info("[MissionBatchService-failOverdueMissions] 마감기한이 지난 미션이 없습니다. - {}", LocalDateTime.now());
 			return;
 		}
-		log.info("[MissionBatchService-failOverdueMissions] 마감기한이 지난 미션 {}건 처리 시작 - {}", overdueMissions.size(),
-			LocalDateTime.now());
 
-		// 2. 순회하며 외부 서비스 호출한다. (프록시 타게 됨 -> 트랜잭션 정상 작동)
-		int successCount = 0;
+		// 2. 처리할 미션이 있다면 로그 출력
+		log.info(
+			"[MissionBatchService-failOverdueMissions] 마감기한이 지난 미션 {}건 처리 시작 - {}",
+			overdueMissions.size(),
+			LocalDateTime.now()
+		);
+
+		// =============================
+		// 미션 실패 처리
+		// =============================
+
+		// 1. 순회하며 외부 서비스 호출한다. (프록시 타게 됨 -> 트랜잭션 정상 작동)
 		for (Mission mission : overdueMissions) {
 			try {
 				// 여기서 외부 빈(Bean)의 호출 -> 프록시를 타게 됨 -> 트랜잭션 정상 작동
 				missionStatusChanger.processBatchFailure(mission);
 				successCount++;
 			} catch (Exception e) {
-				ErrorCount++;
-				log.error("[MissionBatchService-failOverdueMissions] 미션 ID {}", mission.getId());
+				errorCount++;
+				log.error("[MissionBatchService-failOverdueMissions] 미션 ID {} 실패 처리 중 오류", mission.getId(), e);
 			}
 		}
+
 		log.info("[MissionBatchService-failOverdueMissions] 처리 완료. 성공: {}/{}", successCount, overdueMissions.size());
-		log.info("[MissionBatchService-failOverdueMissions] 오류 발생 건수: {}", ErrorCount);
+		log.info("[MissionBatchService-failOverdueMissions] 오류 발생 건수: {}", errorCount);
 	}
 
 	// 매일 자정에 실행한다.
@@ -68,7 +82,6 @@ public class MissionBatchService {
 
 		// 1. 오늘이 시작일인 미션들을 조회한다.
 		List<Mission> missionsToStart = missionPort.findAllMissionsStartingToday(today);
-
 
 		// =============================
 		// 스케줄러 로그 출력
