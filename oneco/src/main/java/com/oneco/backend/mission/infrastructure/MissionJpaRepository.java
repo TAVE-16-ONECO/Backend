@@ -73,5 +73,11 @@ public interface MissionJpaRepository extends JpaRepository<Mission, Long> {
 		Pageable pageable);
 
 	// 오늘이 미션 시작일인 모든 미션을 조회한다.
-	List<Mission> findAllByStartDate(LocalDate today);
+	@Query("SELECT m FROM Mission m " +
+		"WHERE m.period.startDate = :today " +
+		"AND m.status = :status")
+	List<Mission> findAllByStartDate(
+		@Param("today") LocalDate today,
+		@Param("status") MissionStatus status
+	);
 }
