@@ -2,6 +2,8 @@ package com.oneco.backend.mission.domain.mission;
 
 import static lombok.AccessLevel.*;
 
+import java.time.LocalDate;
+
 import com.oneco.backend.category.domain.category.CategoryId;
 import com.oneco.backend.family.domain.relation.FamilyRelationId;
 import com.oneco.backend.global.entity.BaseTimeEntity;
@@ -202,5 +204,14 @@ public class Mission extends BaseTimeEntity {
 				"보상 완료는 보상 요청 상태에서만 가능합니다.");
 		}
 		this.status = MissionStatus.REWARD_COMPLETED;
+	}
+
+	// 현재 열린 일차 시퀀스 계산
+	public int getCurrentOpenedDaySequence(LocalDate today) {
+		return period.openedDaySequenceExcludeWeekend(today);
+	}
+
+	public boolean isActiveForStudy() {
+		return this.status == MissionStatus.IN_PROGRESS;
 	}
 }

@@ -93,4 +93,10 @@ public class QuizOptions {
 		return new QuizOptions(list);
 	}
 
+	public List<String> getOptionTexts() {
+		return options.stream()
+			.map(QuizOption::getText)
+			.collect(Collectors.toList());
+	}
+
 }

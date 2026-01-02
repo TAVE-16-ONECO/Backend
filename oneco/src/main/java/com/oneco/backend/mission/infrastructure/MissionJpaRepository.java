@@ -2,6 +2,7 @@ package com.oneco.backend.mission.infrastructure;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,6 +16,19 @@ public interface MissionJpaRepository extends JpaRepository<Mission, Long> {
 
 	// FamilyRelationId와 CategoryId로 미션 존재 여부 확인
 	boolean existsByFamilyRelationIdValueAndCategoryIdValue(Long familyRelationId, Long categoryId);
+
+	@Query("""
+		select m from Mission m
+		where m.recipientId.value = :memberId
+		  and m.categoryId.value = :categoryId
+		  and m.status = :status
+		order by m.createdAt desc
+		""")
+	Optional<Mission> findLatestActiveForRecipient(
+		@Param("memberId") Long memberId,
+		@Param("categoryId") Long categoryId,
+		@Param("status") MissionStatus status
+	);
 
 	@Query("SELECT m FROM Mission m " +
 		"WHERE m.status = :status " +

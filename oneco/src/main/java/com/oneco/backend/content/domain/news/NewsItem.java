@@ -51,6 +51,7 @@ public class NewsItem {
 	private WebLink webLink;
 
 	@Embedded
+	@AttributeOverride(name="url", column = @Column(name = "image_url", nullable = false))
 	private ImageFile imageFile;
 
 	private NewsItem(String title, WebLink webLink, NewsItemOrder newsItemOrder, ImageFile imageFile) {

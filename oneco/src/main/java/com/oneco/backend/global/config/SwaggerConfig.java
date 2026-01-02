@@ -113,6 +113,15 @@ public class SwaggerConfig {
 			.pathsToMatch("/api/missions/**")
 			.build();
 	}
+	@Bean
+	public GroupedOpenApi StudyRecordApi() {
+		return GroupedOpenApi.builder()
+			.group("StudyRecord")
+			.displayName("StudyRecord (학습기록)")
+			.packagesToScan("com.oneco.backend.StudyRecord.presentation")
+			.pathsToMatch("/api/study-records/**")
+			.build();
+	}
 
 	// === 공통 에러 응답 자동 추가 ===
 	@Bean

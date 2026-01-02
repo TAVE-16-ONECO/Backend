@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 import com.oneco.backend.category.domain.category.CategoryId;
+import com.oneco.backend.content.domain.common.AbstractSequence;
 import com.oneco.backend.content.domain.common.ImageFile;
 import com.oneco.backend.content.domain.common.WebLink;
 import com.oneco.backend.content.domain.exception.constant.ContentErrorCode;
@@ -18,6 +19,7 @@ import com.oneco.backend.content.infrastructure.converter.DaySequenceConverter;
 import com.oneco.backend.global.exception.BaseException;
 
 import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -31,10 +33,12 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 @Table(
 	name = "daily_contents",
 	uniqueConstraints = {
@@ -51,15 +55,22 @@ public class DailyContent {
 	private Long id;
 
 	@Embedded
+	@AttributeOverride(name = "value", column = @Column(name = "category_id", nullable=false))
 	private CategoryId categoryId;
 
 	@Convert(converter = DaySequenceConverter.class)
 	private DaySequence daySequence;
 
 	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name = "title", column = @Column(name = "title", nullable = false, length = ContentDescription.TITLE_MAX_LENGTH)),
+		@AttributeOverride(name = "summary", column = @Column(name = "summary", nullable = false, length = ContentDescription.SUMMARY_MAX_LENGTH)),
+		@AttributeOverride(name = "bodyText", column = @Column(name = "body_text", nullable = false, columnDefinition = "TEXT"))
+	})
 	private ContentDescription description;
 
 	@Embedded
+	@AttributeOverride(name= "value", column = @Column(name = "keyword", nullable = false, length = Keyword.MAX_LENGTH))
 	private Keyword keyword;
 
 	@Embedded
