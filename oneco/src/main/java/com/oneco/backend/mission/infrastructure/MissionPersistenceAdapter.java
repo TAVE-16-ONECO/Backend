@@ -71,4 +71,10 @@ public class MissionPersistenceAdapter implements MissionPersistencePort {
 			PageRequest.of(0, size)
 		);
 	}
+
+	// 오늘이 미션 시작일인 모든 미션을 조회한다.
+	@Override
+	public List<Mission> findAllMissionsStartingToday(LocalDate today) {
+		return repository.findAllByStartDate(today);
+	}
 }
