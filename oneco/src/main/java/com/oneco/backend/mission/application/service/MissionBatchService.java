@@ -72,9 +72,9 @@ public class MissionBatchService {
 		log.info("[MissionBatchService-failOverdueMissions] 오류 발생 건수: {}", errorCount);
 	}
 
-	// 매일 자정에 실행한다.
+	// 매일 00:10 에 실행한다.
 	// 미션 수락 상태에서 Mission의 startDate이 되면 미션 진행중으로 변경한다.
-	@Scheduled(cron = "0 0 0 * * *") // 매일 자정
+	@Scheduled(cron = "0 10 0 * * *")
 	public void startScheduledMissions() {
 		LocalDate today = LocalDate.now(); // 현재 날짜
 		long successCount = 0; // 성공 처리 건수
