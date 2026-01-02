@@ -53,7 +53,7 @@ public class StartStudyService implements StartStudyUseCase {
 			return mapStartStudyResult(sr, dailyContent);
 		}
 		log.info("기존 StudyRecord가 없으므로 새로 생성 진행");
-		log.info("memberId: {} , categoryId:{}",memberId,dailyContent.categoryId());
+		log.info("memberId: {} , categoryId:{}", memberId, dailyContent.categoryId());
 		// 3) Active 미션 조회
 		ActiveMissionSnapshot activeMission =
 			missionQueryPort.findActiveMission(memberId, dailyContent.categoryId())
@@ -61,7 +61,7 @@ public class StartStudyService implements StartStudyUseCase {
 		log.info("로드된 ActiveMissionSnapshot: {}", activeMission);
 
 		// 4) 미션 Active 상태인지 검증
-		if( !activeMission.active()){
+		if (!activeMission.active()) {
 			throw BaseException.from(StudyErrorCode.INVALID_STUDY_STATUS, "미션이 active가 아닙니다.");
 		}
 		log.info("미션이 active 상태임을 검증 통과");
