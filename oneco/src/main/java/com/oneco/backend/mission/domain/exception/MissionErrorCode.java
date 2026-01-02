@@ -11,6 +11,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum MissionErrorCode implements ErrorCode {
 
+	TODAY_DATE_CANNOT_BE_NULL(
+		HttpStatus.BAD_REQUEST,
+		"'오늘' 날짜는 null일 수 없습니다.",
+		"MISSION_ERROR_400_TODAY_DATE_CANNOT_BE_NULL"
+	),
 	INVALID_MISSION_TIME_ORDER
 		(HttpStatus.BAD_REQUEST,
 			"미션 시작시간은 종료시간보다 이전이어야 합니다.",

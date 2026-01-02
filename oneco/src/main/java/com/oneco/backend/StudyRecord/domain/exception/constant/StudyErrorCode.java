@@ -28,7 +28,7 @@ public enum StudyErrorCode implements ErrorCode {
 	CATEGORY_ID_INVALID(HttpStatus.BAD_REQUEST, "STUDY_400_5", "카테고리 ID는 양수여야 합니다."),
 	MEMBER_ID_INVALID(HttpStatus.BAD_REQUEST, "STUDY_400_6", "회원 ID는 양수여야 합니다."),
 	DAILY_CONTENT_ID_INVALID(HttpStatus.BAD_REQUEST, "STUDY_400_7", "오늘의 콘텐츠 ID는 양수여야 합니다."),
-
+	UNAUTHORIZED_ACCESS(HttpStatus.UNAUTHORIZED, "STUDY_401", "해당 리소스에 대한 접근 권한이 없습니다."),
 	// 외부/연관 데이터 미존재,
 	DAILY_CONTENT_NOT_FOUND(HttpStatus.NOT_FOUND, "CONTENT_404", "오늘의 콘텐츠를 찾을 수 없습니다."),
 	QUIZ_NOT_FOUND(HttpStatus.NOT_FOUND, "QUIZ_404", "퀴즈 정보를 찾을 수 없습니다.");
