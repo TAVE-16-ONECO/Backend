@@ -13,7 +13,7 @@ import com.oneco.backend.category.domain.category.CategoryId;
 import com.oneco.backend.content.domain.dailycontent.DailyContentId;
 import com.oneco.backend.global.exception.BaseException;
 import com.oneco.backend.member.domain.MemberId;
-import com.oneco.backend.mission.domain.MissionId;
+import com.oneco.backend.mission.domain.mission.MissionId;
 
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.CascadeType;
