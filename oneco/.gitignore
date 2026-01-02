@@ -10,6 +10,7 @@ build/
 *.class
 *.log
 .gradle/
+.gradle-tmp/
 
 # ========================
 # 🧠  IntelliJ IDEA / IDE 관련

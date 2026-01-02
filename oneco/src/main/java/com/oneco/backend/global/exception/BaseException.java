@@ -22,5 +22,10 @@ public class BaseException extends RuntimeException {
 		return new BaseException(errorCode.getMessage(), errorCode.getHttpStatus(), errorCode.getCode()) {
 		};
 	}
+
+	public static BaseException from(ErrorCode errorCode, String detailMessage){
+		return new BaseException(detailMessage, errorCode.getHttpStatus(), errorCode.getCode()) {
+		};
+	}
 }
 

@@ -1,0 +1,61 @@
+spring:
+
+  config:
+    import: optional:file:/opt/oneco/.env[.properties]
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  data:
+    redis:
+        host: ${REDIS_HOST}
+        port: ${REDIS_PORT}
+        password: ${REDIS_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: none     # prod는 절대 update/create 금지
+    properties:
+      hibernate:
+        show_sql: false
+
+
+kakao:
+  oauth:
+    client-id: ${KAKAO_REST_API_KEY}
+    client-secret: ${KAKAO_CLIENT_SECRET}
+    redirect-uri: ${KAKAO_REDIRECT_URI}
+    base-url: ${KAKAO_OAUTH_BASE_URL}
+  kapi:
+    base-url: ${KAKAO_KAPI_BASE_URL}
+  oidc:
+    issuer: https://kauth.kakao.com
+    jwk-set-uri: https://kauth.kakao.com/.well-known/jwks.json
+
+jwt:
+  access:
+    algorithm: HS256
+    secret-key: ${JWT_ACCESS_SECRET_BASE64}
+    validity-in-seconds: 3600 #1시간
+
+  refresh:
+    algorithm: HS256
+    secret-key: ${JWT_REFRESH_SECRET_BASE64}
+    validity-in-seconds: 1209600 #14일
+
+  onboarding:
+    algorithm: HS256
+    secret-key: ${JWT_ONBOARDING_SECRET_BASE64}
+    validity-in-seconds: 900 #15분
+
+feign:
+  client:
+    config:
+      default:
+        connect-timeout: 5000
+        read-timeout: 5000
+        loggerLevel: FULL
+
+server:
+  forward-headers-strategy: framework

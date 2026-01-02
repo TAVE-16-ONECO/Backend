@@ -33,6 +33,7 @@ public class GlobalExceptionHandler {
 			.body(ErrorResponse.of(e.getHttpStatus(), e.getMessage(), e.getCode()));
 	}
 
+
 	// 검증 예외 처리
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
