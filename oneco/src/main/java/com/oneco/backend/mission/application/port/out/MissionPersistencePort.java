@@ -22,4 +22,7 @@ public interface MissionPersistencePort {
 
 	// 상태는 COMPLETED, REJECTED, EXPIRED, CANCELED, FAILED 일 때 조회
 	List<Mission> findByFamilyRelationAndFinishedStatus(FamilyRelationId relationId, Long lastId, int size);
+
+	// 오늘이 미션 시작일인 모든 미션을 조회한다.
+	List<Mission> findAllMissionsStartingToday(LocalDate today);
 }
