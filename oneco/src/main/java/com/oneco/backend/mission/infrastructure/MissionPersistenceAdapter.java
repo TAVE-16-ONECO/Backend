@@ -77,4 +77,14 @@ public class MissionPersistenceAdapter implements MissionPersistencePort {
 	public List<Mission> findAllMissionsStartingToday(LocalDate today) {
 		return repository.findAllByStartDate(today, MissionStatus.APPROVAL_ACCEPTED);
 	}
+
+	@Override
+	public long countMissionsByFamilyRelation(FamilyRelationId relationId) {
+		return repository.countByFamilyRelationIdValue(relationId.getValue());
+	}
+
+	@Override
+	public long countMissionsByFamilyRelationAndStatuses(FamilyRelationId relationId, List<MissionStatus> statuses) {
+		return repository.countByFamilyRelationIdValueAndStatusIn(relationId.getValue(), statuses);
+	}
 }

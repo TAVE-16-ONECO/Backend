@@ -1,5 +1,6 @@
 package com.oneco.backend.mission.application.service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,6 +13,8 @@ import com.oneco.backend.member.domain.MemberId;
 import com.oneco.backend.mission.application.port.out.FamilyRelationLookupPort;
 import com.oneco.backend.mission.application.port.out.MissionPersistencePort;
 import com.oneco.backend.mission.domain.mission.Mission;
+import com.oneco.backend.mission.domain.mission.MissionStatus;
+import com.oneco.backend.mission.presentation.response.MissionCountResponse;
 import com.oneco.backend.mission.presentation.response.MissionResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -74,5 +77,26 @@ public class MissionReadService {
 			rewardTitle,
 			mission.getStatus().name() // Enum의 name() 메서드를 사용하여 문자열로 변환
 		);
+	}
+
+	public MissionCountResponse countMyMissions(MemberId memberId) {
+		// memberId로 가족 관계 조회
+		FamilyRelationId relationId = familyRelationPort.findRelationIdByMemberId(memberId);
+
+		// 전체 미션 개수, 진행중인 미션 개수, 종료된 미션 개수 조회
+		long totalCount = missionPort.countMissionsByFamilyRelation(relationId);
+
+		// 진행중인 상태와 종료된 상태의 MissionStatus 리스트 생성
+		List<MissionStatus> inProgressStatuses = Arrays.stream(MissionStatus.values())
+			.filter(MissionStatus::isInProgress)
+			.toList();
+		List<MissionStatus> finishedStatuses = Arrays.stream(MissionStatus.values())
+			.filter(MissionStatus::isFinished)
+			.toList();
+
+		long inProgressCount = missionPort.countMissionsByFamilyRelationAndStatuses(relationId, inProgressStatuses);
+		long finishedCount = missionPort.countMissionsByFamilyRelationAndStatuses(relationId, finishedStatuses);
+
+		return MissionCountResponse.of(totalCount, inProgressCount, finishedCount);
 	}
 }
