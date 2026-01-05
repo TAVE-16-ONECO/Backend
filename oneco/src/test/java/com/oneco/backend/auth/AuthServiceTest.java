@@ -27,7 +27,7 @@ import com.oneco.backend.global.exception.BaseException;
 import com.oneco.backend.global.exception.constant.GlobalErrorCode;
 import com.oneco.backend.global.security.jwt.JwtTokenProvider;
 import com.oneco.backend.member.domain.Member;
-import com.oneco.backend.member.domain.MemberRepository;
+import com.oneco.backend.member.infrastructure.persistence.MemberJpaRepository;
 import com.oneco.backend.member.domain.MemberStatus;
 import com.oneco.backend.member.domain.SystemRole;
 
@@ -41,7 +41,7 @@ class AuthServiceTest {
 	@Mock
 	private SocialAccountRepository socialAccountRepository;
 	@Mock
-	private MemberRepository memberRepository;
+	private MemberJpaRepository memberJpaRepository;
 	@Mock
 	private JwtTokenProvider jwtTokenProvider;
 
@@ -120,8 +120,8 @@ class AuthServiceTest {
 		when(jwtTokenProvider.createOnboardingToken(SocialProvider.KAKAO, kakaoSub))
 			.thenReturn("onboarding-token");
 
-		// memberRepository.save(...) 호출 시 id를 세팅해주는 답변을 등록
-		when(memberRepository.save(any(Member.class))).thenAnswer(invocation -> {
+		// memberJpaRepository.save(...) 호출 시 id를 세팅해주는 답변을 등록
+		when(memberJpaRepository.save(any(Member.class))).thenAnswer(invocation -> {
 			Member saved = invocation.getArgument(0);
 			setId(saved, 99L);
 			return saved;
@@ -137,7 +137,7 @@ class AuthServiceTest {
 
 		// verify: member/social 저장 시점에 받은 엔티티도 확인
 		ArgumentCaptor<Member> memberCaptor = ArgumentCaptor.forClass(Member.class);
-		verify(memberRepository).save(memberCaptor.capture());
+		verify(memberJpaRepository).save(memberCaptor.capture());
 		assertEquals(MemberStatus.ONBOARDING, memberCaptor.getValue().getStatus());
 
 		ArgumentCaptor<SocialAccount> socialCaptor = ArgumentCaptor.forClass(SocialAccount.class);

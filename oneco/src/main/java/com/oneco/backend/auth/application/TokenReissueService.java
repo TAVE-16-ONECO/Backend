@@ -26,7 +26,7 @@ import lombok.RequiredArgsConstructor;
 public class TokenReissueService {
 	private final JwtTokenProvider jwtTokenProvider;
 	// 만약 실제 회원 상태 검증이 필요하면 DB 확인
-	// private final MemberRepository memberRepository;
+	// private final MemberJpaRepository memberRepository;
 
 	@Transactional(readOnly = true)
 	public TokenReissueResponse reissue(Claims refreshClaims) {
