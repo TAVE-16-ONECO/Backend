@@ -80,4 +80,8 @@ public interface MissionJpaRepository extends JpaRepository<Mission, Long> {
 		@Param("today") LocalDate today,
 		@Param("status") MissionStatus status
 	);
+
+	long countByFamilyRelationIdValue(Long value);
+
+	long countByFamilyRelationIdValueAndStatusIn(Long value, List<MissionStatus> statuses);
 }
