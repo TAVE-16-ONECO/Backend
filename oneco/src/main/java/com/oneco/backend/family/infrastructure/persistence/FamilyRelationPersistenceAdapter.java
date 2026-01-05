@@ -40,4 +40,9 @@ public class FamilyRelationPersistenceAdapter implements FamilyRelationPersisten
 		return repository.findByParentIdAndChildId(parentId, childId);
 	}
 
+	@Override
+	public boolean existsByMemberId(Long memberId) {
+		return repository.existsConnectedRelationByMemberId(MemberId.of(memberId));
+	}
+
 }

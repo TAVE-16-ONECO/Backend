@@ -15,4 +15,6 @@ public interface FamilyRelationPersistencePort {
 	int countActiveParentsByChildId(MemberId childId);
 
 	Optional<FamilyRelation> findByParentIdAndChildId(MemberId parentId, MemberId childId);
+
+	boolean existsByMemberId(Long memberId);
 }
