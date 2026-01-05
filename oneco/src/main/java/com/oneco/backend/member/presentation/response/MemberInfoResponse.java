@@ -2,7 +2,7 @@ package com.oneco.backend.member.presentation.response;
 
 public record MemberInfoResponse(
 	Long memberId,
-	String FamilyRole,
+	String familyRole,
 	String name,
 	String nickname,
 	String email,
