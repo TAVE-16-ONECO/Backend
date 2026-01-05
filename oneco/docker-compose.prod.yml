@@ -1,6 +1,7 @@
 services:
   mysql:
-    ports: [] # 프로덕션 환경에서는 포트를 외부에 노출하지 않음
+    ports:
+    - "127.0.0.1:3306:3306"  # EC2 내부 localhost에서만 접근 가능하도록 바인딩
     volumes:
       - mysql_data:/var/lib/mysql
     logging:
