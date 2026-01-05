@@ -33,6 +33,7 @@ public class MemberService implements MemberUseCase {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public MemberInfoResult getMemberInfo(Long memberId) {
 		Member member = memberJpaRepository.findById(memberId).
 			orElseThrow(() -> BaseException.from(
