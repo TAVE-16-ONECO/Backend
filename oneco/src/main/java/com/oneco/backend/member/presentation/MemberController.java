@@ -33,13 +33,14 @@ public class MemberController {
 	@GetMapping("/info")
 	@Operation(
 		summary = "회원 정보 조회",
-		description = "현재 로그인한 회원의 정보를 조회한다. \n" +
-			"- memberId: 회원 고유 ID \n" +
-			"- familyRole: 가족 내 역할 \n" +
-			"- name: 회원 이름 \n" +
-			"- nickname: 회원 닉네임(null) \n" +
-			"- email: 회원 이메일(null) \n" +
-			"- profileImageUrl: 프로필 이미지 URL"
+		description = """
+			현재 로그인한 회원의 정보를 조회한다.\s
+			- memberId: 회원 고유 ID\s
+			- familyRole: 가족 내 역할\s
+			- name: 회원 이름\s
+			- nickname: 회원 닉네임(null)\s
+			- email: 회원 이메일(null)\s
+			- profileImageUrl: 프로필 이미지 URL"""
 	)
 	@ApiResponses({
 		@ApiResponse(responseCode = "200", description = "회원 정보 조회 성공")
