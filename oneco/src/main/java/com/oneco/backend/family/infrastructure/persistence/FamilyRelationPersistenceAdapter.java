@@ -41,8 +41,8 @@ public class FamilyRelationPersistenceAdapter implements FamilyRelationPersisten
 	}
 
 	@Override
-	public boolean existsByMemberId(Long memberId) {
-		return repository.existsConnectedRelationByMemberId(MemberId.of(memberId));
+	public boolean existsByMemberId(MemberId memberId) {
+		return repository.existsConnectedRelationByMemberId(memberId);
 	}
 
 }

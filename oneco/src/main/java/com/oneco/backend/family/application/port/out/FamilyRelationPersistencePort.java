@@ -16,5 +16,5 @@ public interface FamilyRelationPersistencePort {
 
 	Optional<FamilyRelation> findByParentIdAndChildId(MemberId parentId, MemberId childId);
 
-	boolean existsByMemberId(Long memberId);
+	boolean existsByMemberId(MemberId memberId);
 }

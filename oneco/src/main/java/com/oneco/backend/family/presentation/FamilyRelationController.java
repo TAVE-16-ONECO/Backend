@@ -25,6 +25,7 @@ import com.oneco.backend.family.presentation.request.AcceptInvitationRequest;
 import com.oneco.backend.family.presentation.response.FamilyRelationExists;
 import com.oneco.backend.global.response.DataResponse;
 import com.oneco.backend.global.security.jwt.JwtPrincipal;
+import com.oneco.backend.member.domain.MemberId;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -128,7 +129,9 @@ public class FamilyRelationController {
 		@AuthenticationPrincipal JwtPrincipal principal
 	) {
 		// 현재 로그인한 사용자의 가족 관계 존재 여부 확인
-		FamilyRelationExists exists = existsFamilyRelationUseCase.existsFamilyRelation(principal.memberId());
+		FamilyRelationExists exists = existsFamilyRelationUseCase.existsFamilyRelation(
+			MemberId.of(principal.memberId())
+		);
 		return ResponseEntity.ok(DataResponse.from(exists));
 	}
 }
