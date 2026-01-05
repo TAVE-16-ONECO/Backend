@@ -1,6 +1,6 @@
 package com.oneco.backend.family.presentation.response;
 
-public record FamilyRelationExists(
+public record FamilyRelationExistsResponse(
 	boolean hasFamilyRelation
 ) {
 }

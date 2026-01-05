@@ -114,6 +114,5 @@ public class MissionReadService {
 		// 진행중인 미션 존재 여부 확인
 		boolean exists = missionPort.existsByFamilyRelationAndInProgressStatus(relationId, inProgressStatuses);
 		return new MissionExistsResponse(exists);
-
 	}
 }
