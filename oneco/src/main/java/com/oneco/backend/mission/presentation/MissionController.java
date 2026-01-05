@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.oneco.backend.global.response.CursorResponse;
@@ -24,6 +23,7 @@ import com.oneco.backend.mission.presentation.request.ApproveMissionRequest;
 import com.oneco.backend.mission.presentation.request.CreateMissionRequest;
 import com.oneco.backend.mission.presentation.request.MissionCursorRequest;
 import com.oneco.backend.mission.presentation.response.MissionCountResponse;
+import com.oneco.backend.mission.presentation.response.MissionExistsResponse;
 import com.oneco.backend.mission.presentation.response.MissionResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -142,6 +142,24 @@ public class MissionController {
 	) {
 		MemberId memberId = MemberId.of(principal.memberId());
 		MissionCountResponse response = missionReadService.countMyMissions(memberId);
+		return ResponseEntity.ok(DataResponse.from(response));
+	}
+
+	// 회원의 진행중인 미션이 있는지 확인하는 API
+	@GetMapping("/exists-in-progress")
+	@Operation(
+		summary = "진행중인 미션 존재 여부 확인",
+		description = "사용자가 진행중인 미션이 있는지 여부를 확인한다."
+	)
+	@ApiResponses({
+		@ApiResponse(responseCode = "200", description = "진행중인 미션 존재 여부 확인 성공")
+	})
+	public ResponseEntity<DataResponse<MissionExistsResponse>> existsInProgressMission(
+		@Parameter(hidden = true)
+		@AuthenticationPrincipal JwtPrincipal principal
+	) {
+		MemberId memberId = MemberId.of(principal.memberId());
+		MissionExistsResponse response = missionReadService.existsInProgressMission(memberId);
 		return ResponseEntity.ok(DataResponse.from(response));
 	}
 }
