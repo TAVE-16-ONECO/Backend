@@ -26,8 +26,12 @@ public class MissionStatusChanger {
 	// 미션 진행중으로 상태 변경한다.
 	// 미션 Period 에서 시작일이 되면 호출된다.
 	// todo: 스케줄러에서 미션 시작일이 되면 호출하도록 구현 필요함.
+	// processBatchFailure
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void toInProgress(Mission mission) {
 		mission.markInProgress();
+		missionPort.save(mission); // 명시적으로 영속성 계층에 변경 사항을 저장
+
 	}
 
 	// 미션 성공으로 상태를 변경한다.
