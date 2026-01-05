@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.oneco.backend.global.exception.BaseException;
+import com.oneco.backend.member.application.dto.result.MemberInfoResult;
 import com.oneco.backend.member.application.port.in.MemberUseCase;
 import com.oneco.backend.member.domain.exception.constant.MemberErrorCode;
 import com.oneco.backend.member.domain.Member;
@@ -32,14 +33,14 @@ public class MemberService implements MemberUseCase {
 	}
 
 	@Override
-	public MemberInfoResponse getMemberInfo(Long memberId) {
+	public MemberInfoResult getMemberInfo(Long memberId) {
 		Member member = memberJpaRepository.findById(memberId).
 			orElseThrow(() -> BaseException.from(
 				MemberErrorCode.MEMBER_NOT_FOUND, "MemberId: " + memberId)
 			);
-		return MemberInfoResponse.of(
+		return MemberInfoResult.of(
 			member.getId(),
-			member.getFamilyRole().toString(),
+			member.getFamilyRole(),
 			member.getName(),
 			member.getNickname(),
 			member.getEmail(),
