@@ -12,10 +12,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.oneco.backend.global.exception.BaseException;
+import com.oneco.backend.member.application.service.MemberService;
 import com.oneco.backend.member.domain.exception.constant.MemberErrorCode;
-import com.oneco.backend.member.application.MemberService;
 import com.oneco.backend.member.domain.Member;
-import com.oneco.backend.member.domain.MemberRepository;
+import com.oneco.backend.member.infrastructure.persistence.MemberJpaRepository;
 import com.oneco.backend.member.domain.MemberStatus;
 import com.oneco.backend.member.domain.SystemRole;
 
@@ -23,7 +23,7 @@ import com.oneco.backend.member.domain.SystemRole;
 class MemberServiceTest {
 
 	@Mock
-	private MemberRepository memberRepository;
+	private MemberJpaRepository memberJpaRepository;
 
 	@InjectMocks
 	private MemberService memberService;
@@ -31,7 +31,7 @@ class MemberServiceTest {
 	@Test
 	void findByIdOrThrow_whenMemberExists_returnsMember() {
 		Member member = Member.createForOnboarding("profile", "nick", SystemRole.USER);
-		when(memberRepository.findById(1L)).thenReturn(Optional.of(member));
+		when(memberJpaRepository.findById(1L)).thenReturn(Optional.of(member));
 
 		Member found = memberService.findByIdOrThrow(1L);
 
@@ -40,7 +40,7 @@ class MemberServiceTest {
 
 	@Test
 	void findByIdOrThrow_whenMissing_throwsUserNotFound() {
-		when(memberRepository.findById(10L)).thenReturn(Optional.empty());
+		when(memberJpaRepository.findById(10L)).thenReturn(Optional.empty());
 
 		BaseException ex = assertThrows(BaseException.class, () -> memberService.findByIdOrThrow(10L));
 		assertEquals(MemberErrorCode.MEMBER_NOT_FOUND.getCode(), ex.getCode());

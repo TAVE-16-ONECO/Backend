@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import com.oneco.backend.family.application.port.out.MemberLookupPort;
 import com.oneco.backend.member.domain.FamilyRole;
 import com.oneco.backend.member.domain.MemberId;
-import com.oneco.backend.member.domain.MemberRepository;
+import com.oneco.backend.member.infrastructure.persistence.MemberJpaRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -13,20 +13,20 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MemberLookupJpaAdapter implements MemberLookupPort {
 
-	private final MemberRepository memberRepository;
+	private final MemberJpaRepository memberJpaRepository;
 
 	@Override
 	public boolean exists(MemberId memberId) {
-		return memberRepository.existsById(memberId.getValue());
+		return memberJpaRepository.existsById(memberId.getValue());
 	}
 
 	@Override
 	public boolean isParent(MemberId memberId) {
-		return memberRepository.existsByIdAndFamilyRole(memberId.getValue(), FamilyRole.PARENT);
+		return memberJpaRepository.existsByIdAndFamilyRole(memberId.getValue(), FamilyRole.PARENT);
 	}
 
 	@Override
 	public boolean isChild(MemberId memberId) {
-		return memberRepository.existsByIdAndFamilyRole(memberId.getValue(), FamilyRole.CHILD);
+		return memberJpaRepository.existsByIdAndFamilyRole(memberId.getValue(), FamilyRole.CHILD);
 	}
 }
