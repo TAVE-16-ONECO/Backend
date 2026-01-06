@@ -33,7 +33,7 @@ public interface MissionJpaRepository extends JpaRepository<Mission, Long> {
 	@Query("SELECT m FROM Mission m " +
 		"WHERE m.status = :status " +
 		"AND m.period.endDate < :today")
-	public List<Mission> findAllOverdueMissions(
+	List<Mission> findAllOverdueMissions(
 		@Param("status") MissionStatus status,
 		@Param("today") LocalDate today
 	);
