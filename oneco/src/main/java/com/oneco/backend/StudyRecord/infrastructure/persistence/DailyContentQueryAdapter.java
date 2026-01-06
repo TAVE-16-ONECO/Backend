@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.oneco.backend.StudyRecord.application.dto.result.SubmitQuizSubmissionResult;
 import com.oneco.backend.StudyRecord.application.port.dto.DailyContentSnapshot;
 import com.oneco.backend.StudyRecord.application.port.dto.DailyContentWithQuizzesSnapshot;
 import com.oneco.backend.StudyRecord.application.port.dto.QuizSnapshot;
@@ -24,9 +25,9 @@ public class DailyContentQueryAdapter implements DailyContentQueryPort {
 
 	@Override
 	@Transactional(readOnly = true)
-	public DailyContentSnapshot loadDailyContentSnapshot(Long dailyContentId){
+	public DailyContentSnapshot loadDailyContentSnapshot(Long dailyContentId) {
 		DailyContent dc = dailyContentRepository.findById(dailyContentId)
-			.orElseThrow(()-> BaseException.from(StudyErrorCode.DAILY_CONTENT_NOT_FOUND));
+			.orElseThrow(() -> BaseException.from(StudyErrorCode.DAILY_CONTENT_NOT_FOUND));
 
 		return toDailyContentSnapshot(dc);
 
@@ -34,9 +35,25 @@ public class DailyContentQueryAdapter implements DailyContentQueryPort {
 
 	@Override
 	@Transactional(readOnly = true)
-	public DailyContentWithQuizzesSnapshot loadDailyContentWithQuizzes(Long dailyContentId){
+	public List<SubmitQuizSubmissionResult.NewsItemSummary> loadNewsItemSummary(Long dailyContentId) {
+		DailyContent dc = dailyContentRepository.findByIdWithNews(dailyContentId)
+			.orElseThrow(() -> BaseException.from(StudyErrorCode.DAILY_CONTENT_NOT_FOUND));
+
+		List<SubmitQuizSubmissionResult.NewsItemSummary> newsItems = dc.getNewsItems().stream()
+			.map(ni -> new SubmitQuizSubmissionResult.NewsItemSummary(
+				ni.getTitle(),
+				ni.getWebLink().getUrl(),
+				ni.getImageFile().getUrl()
+			))
+			.toList();
+		return newsItems;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public DailyContentWithQuizzesSnapshot loadDailyContentWithQuizzes(Long dailyContentId) {
 		DailyContent dc = dailyContentRepository.findByIdWithQuizzes(dailyContentId)
-			.orElseThrow(()-> BaseException.from(StudyErrorCode.DAILY_CONTENT_NOT_FOUND));
+			.orElseThrow(() -> BaseException.from(StudyErrorCode.DAILY_CONTENT_NOT_FOUND));
 
 		DailyContentSnapshot content = toDailyContentSnapshot(dc);
 		List<QuizSnapshot> quizzes = dc.getQuizzes().stream()
@@ -46,7 +63,7 @@ public class DailyContentQueryAdapter implements DailyContentQueryPort {
 		return new DailyContentWithQuizzesSnapshot(content, quizzes);
 	}
 
-	private DailyContentSnapshot toDailyContentSnapshot(DailyContent dc){
+	private DailyContentSnapshot toDailyContentSnapshot(DailyContent dc) {
 		return new DailyContentSnapshot(
 			dc.getId(),
 			dc.getCategoryId().getValue(),
@@ -59,7 +76,7 @@ public class DailyContentQueryAdapter implements DailyContentQueryPort {
 		);
 	}
 
-	private QuizSnapshot toQuizSnapshot(Quiz quiz){
+	private QuizSnapshot toQuizSnapshot(Quiz quiz) {
 		return new QuizSnapshot(
 			quiz.getId(),
 			quiz.getQuestion(),

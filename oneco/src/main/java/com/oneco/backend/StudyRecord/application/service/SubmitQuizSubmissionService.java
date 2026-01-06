@@ -15,6 +15,7 @@ import com.oneco.backend.StudyRecord.application.dto.result.AttemptSummary;
 import com.oneco.backend.StudyRecord.application.dto.result.SubmitQuizSubmissionResult;
 import com.oneco.backend.StudyRecord.application.port.dto.QuizForGrading;
 import com.oneco.backend.StudyRecord.application.port.in.SubmitQuizSubmissionUseCase;
+import com.oneco.backend.StudyRecord.application.port.out.DailyContentQueryPort;
 import com.oneco.backend.StudyRecord.application.port.out.QuizQueryPort;
 import com.oneco.backend.StudyRecord.application.port.out.StudyRecordPersistencePort;
 import com.oneco.backend.StudyRecord.domain.exception.constant.StudyErrorCode;
@@ -33,6 +34,7 @@ public class SubmitQuizSubmissionService implements SubmitQuizSubmissionUseCase 
 
 	private final StudyRecordPersistencePort studyRecordPersistencePort;
 	private final QuizQueryPort quizQueryPort;
+	private final DailyContentQueryPort dailyContentQueryPort;
 
 	@Override
 	@Transactional
@@ -173,6 +175,12 @@ public class SubmitQuizSubmissionService implements SubmitQuizSubmissionUseCase 
 		int remainingAttempts = 2 - attemptNo;
 		log.info("응답용 남은 시도 횟수 계산 완료: {}", remainingAttempts);
 
+		// 뉴스 데이터 가져오기
+		Long dailyContentId = sr.getDailyContentId().getValue();
+		List<SubmitQuizSubmissionResult.NewsItemSummary> newsItems = dailyContentQueryPort.loadNewsItemSummary(
+			dailyContentId);
+		log.info("뉴스 아이템 요약 조회 완료: {}", newsItems);
+
 		return new SubmitQuizSubmissionResult(
 			saved.getId(),
 			saved.getDailyContentId().getValue(),
@@ -186,6 +194,7 @@ public class SubmitQuizSubmissionService implements SubmitQuizSubmissionUseCase 
 				quizIds.size(),
 				updatedAttempt.getAttemptResult()
 			),
+			newsItems,
 			saved.getQuizProgressStatus(),
 			saved.isNewsUnlocked(),
 			remainingAttempts
