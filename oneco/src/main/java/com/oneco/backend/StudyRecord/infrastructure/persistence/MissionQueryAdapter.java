@@ -2,6 +2,7 @@ package com.oneco.backend.StudyRecord.infrastructure.persistence;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Component;
@@ -31,20 +32,19 @@ public class MissionQueryAdapter implements MissionQueryPort {
 	@Override
 	@Transactional(readOnly = true)
 	public Optional<ActiveMissionSnapshot> findActiveMission(Long memberId, Long categoryId) {
-		Optional<Mission> m = missionJpaRepository.findLatestActiveForRecipient(
+		List<Mission> m = missionJpaRepository.findLatestActive(
 			memberId,
 			categoryId,
 			MissionStatus.IN_PROGRESS
 		);
-
 		// 2) 없으면 empty
 		if (m.isEmpty()) {
 			return Optional.empty();
 		}
 
-		Mission mission = m.get();
+		Mission mission = m.get(0);
 
-		// 3) openedDaySequence 계산 (도메인 메서드 사용 권장)
+		// 3) openedDaySequence 계산
 		LocalDate today = LocalDate.now(KST);
 		int openedDaySequence = mission.getCurrentOpenedDaySequence(today);
 
