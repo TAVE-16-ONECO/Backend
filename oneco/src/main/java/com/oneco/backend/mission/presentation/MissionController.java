@@ -44,15 +44,16 @@ public class MissionController {
 	private final ApproveMissionUseCase approveMissionUseCase;
 	private final MissionReadService missionReadService;
 
-	@GetMapping("/health")
-	public String healthCheck() {
-		return "미션 서비스 정상 작동 중";
-	}
-
 	@PostMapping
 	@Operation(
-		summary = "미션 생성",
-		description = "가족과 카테고리, 기간, 보상 정보를 입력해 미션을 생성한다."
+		summary = "	회원이 미션을 생성한다.",
+		description = """
+			- 미션 생성 요청을 처리한다.
+			- 미션 생성 시 가족 구성원 중 한명을 수신자로 지정한다.
+			- 생성된 미션은 수신자에게 할당된다.
+			- 요청자는 미션의 세부 내용을 포함하여 미션을 생성할 수 있다.
+			- 생성된 미션의 상태는 '승인요청' 상태로 시작된다.
+			"""
 	)
 	@ApiResponses({
 		@ApiResponse(responseCode = "200", description = "미션 생성 성공")
@@ -69,8 +70,13 @@ public class MissionController {
 
 	@PostMapping("/{missionId}/approval")
 	@Operation(
-		summary = "미션 승인/거절",
-		description = "수신자(recipient)가 미션 승인 요청을 수락하거나 거절한다."
+		summary = "회원이 미션 승인/거절 처리한다.",
+		description = """
+			- 미션 승인 또는 거절 요청을 처리한다.
+			- 미션 수신자는 미션을 승인하거나 거절할 수 있다.
+			- 승인 시 미션 상태는 '진행중'으로 변경된다.
+			- 거절 시 미션 상태는 '거절됨'으로 변경된다.
+			"""
 	)
 	@ApiResponses({
 		@ApiResponse(responseCode = "200", description = "미션 승인/거절 처리 성공")
@@ -85,15 +91,16 @@ public class MissionController {
 		return ResponseEntity.ok(DataResponse.from(approveMissionUseCase.decide(command)));
 	}
 
-	// ==============================
-	// 미션 조회 API(커서 기반 페이징)
-	// ==============================
-
-	// 진행중인 미션 조회 API(커서 기반 페이징)
 	@GetMapping("/in-progress")
 	@Operation(
-		summary = "진행중인 미션 조회",
-		description = "사용자가 진행중인 미션 목록을 조회한다. 커서(lastId) 쿼리 파라미터로 이어서 조회할 수 있다."
+		summary = "회원의 진행중인 미션을 조회한다.[커서 기반 페이징]",
+		description = """
+			- 사용자의 진행중인 미션 목록을 조회한다.
+			- 진행중인 미션은 승인 대기, 진행중 상태를 포함한다
+			- 커서(lastId) 쿼리 파라미터로 이어서 조회할 수 있다.
+			- 크기(size) 쿼리 파라미터로 한 번에 조회할 개수를 지정할 수 있다.
+			- size의 기본 값은 5이며, size 파라미터를 생략하면 기본값이 적용된다.
+			- LastId는 생략할 수 있다. 생략 시 가장 최신의 진행중인 미션부터 조회를 시작한다.(초기 요청)"""
 	)
 	@ApiResponses({
 		@ApiResponse(responseCode = "200", description = "진행중인 미션 조회 성공")
@@ -110,8 +117,14 @@ public class MissionController {
 
 	@GetMapping("/finished")
 	@Operation(
-		summary = "종료된 미션 조회",
-		description = "사용자가 종료한 미션 목록을 조회한다. 커서(lastId) 쿼리 파라미터로 이어서 조회할 수 있다."
+		summary = "회원의 종료된 미션을 조회한다.[커서 기반 페이징]",
+		description = """
+			- 사용자의 종료된 미션 목록을 조회한다.
+			- 종료된 미션은 승인 거절, 미션 완료/실패, 보상 요청, 보상 수령 상태를 포함한다.
+			- 커서(lastId) 쿼리 파라미터로 이어서 조회할 수 있다.
+			- 크기(size) 쿼리 파라미터로 한 번에 조회할 개수를 지정할 수 있다.
+			- size의 기본 값은 5이며, size 파라미터를 생략하면 기본값이 적용된다.
+			- LastId는 생략할 수 있다. 생략 시 가장 최신의 종료된 미션부터 조회를 시작한다.(초기 요청)"""
 	)
 	@ApiResponses({
 		@ApiResponse(responseCode = "200", description = "종료된 미션 조회 성공")
@@ -126,17 +139,16 @@ public class MissionController {
 		return ResponseEntity.ok(DataResponse.from(response));
 	}
 
-	// 미션 생성 OK
-	// 미션 승인/ 거절 OK
-	// 미션 진행중 -> 완료 전환은 API 없음, StudyRecord 도메인에서 (MissionStatusChange을 주입) 에서 처리한다.
-	// 미션 진행중 -> 실패 전환(조기 실패)은 API 없음, StudyRecord 도메인에서 (MissionStatusChange을 주입) 에서 처리한다.
-	// 미션 진행중 -> 실패 전환(기간 만료)는 API 없음, Mission 도메인에서 MissionBatchService(스케줄러)로 처리한다.
-	// 미션 삭제 API는 당장은 없음(미션 기록 보존을 위해 삭제 기능은 추후에 별도로 논의)
-
-	// 나의 미션 개수
-	// 쿼리 파라미터로 필터링 기능을 제공한다.
-	// API 요청 예시 - 전체 미션 개수: /api/missions/me/count
 	@GetMapping("me/count")
+	@Operation(,
+		summary = "회원의 미션 개수를 조회한다.",
+		description = """
+			- 회원의 미션 개수를 상태별로 조회한다.
+			- 진행중인 미션, 종료된 미션, 미션 합계 개수를 반환한다."""
+	)
+	@ApiResponses({
+		@ApiResponse(responseCode = "200", description = "미션 개수 조회 성공")
+	})
 	public ResponseEntity<DataResponse<MissionCountResponse>> getMyMissionCount(
 		@Parameter(hidden = true) @AuthenticationPrincipal JwtPrincipal principal
 	) {
