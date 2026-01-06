@@ -20,4 +20,12 @@ public interface DailyContentJpaRepository extends JpaRepository<DailyContent, L
 		where dc.id = :id
 		""")
 	Optional<DailyContent> findByIdWithQuizzes(@Param("id") Long id);
+
+	@Query("""
+			select distinct dc
+			from DailyContent  dc
+			left join fetch dc.newsItems n
+			where dc.id = :id
+		""")
+	Optional<DailyContent> findByIdWithNews(@Param("id") Long id);
 }
