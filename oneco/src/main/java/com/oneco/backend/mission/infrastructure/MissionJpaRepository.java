@@ -19,12 +19,12 @@ public interface MissionJpaRepository extends JpaRepository<Mission, Long> {
 
 	@Query("""
 		select m from Mission m
-		where m.recipientId.value = :memberId
+		where (m.recipientId.value = :memberId OR m.requesterId.value = :memberId)
 		  and m.categoryId.value = :categoryId
 		  and m.status = :status
 		order by m.createdAt desc
 		""")
-	Optional<Mission> findLatestActiveForRecipient(
+	List<Mission> findLatestActive(
 		@Param("memberId") Long memberId,
 		@Param("categoryId") Long categoryId,
 		@Param("status") MissionStatus status
@@ -33,7 +33,7 @@ public interface MissionJpaRepository extends JpaRepository<Mission, Long> {
 	@Query("SELECT m FROM Mission m " +
 		"WHERE m.status = :status " +
 		"AND m.period.endDate < :today")
-	public List<Mission> findAllOverdueMissions(
+	List<Mission> findAllOverdueMissions(
 		@Param("status") MissionStatus status,
 		@Param("today") LocalDate today
 	);
