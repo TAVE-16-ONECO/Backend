@@ -32,4 +32,7 @@ public interface MissionPersistencePort {
 
 	// 가족관계를 기반으로 주어진 상태 목록의 미션 개수를 조회한다.
 	long countMissionsByFamilyRelationAndStatuses(FamilyRelationId relationId, List<MissionStatus> statuses);
+
+	// 가족관계와 진행중인 상태의 미션 존재 여부를 확인한다.
+	boolean existsByFamilyRelationAndInProgressStatus(FamilyRelationId relationId, List<MissionStatus> statuses);
 }

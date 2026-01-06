@@ -19,10 +19,13 @@ import com.oneco.backend.family.application.dto.result.FamilyRelationResult;
 import com.oneco.backend.family.application.dto.result.IssueInvitationResult;
 import com.oneco.backend.family.application.port.in.AcceptInvitationUseCase;
 import com.oneco.backend.family.application.port.in.DisconnectFamilyRelationUseCase;
+import com.oneco.backend.family.application.port.in.ExistsFamilyRelationUseCase;
 import com.oneco.backend.family.application.port.in.IssueInvitationUseCase;
 import com.oneco.backend.family.presentation.request.AcceptInvitationRequest;
+import com.oneco.backend.family.presentation.response.FamilyRelationExistsResponse;
 import com.oneco.backend.global.response.DataResponse;
 import com.oneco.backend.global.security.jwt.JwtPrincipal;
+import com.oneco.backend.member.domain.MemberId;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -41,6 +44,7 @@ public class FamilyRelationController {
 	private final DisconnectFamilyRelationUseCase disconnectUseCase;
 	private final IssueInvitationUseCase issueInvitationUseCase;
 	private final AcceptInvitationUseCase acceptInvitationUseCase;
+	private final ExistsFamilyRelationUseCase existsFamilyRelationUseCase;
 
 	@GetMapping("/invitations/code")
 	@Operation(
@@ -112,4 +116,22 @@ public class FamilyRelationController {
 		return ResponseEntity.ok(DataResponse.from(disconnectUseCase.disconnect(command)));
 	}
 
+	@GetMapping("/exists")
+	@Operation(
+		summary = "가족 관계 존재 여부 확인",
+		description = "현재 로그인한 사용자가 가족 관계를 맺고 있는지 여부를 반환한다."
+	)
+	@ApiResponses({
+		@ApiResponse(responseCode = "200", description = "가족 관계 존재 여부 반환")
+	})
+	public ResponseEntity<DataResponse<FamilyRelationExistsResponse>> existsFamilyRelation(
+		@Parameter(hidden = true)
+		@AuthenticationPrincipal JwtPrincipal principal
+	) {
+		// 현재 로그인한 사용자의 가족 관계 존재 여부 확인
+		FamilyRelationExistsResponse exists = existsFamilyRelationUseCase.existsFamilyRelation(
+			MemberId.of(principal.memberId())
+		);
+		return ResponseEntity.ok(DataResponse.from(exists));
+	}
 }

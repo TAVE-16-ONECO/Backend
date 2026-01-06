@@ -87,4 +87,9 @@ public class MissionPersistenceAdapter implements MissionPersistencePort {
 	public long countMissionsByFamilyRelationAndStatuses(FamilyRelationId relationId, List<MissionStatus> statuses) {
 		return repository.countByFamilyRelationIdValueAndStatusIn(relationId.getValue(), statuses);
 	}
+
+	@Override
+	public boolean existsByFamilyRelationAndInProgressStatus(FamilyRelationId relationId, List<MissionStatus> statuses) {
+		return repository.existsByFamilyRelationIdValueAndStatusIn(relationId.getValue(), statuses);
+	}
 }
