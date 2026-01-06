@@ -137,9 +137,10 @@ public class FamilyRelationController {
 		@AuthenticationPrincipal JwtPrincipal principal
 	) {
 		// 현재 로그인한 사용자의 가족 관계 존재 여부 확인
-		FamilyRelationExistsResponse exists = existsFamilyRelationUseCase.existsFamilyRelation(
-			MemberId.of(principal.memberId())
+		FamilyRelationExistsResponse response = FamilyRelationExistsResponse.of(
+			existsFamilyRelationUseCase.existsFamilyRelation(MemberId.of(principal.memberId()))
 		);
-		return ResponseEntity.ok(DataResponse.from(exists));
+
+		return ResponseEntity.ok(DataResponse.from(response));
 	}
 }

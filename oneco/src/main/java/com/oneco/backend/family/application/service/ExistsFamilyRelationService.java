@@ -17,7 +17,7 @@ public class ExistsFamilyRelationService implements ExistsFamilyRelationUseCase 
 
 	// 회원의 가족 관계 존재 여부 확인 구현
 	@Override
-	public FamilyRelationExistsResponse existsFamilyRelation(MemberId memberId) {
-		return new FamilyRelationExistsResponse(relationPort.existsByMemberId(memberId));
+	public boolean existsFamilyRelation(MemberId memberId) {
+		return relationPort.existsByMemberId(memberId);
 	}
 }
