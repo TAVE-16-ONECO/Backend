@@ -14,7 +14,7 @@ import com.oneco.backend.global.exception.BaseException;
 import com.oneco.backend.global.exception.constant.GlobalErrorCode;
 import com.oneco.backend.global.security.jwt.JwtTokenProvider;
 import com.oneco.backend.member.domain.Member;
-import com.oneco.backend.member.domain.MemberRepository;
+import com.oneco.backend.member.infrastructure.persistence.MemberJpaRepository;
 import com.oneco.backend.member.domain.MemberStatus;
 import com.oneco.backend.member.domain.SystemRole;
 
@@ -30,7 +30,7 @@ public class AuthService {
 	private final KakaoOidcService kakaoOidcService;
 
 	private final SocialAccountRepository socialAccountRepository;
-	private final MemberRepository memberRepository;
+	private final MemberJpaRepository memberJpaRepository;
 
 	private final JwtTokenProvider jwtTokenProvider;
 
@@ -75,7 +75,7 @@ public class AuthService {
 				//       -> MemberStatus.ONBOARDING 상태로 변경 (따로 ttl은 안둠)
 				Member member = Member.createForOnboarding(claims.profileImageUrl(), claims.nickname(),
 					SystemRole.USER); // 최소 필드만 채운 팩토리
-				memberRepository.save(member);
+				memberJpaRepository.save(member);
 
 				SocialAccount social = SocialAccount.create(
 					member,

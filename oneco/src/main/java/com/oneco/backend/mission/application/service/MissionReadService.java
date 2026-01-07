@@ -15,6 +15,7 @@ import com.oneco.backend.mission.application.port.out.MissionPersistencePort;
 import com.oneco.backend.mission.domain.mission.Mission;
 import com.oneco.backend.mission.domain.mission.MissionStatus;
 import com.oneco.backend.mission.presentation.response.MissionCountResponse;
+import com.oneco.backend.mission.presentation.response.MissionExistsResponse;
 import com.oneco.backend.mission.presentation.response.MissionResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -98,5 +99,20 @@ public class MissionReadService {
 		long finishedCount = missionPort.countMissionsByFamilyRelationAndStatuses(relationId, finishedStatuses);
 
 		return MissionCountResponse.of(totalCount, inProgressCount, finishedCount);
+	}
+
+	// 회원의 진행중인 미션이 있는지 확인하는 메서드
+	public MissionExistsResponse existsInProgressMission(MemberId memberId) {
+		// memberId로 가족 관계 조회
+		FamilyRelationId relationId = familyRelationPort.findRelationIdByMemberId(memberId);
+
+		// 진행중인 상태의 MissionStatus 리스트 생성
+		List<MissionStatus> inProgressStatuses = Arrays.stream(MissionStatus.values())
+			.filter(MissionStatus::isInProgress)
+			.toList();
+
+		// 진행중인 미션 존재 여부 확인
+		boolean exists = missionPort.existsByFamilyRelationAndInProgressStatus(relationId, inProgressStatuses);
+		return new MissionExistsResponse(exists);
 	}
 }

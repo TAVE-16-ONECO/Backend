@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.oneco.backend.global.response.CursorResponse;
@@ -24,6 +23,7 @@ import com.oneco.backend.mission.presentation.request.ApproveMissionRequest;
 import com.oneco.backend.mission.presentation.request.CreateMissionRequest;
 import com.oneco.backend.mission.presentation.request.MissionCursorRequest;
 import com.oneco.backend.mission.presentation.response.MissionCountResponse;
+import com.oneco.backend.mission.presentation.response.MissionExistsResponse;
 import com.oneco.backend.mission.presentation.response.MissionResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -126,22 +126,37 @@ public class MissionController {
 		return ResponseEntity.ok(DataResponse.from(response));
 	}
 
-	// 미션 생성 OK
-	// 미션 승인/ 거절 OK
-	// 미션 진행중 -> 완료 전환은 API 없음, StudyRecord 도메인에서 (MissionStatusChange을 주입) 에서 처리한다.
-	// 미션 진행중 -> 실패 전환(조기 실패)은 API 없음, StudyRecord 도메인에서 (MissionStatusChange을 주입) 에서 처리한다.
-	// 미션 진행중 -> 실패 전환(기간 만료)는 API 없음, Mission 도메인에서 MissionBatchService(스케줄러)로 처리한다.
-	// 미션 삭제 API는 당장은 없음(미션 기록 보존을 위해 삭제 기능은 추후에 별도로 논의)
-
-	// 나의 미션 개수
-	// 쿼리 파라미터로 필터링 기능을 제공한다.
-	// API 요청 예시 - 전체 미션 개수: /api/missions/me/count
 	@GetMapping("me/count")
+	@Operation(
+		summary = "내 미션 개수 조회",
+		description = "사용자의 미션 개수를 조회한다."
+	)
+	@ApiResponses({
+		@ApiResponse(responseCode = "200", description = "내 미션 개수 조회 성공")
+	})
 	public ResponseEntity<DataResponse<MissionCountResponse>> getMyMissionCount(
 		@Parameter(hidden = true) @AuthenticationPrincipal JwtPrincipal principal
 	) {
 		MemberId memberId = MemberId.of(principal.memberId());
 		MissionCountResponse response = missionReadService.countMyMissions(memberId);
+		return ResponseEntity.ok(DataResponse.from(response));
+	}
+
+	// 회원의 진행중인 미션이 있는지 확인하는 API
+	@GetMapping("/exists-in-progress")
+	@Operation(
+		summary = "진행중인 미션 존재 여부 확인",
+		description = "사용자가 진행중인 미션이 있는지 여부를 확인한다."
+	)
+	@ApiResponses({
+		@ApiResponse(responseCode = "200", description = "진행중인 미션 존재 여부 확인 성공")
+	})
+	public ResponseEntity<DataResponse<MissionExistsResponse>> existsInProgressMission(
+		@Parameter(hidden = true)
+		@AuthenticationPrincipal JwtPrincipal principal
+	) {
+		MemberId memberId = MemberId.of(principal.memberId());
+		MissionExistsResponse response = missionReadService.existsInProgressMission(memberId);
 		return ResponseEntity.ok(DataResponse.from(response));
 	}
 }
