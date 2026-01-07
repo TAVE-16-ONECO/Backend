@@ -15,13 +15,11 @@ public class CorsConfig {
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration config = new CorsConfiguration();
 		config.setAllowedOriginPatterns(List.of(
-			"https://one-co.netlify.app"
-		));
-
-		config.setAllowedOrigins(List.of(
+			"https://one-co.netlify.app",
 			"http://localhost:5173",
 			"https://*.netlify.app",
-			"https://*.vercel.app"
+			"https://*.vercel.app",
+			"https://oneco.io.kr"
 		));
 
 		config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
