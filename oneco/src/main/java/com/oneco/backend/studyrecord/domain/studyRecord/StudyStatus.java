@@ -1,5 +1,6 @@
 package com.oneco.backend.StudyRecord.domain.studyRecord;
 
+@Deprecated
 /**
  * 학습 진행 상태(서버가 강제하는 상태 머신)
  * <p>
