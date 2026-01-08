@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.oneco.backend.global.response.CursorResponse;
@@ -140,7 +139,7 @@ public class MissionController {
 	}
 
 	@GetMapping("me/count")
-	@Operation(,
+	@Operation(
 		summary = "회원의 미션 개수를 조회한다.",
 		description = """
 			- 회원의 미션 개수를 상태별로 조회한다.
