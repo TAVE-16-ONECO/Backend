@@ -124,4 +124,7 @@ public interface MissionJpaRepository extends JpaRepository<Mission, Long> {
 	long countByFamilyRelationIdValue(Long value);
 
 	long countByFamilyRelationIdValueAndStatusIn(Long value, List<MissionStatus> statuses);
+
+	// 가족관계와 진행중인 상태의 미션 존재 여부를 확인한다.
+	boolean existsByFamilyRelationIdValueAndStatusIn(Long value, List<MissionStatus> statuses);
 }

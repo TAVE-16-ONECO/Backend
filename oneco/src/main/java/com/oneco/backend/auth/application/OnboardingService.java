@@ -9,10 +9,10 @@ import com.oneco.backend.auth.application.dto.TokensResponse;
 import com.oneco.backend.auth.domain.oauth.SocialAccount;
 import com.oneco.backend.auth.domain.oauth.SocialAccountRepository;
 import com.oneco.backend.global.exception.BaseException;
+import com.oneco.backend.member.application.service.MemberService;
 import com.oneco.backend.member.domain.exception.constant.MemberErrorCode;
 import com.oneco.backend.global.security.jwt.JwtClaimExtractor;
 import com.oneco.backend.global.security.jwt.JwtTokenProvider;
-import com.oneco.backend.member.application.MemberService;
 import com.oneco.backend.member.domain.Member;
 
 import io.jsonwebtoken.Claims;

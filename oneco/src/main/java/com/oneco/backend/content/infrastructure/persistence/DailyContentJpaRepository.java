@@ -22,6 +22,14 @@ public interface DailyContentJpaRepository extends JpaRepository<DailyContent, L
 		""")
 	Optional<DailyContent> findByIdWithQuizzes(@Param("id") Long id);
 
+	@Query("""
+			select distinct dc
+			from DailyContent  dc
+			left join fetch dc.newsItems n
+			where dc.id = :id
+		""")
+	Optional<DailyContent> findByIdWithNews(@Param("id") Long id);
+
 	// elapsedDays는 1부터 시작한다고 가정한다.
 	// 예: elapsedDays = 1 -> 첫째날, elapsedDays = 2 -> 둘째날
 	// daySequence도 1부터 시작한다.

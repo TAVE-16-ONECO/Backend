@@ -1,5 +1,7 @@
 package com.oneco.backend.StudyRecord.application.dto.result;
 
+import java.util.List;
+
 import com.oneco.backend.StudyRecord.domain.quizAttempt.AttemptResult;
 import com.oneco.backend.StudyRecord.domain.studyRecord.QuizProgressStatus;
 
@@ -28,11 +30,18 @@ public record SubmitQuizSubmissionResult(
 
 	AttemptSummary attemptSummary,
 	GradingSummary grading,
-
+	List<NewsItemSummary> newsItems,
 	QuizProgressStatus quizProgressStatus,
 	boolean newsUnlocked,
 	int remainingAttempts
 ) {
+	public record NewsItemSummary(
+		String title,
+		String url,
+		String imageUrl
+	) {
+	}
+
 	public record GradingSummary(
 		int correctCount,
 		int totalCount,
