@@ -46,7 +46,7 @@ public class MissionController {
 
 	@PostMapping
 	@Operation(
-		summary = "	회원이 미션을 생성한다.",
+		summary = "회원이 미션을 생성한다.",
 		description = """
 			- 미션 생성 요청을 처리한다.
 			- 미션 생성 시 가족 구성원 중 한명을 수신자로 지정한다.

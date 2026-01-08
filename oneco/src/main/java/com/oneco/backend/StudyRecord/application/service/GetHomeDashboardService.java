@@ -114,7 +114,7 @@ public class GetHomeDashboardService implements GetHomeDashboardUseCase {
 
 		// 3. today 기준 "오늘이 미션의 몇 번째 학습일인가(daySequence)" 계산
 		LocalDate today = LocalDate.now();
-		log.info("오늘 날짜 tody = {}", today);
+		log.info("오늘 날짜 today = {}", today);
 
 		// elapsedDays(시작한지 몇 번째 날인가) = 오늘에 해당하는 daySequence (1부터 시작)
 		log.info("미션 기간: startDate = {}, endDate = {}", mission.startDate(), mission.endDate());

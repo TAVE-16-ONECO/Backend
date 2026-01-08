@@ -12,7 +12,6 @@ import com.oneco.backend.mission.domain.exception.MissionErrorCode;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Component
 public final class MissionDateCalculator {
 
 	private MissionDateCalculator() {
@@ -25,8 +24,8 @@ public final class MissionDateCalculator {
 		LocalDate today
 	) {
 
-		log.info("@@@@@@@@@ openedDaySequenceExcludeWeekend 호출 startDate={}, endDate={}, today={}",
-			startDate, endDate, today + "@@@@@@@@@");
+		log.info("openedDaySequenceExcludeWeekend 호출 startDate={}, endDate={}, today={}",
+			startDate, endDate, today);
 
 		if (today == null) {
 			throw BaseException.from(MissionErrorCode.TODAY_DATE_CANNOT_BE_NULL);
@@ -67,7 +66,7 @@ public final class MissionDateCalculator {
 		}
 
 		log.info("평일 일수 weekdays={}", weekdays);
-		log.info("@@@@@@@@@ openedDaySequenceExcludeWeekend 호출 끝 @@@@@@@@@");
+		log.info("openedDaySequenceExcludeWeekend 호출 끝");
 		return (int)weekdays;
 
 	}

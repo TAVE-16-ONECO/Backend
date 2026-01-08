@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class HomeDashboardDailyContentReadAdapter implements HomeDashboardDailyContentReadPort {
 
-	public final DailyContentJpaRepository dailyContentJpaRepository;
+	private final DailyContentJpaRepository dailyContentJpaRepository;
 
 	@Override
 	public DailyContentResult findByCategoryIdAndDaySequence(Long categoryId, int elapsedDays) {
