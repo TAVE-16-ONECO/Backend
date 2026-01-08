@@ -2,10 +2,12 @@ package com.oneco.backend.StudyRecord.presentation;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.oneco.backend.StudyRecord.application.dto.command.StartQuizAttemptCommand;
@@ -14,17 +16,20 @@ import com.oneco.backend.StudyRecord.application.dto.command.SubmitQuizSubmissio
 import com.oneco.backend.StudyRecord.application.dto.result.StartQuizAttemptResult;
 import com.oneco.backend.StudyRecord.application.dto.result.StartStudyResult;
 import com.oneco.backend.StudyRecord.application.dto.result.SubmitQuizSubmissionResult;
+import com.oneco.backend.StudyRecord.application.port.in.GetHomeDashboardUseCase;
 import com.oneco.backend.StudyRecord.application.port.in.StartQuizAttemptUseCase;
 import com.oneco.backend.StudyRecord.application.port.in.StartStudyUseCase;
 import com.oneco.backend.StudyRecord.application.port.in.SubmitQuizSubmissionUseCase;
 import com.oneco.backend.global.response.DataResponse;
 import com.oneco.backend.global.security.jwt.JwtPrincipal;
+import com.oneco.backend.StudyRecord.presentation.response.HomeDashboardResponse;
+import com.oneco.backend.member.domain.MemberId;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -38,6 +43,7 @@ public class StudyRecordController {
 	private final StartStudyUseCase startStudyUseCase;
 	private final StartQuizAttemptUseCase startQuizAttemptUseCase;
 	private final SubmitQuizSubmissionUseCase submitQuizSubmissionUseCase;
+	private final GetHomeDashboardUseCase getHomeDashboardUseCase;
 
 	// 1) 마스터하기 (학습 시작)
 
@@ -67,15 +73,15 @@ public class StudyRecordController {
 				examples = @ExampleObject(
 					name = "요청 예시",
 					value = """
-                    {
-                      "dailyContentId": 123
-                    }
-                    """
+						{
+						  "dailyContentId": 123
+						}
+						"""
 				)
 			)
 		)
 		@RequestBody @Valid StartStudyCommand command
-	){
+	) {
 		StartStudyResult result = startStudyUseCase.start(command, principal.memberId());
 
 		return ResponseEntity.ok(DataResponse.from(result));
@@ -99,7 +105,7 @@ public class StudyRecordController {
 
 		@Parameter(description = "학습 기록 ID", example = "10", required = true)
 		@PathVariable @NotNull Long studyRecordId
-	){
+	) {
 		StartQuizAttemptCommand command = StartQuizAttemptCommand.with(studyRecordId);
 		StartQuizAttemptResult result = startQuizAttemptUseCase.start(command, principal.memberId());
 
@@ -133,7 +139,6 @@ public class StudyRecordController {
 		@Parameter(description = "학습 기록 ID", example = "10", required = true)
 		@PathVariable @NotNull Long studyRecordId,
 
-
 		@Parameter(description = "퀴즈 시도 ID", example = "5", required = true)
 		@PathVariable @NotNull Long attemptId,
 
@@ -144,23 +149,41 @@ public class StudyRecordController {
 				examples = @ExampleObject(
 					name = "요청 예시",
 					value = """
-                    {
-                            "answers": {
-						           "1001": 1,
-						           "1002": 0,
-						           "1003": 2
+						       {
+						               "answers": {
+						    "1001": 1,
+						    "1002": 0,
+						    "1003": 2
+						}
 						       }
-                    }
-                    """
+						"""
 				)
 			)
 		)
 		@Parameter(description = "퀴즈 제출 요청", required = true)
 		@RequestBody @Valid SubmitQuizSubmissionCommand command
-	){
+	) {
 		SubmitQuizSubmissionCommand commandWithPath = command.withPath(studyRecordId, attemptId);
 		SubmitQuizSubmissionResult result = submitQuizSubmissionUseCase.submit(commandWithPath, principal.memberId());
 
 		return ResponseEntity.ok(DataResponse.from(result));
 	}
+
+	@GetMapping("/dashboard")
+	@Operation(
+		summary = "홈 대시보드 조회",
+		description = "missionId가 없으면 최신 진행중 미션 기준, 있으면 해당 미션 기준으로 홈 대시보드를 조회합니다."
+	)
+	@ApiResponses
+	public ResponseEntity<DataResponse<HomeDashboardResponse>> getHomeDashboard(
+		@Parameter(hidden = true)
+		@AuthenticationPrincipal JwtPrincipal principal,
+		@RequestParam(required = false) Long missionId
+	) {
+		HomeDashboardResponse response = HomeDashboardResponse.from(
+			getHomeDashboardUseCase.getHomeDashboard(principal.memberId(), missionId)
+		);
+		return ResponseEntity.ok(DataResponse.from(response));
+	}
+
 }

@@ -2,9 +2,12 @@ package com.oneco.backend.mission.infrastructure;
 
 import org.springframework.stereotype.Component;
 
+import com.oneco.backend.category.domain.category.Category;
 import com.oneco.backend.category.domain.category.CategoryId;
 import com.oneco.backend.category.domain.category.MissionDays;
-
+import com.oneco.backend.category.domain.exception.constant.CategoryErrorCode;
+import com.oneco.backend.category.infrastructure.CategoryJpaRepository;
+import com.oneco.backend.global.exception.BaseException;
 import com.oneco.backend.mission.application.port.out.CategoryLookupPort;
 
 import lombok.RequiredArgsConstructor;
@@ -12,12 +15,16 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class CategoryLookupJpaAdapter implements CategoryLookupPort {
-	//private final CategoryRepository repository;
+
+	private final CategoryJpaRepository categoryJpaRepository;
 
 	@Override
 	public MissionDays getDefaultMissionDays(CategoryId categoryId) {
-		// TODO: CategoryRepository를 통해 기본 MissionDays를 조회하는 로직 구현
-		// return repository.findByCategoryId(categoryId).getDefaultMissionDays();
-		return MissionDays.of(10); // 임시로 10일 반환
+		return categoryJpaRepository.findById(categoryId.getValue())
+			.map(Category::getDefaultMissionDays)
+			.orElseThrow(() -> BaseException.from(
+				CategoryErrorCode.INVALID_CATEGORY_ID,
+				"Invalid categoryId: " + categoryId.getValue()
+			));
 	}
 }
