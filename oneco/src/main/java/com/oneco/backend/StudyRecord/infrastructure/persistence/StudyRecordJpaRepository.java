@@ -1,5 +1,6 @@
 package com.oneco.backend.StudyRecord.infrastructure.persistence;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,5 +21,15 @@ public interface StudyRecordJpaRepository extends JpaRepository<StudyRecord, Lon
 		""")
 	Optional<StudyRecord> findByIdWithAttempts(@Param("id") Long id);
 
+	@Query("""
+			select sr from StudyRecord sr
+			where sr.memberId.value = :memberId
+			and sr.missionId.value = :missionId
+			and sr.categoryId.value = :categoryId
+		""")
+	List<StudyRecord> findByMemberIdAndMissionIdAndCategoryId(
+		@Param("memberId") Long memberId,
+		@Param("missionId") Long missionId,
+		@Param("categoryId") Long categoryId);
 }
 
