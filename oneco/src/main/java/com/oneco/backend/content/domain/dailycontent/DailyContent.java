@@ -16,6 +16,7 @@ import com.oneco.backend.content.domain.quiz.QuestionOrder;
 import com.oneco.backend.content.domain.quiz.Quiz;
 import com.oneco.backend.content.domain.quiz.QuizOptions;
 import com.oneco.backend.content.infrastructure.converter.DaySequenceConverter;
+import com.oneco.backend.global.entity.BaseTimeEntity;
 import com.oneco.backend.global.exception.BaseException;
 
 import jakarta.persistence.AttributeOverride;
@@ -48,7 +49,7 @@ import lombok.NoArgsConstructor;
 		)
 	}
 )
-public class DailyContent {
+public class DailyContent extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
