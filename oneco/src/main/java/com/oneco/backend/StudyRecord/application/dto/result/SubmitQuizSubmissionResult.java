@@ -35,12 +35,7 @@ public record SubmitQuizSubmissionResult(
 	boolean newsUnlocked,
 	int remainingAttempts
 ) {
-	public record NewsItemSummary(
-		String title,
-		String url,
-		String imageUrl
-	) {
-	}
+
 
 	public record GradingSummary(
 		int correctCount,
