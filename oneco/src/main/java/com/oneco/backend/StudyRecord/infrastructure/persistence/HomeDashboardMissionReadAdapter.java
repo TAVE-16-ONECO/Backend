@@ -2,12 +2,15 @@ package com.oneco.backend.StudyRecord.infrastructure.persistence;
 
 import static com.oneco.backend.StudyRecord.application.port.dto.result.HomeDashboardResult.*;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
+import com.oneco.backend.StudyRecord.application.port.dto.result.HomeActiveMissionsResult;
 import com.oneco.backend.StudyRecord.application.port.out.HomeDashboardMissionReadPort;
+import com.oneco.backend.mission.domain.mission.MissionId;
 import com.oneco.backend.mission.domain.mission.MissionStatus;
 import com.oneco.backend.mission.infrastructure.MissionJpaRepository;
 
@@ -47,5 +50,17 @@ public class HomeDashboardMissionReadAdapter implements HomeDashboardMissionRead
 			mission.getPeriod().getStartDate(),
 			mission.getPeriod().getEndDate()
 		));
+	}
+
+	@Override
+	public List<HomeActiveMissionsResult> findActiveMissionsByMemberId(Long memberId) {
+		List<MissionId> activeMissionIds = repository.findLatestActive(
+				memberId,
+				MissionStatus.IN_PROGRESS
+			).stream()
+			.map(mission -> MissionId.of(mission.getId()))
+			.toList();
+
+		return List.of(HomeActiveMissionsResult.of((long)activeMissionIds.size(), activeMissionIds));
 	}
 }

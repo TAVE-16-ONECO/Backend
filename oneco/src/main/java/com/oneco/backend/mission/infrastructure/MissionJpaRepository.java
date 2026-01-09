@@ -31,7 +31,7 @@ public interface MissionJpaRepository extends JpaRepository<Mission, Long> {
 		@Param("status") MissionStatus status
 	);
 
-	// 최신 진행중인 미션 조회
+	// 최신 진행중인 미션들 조회
 	@Query("""
 		select m from Mission m
 		where (m.recipientId.value = :memberId OR m.requesterId.value = :memberId)
