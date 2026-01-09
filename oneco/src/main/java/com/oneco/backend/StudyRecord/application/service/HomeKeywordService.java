@@ -15,7 +15,7 @@ public class HomeKeywordService implements HomeKeywordUseCase {
 	private final HomeDashboardDailyContentReadPort dailyContentReadPort;
 
 	@Override
-	public HomeKeywordResult getKeyword(Long memberId, Long dailyContentId) {
-		return dailyContentReadPort.findKeywordByMemberIdAndDailyContentId(memberId, dailyContentId);
+	public HomeKeywordResult getKeyword(Long dailyContentId) {
+		return dailyContentReadPort.findKeywordByDailyContentId(dailyContentId);
 	}
 }

@@ -81,12 +81,10 @@ public class HomeController {
 		@ApiResponse(responseCode = "200", description = "오늘의 키워드 조회 성공")
 	})
 	public ResponseEntity<DataResponse<HomeKeywordResponse>> getKeyword(
-		@Parameter(hidden = true)
-		@AuthenticationPrincipal JwtPrincipal principal,
 		@RequestParam(required = false) Long dailyContentId
 	) {
 		HomeKeywordResponse response = HomeKeywordResponse.from(
-			homeKeywordUseCase.getKeyword(principal.memberId(), dailyContentId)
+			homeKeywordUseCase.getKeyword(dailyContentId)
 		);
 
 		return ResponseEntity.ok(DataResponse.from(response));

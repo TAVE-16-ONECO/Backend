@@ -14,5 +14,5 @@ public interface HomeDashboardDailyContentReadPort {
 	List<DailyContentResult> findAllByCategoryIdOrderByDaySequence(Long categoryId);
 
 	// 회원 ID와 DailyContent ID로 HomeKeyword 조회
-	HomeKeywordResult findKeywordByMemberIdAndDailyContentId(Long memberId, Long dailyContentId);
+	HomeKeywordResult findKeywordByDailyContentId(Long dailyContentId);
 }

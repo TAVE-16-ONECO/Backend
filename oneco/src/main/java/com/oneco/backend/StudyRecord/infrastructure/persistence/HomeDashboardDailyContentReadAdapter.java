@@ -43,7 +43,7 @@ public class HomeDashboardDailyContentReadAdapter implements HomeDashboardDailyC
 	}
 
 	@Override
-	public HomeKeywordResult findKeywordByMemberIdAndDailyContentId(Long memberId, Long dailyContentId) {
+	public HomeKeywordResult findKeywordByDailyContentId(Long dailyContentId) {
 		DailyContent dailyContent = dailyContentJpaRepository.findById(dailyContentId)
 			.orElseThrow(() -> BaseException.from(StudyErrorCode.DAILY_CONTENT_NOT_FOUND));
 
