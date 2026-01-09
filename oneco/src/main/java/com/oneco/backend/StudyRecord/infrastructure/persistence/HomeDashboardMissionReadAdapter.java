@@ -53,14 +53,12 @@ public class HomeDashboardMissionReadAdapter implements HomeDashboardMissionRead
 	}
 
 	@Override
-	public List<HomeActiveMissionsResult> findActiveMissionsByMemberId(Long memberId) {
-		List<MissionId> activeMissionIds = repository.findLatestActive(
+	public List<MissionId> findActiveMissionsByMemberId(Long memberId) {
+		return repository.findLatestActive(
 				memberId,
 				MissionStatus.IN_PROGRESS
 			).stream()
 			.map(mission -> MissionId.of(mission.getId()))
 			.toList();
-
-		return List.of(HomeActiveMissionsResult.of((long)activeMissionIds.size(), activeMissionIds));
 	}
 }

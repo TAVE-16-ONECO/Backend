@@ -7,16 +7,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.oneco.backend.StudyRecord.application.port.dto.result.HomeActiveMissionsResult;
-import com.oneco.backend.StudyRecord.application.port.dto.result.HomeDashboardResult;
 import com.oneco.backend.StudyRecord.application.port.in.GetHomeDashboardUseCase;
 import com.oneco.backend.StudyRecord.application.port.in.HomeActiveMissionsUseCase;
 import com.oneco.backend.StudyRecord.presentation.response.HomeActiveMissionsResponse;
 import com.oneco.backend.StudyRecord.presentation.response.HomeDashboardResponse;
 import com.oneco.backend.global.response.DataResponse;
 import com.oneco.backend.global.security.jwt.JwtPrincipal;
-import com.oneco.backend.member.domain.MemberId;
-import com.oneco.backend.mission.domain.mission.MissionId;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -55,7 +51,7 @@ public class HomeController {
 
 	@GetMapping("/missions/active")
 	@Operation(
-		summary = "진행중인 미션 조회로, 홈 대시보드 API 조회하기 전에 호출합니다. ",
+		summary = "홈 대시보드 API 조회 전 진행중인 미션 조회",
 		description = "회원의 진행중인 미션 수와 진행중인 미션 ID 리스트를 조회합니다.\n" +
 		"진행중인 미션이 없을 경우, 미션 수는 0, 미션 ID 리스트는 빈 리스트로 반환됩니다."
 	)
