@@ -4,7 +4,7 @@ import com.oneco.backend.StudyRecord.application.port.dto.result.HomeKeywordResu
 
 public record HomeKeywordResponse(
 	Long dailyContentId,
-	String Keyword
+	String keyword
 ) {
 	public static HomeKeywordResponse from(HomeKeywordResult result) {
 		return new HomeKeywordResponse(
