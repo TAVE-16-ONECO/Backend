@@ -3,6 +3,7 @@ package com.oneco.backend.category.application.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.oneco.backend.category.application.dto.CategoriesResult;
 import com.oneco.backend.category.application.port.in.GetCategoriesUseCase;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class GetCategoriesService implements GetCategoriesUseCase {
 
 	private final CategoryPersistencePort categoryPersistencePort;
