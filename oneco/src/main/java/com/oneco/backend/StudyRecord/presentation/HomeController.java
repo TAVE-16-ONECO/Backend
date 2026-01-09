@@ -8,9 +8,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.oneco.backend.StudyRecord.application.port.in.GetHomeDashboardUseCase;
+import com.oneco.backend.StudyRecord.application.port.in.HomeKeywordUseCase;
 import com.oneco.backend.StudyRecord.application.port.in.HomeActiveMissionsUseCase;
 import com.oneco.backend.StudyRecord.presentation.response.HomeActiveMissionsResponse;
 import com.oneco.backend.StudyRecord.presentation.response.HomeDashboardResponse;
+import com.oneco.backend.StudyRecord.presentation.response.HomeKeywordResponse;
 import com.oneco.backend.global.response.DataResponse;
 import com.oneco.backend.global.security.jwt.JwtPrincipal;
 
@@ -29,6 +31,7 @@ public class HomeController {
 
 	private final GetHomeDashboardUseCase getHomeDashboardUseCase;
 	private final HomeActiveMissionsUseCase homeActiveMissionsUseCase;
+	private final HomeKeywordUseCase homeKeywordUseCase;
 
 	@GetMapping("/dashboard")
 	@Operation(
@@ -53,7 +56,7 @@ public class HomeController {
 	@Operation(
 		summary = "홈 대시보드 API 조회 전 진행중인 미션 조회",
 		description = "회원의 진행중인 미션 수와 진행중인 미션 ID 리스트를 조회합니다.\n" +
-		"진행중인 미션이 없을 경우, 미션 수는 0, 미션 ID 리스트는 빈 리스트로 반환됩니다."
+			"진행중인 미션이 없을 경우, 미션 수는 0, 미션 ID 리스트는 빈 리스트로 반환됩니다."
 	)
 	@ApiResponses({
 		@ApiResponse(responseCode = "200", description = "진행중인 미션 조회 성공")
@@ -65,6 +68,25 @@ public class HomeController {
 		HomeActiveMissionsResponse response = HomeActiveMissionsResponse.from(
 			homeActiveMissionsUseCase.getActiveMissions(principal.memberId())
 		);
+		return ResponseEntity.ok(DataResponse.from(response));
+	}
+
+	// dailyContentId로 오늘의 키워드 조회
+	@GetMapping("/keyword")
+	@Operation(
+		summary = "오늘의 키워드 조회",
+		description = "오늘의 키워드를 조회합니다."
+	)
+	@ApiResponses({
+		@ApiResponse(responseCode = "200", description = "오늘의 키워드 조회 성공")
+	})
+	public ResponseEntity<DataResponse<HomeKeywordResponse>> getKeyword(
+		@RequestParam(required = false) Long dailyContentId
+	) {
+		HomeKeywordResponse response = HomeKeywordResponse.from(
+			homeKeywordUseCase.getKeyword(dailyContentId)
+		);
+
 		return ResponseEntity.ok(DataResponse.from(response));
 	}
 }
