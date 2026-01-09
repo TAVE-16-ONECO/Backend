@@ -2,6 +2,7 @@ package com.oneco.backend.StudyRecord.application.port.out;
 
 import java.util.List;
 
+import com.oneco.backend.StudyRecord.application.dto.result.NewsItemSummary;
 import com.oneco.backend.StudyRecord.application.dto.result.SubmitQuizSubmissionResult;
 import com.oneco.backend.StudyRecord.application.port.dto.DailyContentSnapshot;
 import com.oneco.backend.StudyRecord.application.port.dto.DailyContentWithQuizzesSnapshot;
@@ -21,6 +22,6 @@ public interface DailyContentQueryPort {
 	 */
 	DailyContentWithQuizzesSnapshot loadDailyContentWithQuizzes(Long dailyContentId);
 
-	List<SubmitQuizSubmissionResult.NewsItemSummary> loadNewsItemSummary(Long dailyContentId);
+	List<NewsItemSummary> loadNewsItemSummary(Long dailyContentId);
 
 }
