@@ -60,7 +60,7 @@ public class OnboardingService {
 		}
 		member.completeOnboarding(request.familyRole());
 
-		String access = jwtTokenProvider.createAccessToken(memberId, "ROLE_USER");
+		String access = jwtTokenProvider.createAccessToken(memberId, request.familyRole().name());
 		// redis 관리 정책 세우기
 		String refresh = jwtTokenProvider.createRefreshToken(memberId);
 
