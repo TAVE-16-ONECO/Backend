@@ -24,7 +24,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -67,15 +67,15 @@ public class StudyRecordController {
 				examples = @ExampleObject(
 					name = "요청 예시",
 					value = """
-                    {
-                      "dailyContentId": 123
-                    }
-                    """
+						{
+						  "dailyContentId": 123
+						}
+						"""
 				)
 			)
 		)
 		@RequestBody @Valid StartStudyCommand command
-	){
+	) {
 		StartStudyResult result = startStudyUseCase.start(command, principal.memberId());
 
 		return ResponseEntity.ok(DataResponse.from(result));
@@ -99,7 +99,7 @@ public class StudyRecordController {
 
 		@Parameter(description = "학습 기록 ID", example = "10", required = true)
 		@PathVariable @NotNull Long studyRecordId
-	){
+	) {
 		StartQuizAttemptCommand command = StartQuizAttemptCommand.with(studyRecordId);
 		StartQuizAttemptResult result = startQuizAttemptUseCase.start(command, principal.memberId());
 
@@ -133,7 +133,6 @@ public class StudyRecordController {
 		@Parameter(description = "학습 기록 ID", example = "10", required = true)
 		@PathVariable @NotNull Long studyRecordId,
 
-
 		@Parameter(description = "퀴즈 시도 ID", example = "5", required = true)
 		@PathVariable @NotNull Long attemptId,
 
@@ -144,23 +143,24 @@ public class StudyRecordController {
 				examples = @ExampleObject(
 					name = "요청 예시",
 					value = """
-                    {
-                            "answers": {
-						           "1001": 1,
-						           "1002": 0,
-						           "1003": 2
+						       {
+						               "answers": {
+						    "1001": 1,
+						    "1002": 0,
+						    "1003": 2
+						}
 						       }
-                    }
-                    """
+						"""
 				)
 			)
 		)
 		@Parameter(description = "퀴즈 제출 요청", required = true)
 		@RequestBody @Valid SubmitQuizSubmissionCommand command
-	){
+	) {
 		SubmitQuizSubmissionCommand commandWithPath = command.withPath(studyRecordId, attemptId);
 		SubmitQuizSubmissionResult result = submitQuizSubmissionUseCase.submit(commandWithPath, principal.memberId());
 
 		return ResponseEntity.ok(DataResponse.from(result));
 	}
+
 }

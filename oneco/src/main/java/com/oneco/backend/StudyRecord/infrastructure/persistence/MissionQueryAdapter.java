@@ -32,7 +32,7 @@ public class MissionQueryAdapter implements MissionQueryPort {
 	@Override
 	@Transactional(readOnly = true)
 	public Optional<ActiveMissionSnapshot> findActiveMission(Long memberId, Long categoryId) {
-		List<Mission> m = missionJpaRepository.findLatestActive(
+		List<Mission> m = missionJpaRepository.findLatestActiveByCategory(
 			memberId,
 			categoryId,
 			MissionStatus.IN_PROGRESS

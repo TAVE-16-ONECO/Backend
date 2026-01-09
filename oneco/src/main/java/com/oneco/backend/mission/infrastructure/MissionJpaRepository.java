@@ -17,6 +17,7 @@ public interface MissionJpaRepository extends JpaRepository<Mission, Long> {
 	// FamilyRelationId와 CategoryId로 미션 존재 여부 확인
 	boolean existsByFamilyRelationIdValueAndCategoryIdValue(Long familyRelationId, Long categoryId);
 
+	// 특정 카테고리의 최신 진행중인 미션 조회
 	@Query("""
 		select m from Mission m
 		where (m.recipientId.value = :memberId OR m.requesterId.value = :memberId)
@@ -24,11 +25,50 @@ public interface MissionJpaRepository extends JpaRepository<Mission, Long> {
 		  and m.status = :status
 		order by m.createdAt desc
 		""")
-	List<Mission> findLatestActive(
+	List<Mission> findLatestActiveByCategory(
 		@Param("memberId") Long memberId,
 		@Param("categoryId") Long categoryId,
 		@Param("status") MissionStatus status
 	);
+
+	// 최신 진행중인 미션들 조회
+	@Query("""
+		select m from Mission m
+		where (m.recipientId.value = :memberId OR m.requesterId.value = :memberId)
+		  and m.status = :status
+		order by m.createdAt desc
+		""")
+	List<Mission> findLatestActive(
+		@Param("memberId") Long memberId,
+		@Param("status") MissionStatus status
+	);
+
+	// 최신 진행중인 미션 1개 조회
+	@Query("""
+		select m from Mission m
+		where (m.recipientId.value = :memberId OR m.requesterId.value = :memberId)
+		  and m.status = :status
+		order by m.createdAt desc
+		""")
+	List<Mission> findTop1LatestActive(
+		@Param("memberId") Long memberId,
+		@Param("status") MissionStatus status,
+		Pageable pageable
+	);
+
+	// 특정 미션 ID와 회원으로 진행중인 미션 조회
+	@Query("""
+		select m from Mission m
+		where (m.recipientId.value = :memberId OR m.requesterId.value = :memberId)
+		  and m.id = :missionId
+		  and m.status = :status
+		""")
+	Optional<Mission> findActiveByIdAndMember(
+		@Param("memberId") Long memberId,
+		@Param("missionId") Long missionId,
+		@Param("status") MissionStatus status
+	);
+
 
 	@Query("SELECT m FROM Mission m " +
 		"WHERE m.status = :status " +
