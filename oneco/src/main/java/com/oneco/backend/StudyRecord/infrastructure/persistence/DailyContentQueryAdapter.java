@@ -5,15 +5,16 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.oneco.backend.StudyRecord.application.dto.result.NewsItemSummary;
 import com.oneco.backend.StudyRecord.application.dto.result.SubmitQuizSubmissionResult;
 import com.oneco.backend.StudyRecord.application.port.dto.DailyContentSnapshot;
 import com.oneco.backend.StudyRecord.application.port.dto.DailyContentWithQuizzesSnapshot;
 import com.oneco.backend.StudyRecord.application.port.dto.QuizSnapshot;
 import com.oneco.backend.StudyRecord.application.port.out.DailyContentQueryPort;
 import com.oneco.backend.StudyRecord.domain.exception.constant.StudyErrorCode;
-import com.oneco.backend.content.infrastructure.persistence.DailyContentJpaRepository;
-import com.oneco.backend.content.domain.dailycontent.DailyContent;
-import com.oneco.backend.content.domain.quiz.Quiz;
+import com.oneco.backend.dailycontent.infrastructure.persistence.DailyContentJpaRepository;
+import com.oneco.backend.dailycontent.domain.dailycontent.DailyContent;
+import com.oneco.backend.dailycontent.domain.quiz.Quiz;
 import com.oneco.backend.global.exception.BaseException;
 
 import lombok.RequiredArgsConstructor;
@@ -35,12 +36,13 @@ public class DailyContentQueryAdapter implements DailyContentQueryPort {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<SubmitQuizSubmissionResult.NewsItemSummary> loadNewsItemSummary(Long dailyContentId) {
+	public List<NewsItemSummary> loadNewsItemSummary(Long dailyContentId) {
 		DailyContent dc = dailyContentRepository.findByIdWithNews(dailyContentId)
 			.orElseThrow(() -> BaseException.from(StudyErrorCode.DAILY_CONTENT_NOT_FOUND));
 
-		List<SubmitQuizSubmissionResult.NewsItemSummary> newsItems = dc.getNewsItems().stream()
-			.map(ni -> new SubmitQuizSubmissionResult.NewsItemSummary(
+		List<NewsItemSummary> newsItems = dc.getNewsItems().stream()
+			.map(ni -> new
+				NewsItemSummary(
 				ni.getTitle(),
 				ni.getWebLink().getUrl(),
 				ni.getImageFile().getUrl()

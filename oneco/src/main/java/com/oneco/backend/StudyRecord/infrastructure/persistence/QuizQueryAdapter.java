@@ -12,8 +12,8 @@ import com.oneco.backend.StudyRecord.application.dto.result.QuizView;
 import com.oneco.backend.StudyRecord.application.port.dto.QuizForGrading;
 import com.oneco.backend.StudyRecord.application.port.out.QuizQueryPort;
 import com.oneco.backend.StudyRecord.domain.exception.constant.StudyErrorCode;
-import com.oneco.backend.content.domain.quiz.Quiz;
-import com.oneco.backend.content.infrastructure.persistence.QuizJpaRepository;
+import com.oneco.backend.dailycontent.domain.quiz.Quiz;
+import com.oneco.backend.dailycontent.infrastructure.persistence.QuizJpaRepository;
 import com.oneco.backend.global.exception.BaseException;
 
 import lombok.RequiredArgsConstructor;
