@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.oneco.backend.StudyRecord.application.port.dto.result.HomeKeywordResult;
 import com.oneco.backend.StudyRecord.application.port.out.HomeDashboardDailyContentReadPort;
 import com.oneco.backend.content.domain.dailycontent.DailyContent;
 import com.oneco.backend.content.domain.dailycontent.DaySequence;
@@ -39,5 +40,13 @@ public class HomeDashboardDailyContentReadAdapter implements HomeDashboardDailyC
 			.stream()
 			.map(dc -> new DailyContentResult(dc.getId(), dc.getKeyword().getValue()))
 			.toList();
+	}
+
+	@Override
+	public HomeKeywordResult findKeywordByMemberIdAndDailyContentId(Long memberId, Long dailyContentId) {
+		DailyContent dailyContent = dailyContentJpaRepository.findById(dailyContentId)
+			.orElseThrow(() -> BaseException.from(StudyErrorCode.DAILY_CONTENT_NOT_FOUND));
+
+		return HomeKeywordResult.of(dailyContent.getId(), dailyContent.getKeyword());
 	}
 }
