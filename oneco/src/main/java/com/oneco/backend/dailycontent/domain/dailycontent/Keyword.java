@@ -29,6 +29,7 @@ public class Keyword {
 			throw BaseException.from(ContentErrorCode.KEYWORD_TOO_LONG,
 				"maxLength:" + MAX_LENGTH + ", actualLength:" + v.length());
 		}
+
 		this.value = v;
 	}
 
