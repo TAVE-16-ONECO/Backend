@@ -19,7 +19,7 @@ import com.oneco.backend.StudyRecord.application.port.out.HomeDashboardMissionRe
 import com.oneco.backend.StudyRecord.domain.studyRecord.StudyRecord;
 import com.oneco.backend.StudyRecord.infrastructure.persistence.StudyRecordJpaRepository;
 import com.oneco.backend.category.domain.exception.constant.CategoryErrorCode;
-import com.oneco.backend.content.domain.dailycontent.DailyContentId;
+import com.oneco.backend.dailycontent.domain.dailycontent.DailyContentId;
 import com.oneco.backend.global.exception.BaseException;
 import com.oneco.backend.mission.domain.exception.MissionErrorCode;
 import com.oneco.backend.mission.domain.mission.MissionDateCalculator;
