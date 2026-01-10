@@ -62,7 +62,7 @@ public class AuthService {
 				}
 
 				Long memberId = member.getId();
-				String access = jwtTokenProvider.createAccessToken(memberId, "ROLE_USER");
+				String access = jwtTokenProvider.createAccessToken(memberId, member.getFamilyRole().name());
 				String refresh = jwtTokenProvider.createRefreshToken(memberId);
 				return KakaoLoginResponse.existing(access, refresh);
 			})
