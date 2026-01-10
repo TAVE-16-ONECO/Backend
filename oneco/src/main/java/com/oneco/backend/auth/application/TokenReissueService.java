@@ -7,6 +7,9 @@ import com.oneco.backend.auth.application.dto.TokenReissueResponse;
 import com.oneco.backend.global.exception.BaseException;
 import com.oneco.backend.global.exception.constant.JwtErrorCode;
 import com.oneco.backend.global.security.jwt.JwtTokenProvider;
+import com.oneco.backend.member.domain.Member;
+import com.oneco.backend.member.domain.exception.constant.MemberErrorCode;
+import com.oneco.backend.member.infrastructure.persistence.MemberJpaRepository;
 
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +30,7 @@ public class TokenReissueService {
 	private final JwtTokenProvider jwtTokenProvider;
 	// 만약 실제 회원 상태 검증이 필요하면 DB 확인
 	// private final MemberJpaRepository memberRepository;
+	private final MemberJpaRepository memberRepository;
 
 	@Transactional(readOnly = true)
 	public TokenReissueResponse reissue(Claims refreshClaims) {
@@ -46,12 +50,13 @@ public class TokenReissueService {
 			throw BaseException.from(JwtErrorCode.INVALID_TOKEN);
 		}
 
-		// 만약 사용자 상태 검증할 시 사용( 탈퇴/정지/휴면 여부 확인 등)
-		// Member member = memberRepository.findById(memberId)
-		// 	.orElseThrow(()-> BaseException.from(MemberErrorCode.MEMBER_NOT_FOUND));
+		// FamilyRole 넣기 위해서
+		 Member member = memberRepository.findById(memberId)
+		 	.orElseThrow(()-> BaseException.from(MemberErrorCode.MEMBER_NOT_FOUND));
+
 
 		// 새 Access Token 발급
-		String newAccessToken = jwtTokenProvider.createAccessToken(memberId, "ROLE_USER");
+		String newAccessToken = jwtTokenProvider.createAccessToken(memberId, member.getFamilyRole().name());
 
 		return new TokenReissueResponse(newAccessToken);
 	}

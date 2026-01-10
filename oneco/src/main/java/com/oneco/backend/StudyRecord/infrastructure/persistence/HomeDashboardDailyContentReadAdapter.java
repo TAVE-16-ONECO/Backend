@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 
 import com.oneco.backend.StudyRecord.application.port.dto.result.HomeKeywordResult;
 import com.oneco.backend.StudyRecord.application.port.out.HomeDashboardDailyContentReadPort;
-import com.oneco.backend.content.domain.dailycontent.DailyContent;
-import com.oneco.backend.content.domain.dailycontent.DaySequence;
-import com.oneco.backend.content.infrastructure.persistence.DailyContentJpaRepository;
+import com.oneco.backend.dailycontent.domain.dailycontent.DailyContent;
+import com.oneco.backend.dailycontent.domain.dailycontent.DaySequence;
+import com.oneco.backend.dailycontent.infrastructure.persistence.DailyContentJpaRepository;
 import com.oneco.backend.StudyRecord.domain.exception.constant.StudyErrorCode;
 import com.oneco.backend.global.exception.BaseException;
 

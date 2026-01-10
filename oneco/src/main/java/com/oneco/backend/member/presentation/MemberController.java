@@ -16,7 +16,9 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/members")
 @RequiredArgsConstructor
@@ -25,7 +27,11 @@ public class MemberController {
 	private final MemberUseCase memberUseCase;
 
 	@GetMapping("/health")
-	public String healthCheck() {
+	public String healthCheck(
+		@AuthenticationPrincipal JwtPrincipal principal
+	) {
+		log.info("Member Service Health Check - Member ID: {}", principal.memberId());
+		log.info("Member FamilyRole: {}", principal.familyRole());
 		return "멤버 서비스 정상 작동 중";
 	}
 

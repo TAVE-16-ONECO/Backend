@@ -1,5 +1,6 @@
 package com.oneco.backend.StudyRecord.domain.studyRecord;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +11,8 @@ import com.oneco.backend.StudyRecord.domain.quizAttempt.CorrectCount;
 import com.oneco.backend.StudyRecord.domain.quizAttempt.QuizAttempt;
 import com.oneco.backend.StudyRecord.domain.exception.constant.StudyErrorCode;
 import com.oneco.backend.category.domain.category.CategoryId;
-import com.oneco.backend.content.domain.dailycontent.DailyContentId;
+import com.oneco.backend.dailycontent.domain.dailycontent.DailyContentId;
+import com.oneco.backend.global.entity.BaseTimeEntity;
 import com.oneco.backend.global.exception.BaseException;
 import com.oneco.backend.member.domain.MemberId;
 import com.oneco.backend.mission.domain.mission.MissionId;
@@ -25,6 +27,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
@@ -41,10 +44,14 @@ import lombok.NoArgsConstructor;
 	uniqueConstraints = {
 		// 같은 멤버가 같은 dailyContent에 대해 기록은 1개만
 		@UniqueConstraint(name = "uk_member_daily", columnNames = {"member_id", "daily_content_id"})
+	},
+	indexes = {
+		@Index(name ="idx_member_created_id",columnList = "member_id, created_at, id")
 	}
+
 )
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class StudyRecord {
+public class StudyRecord extends BaseTimeEntity {
 
 	private static final int MAX_ATTEMPTS = 2;
 	private static final int DEFAULT_RETRY = 1;
@@ -56,6 +63,12 @@ public class StudyRecord {
 	@Embedded
 	@AttributeOverride(name = "value", column = @Column(name = "mission_id", nullable = false))
 	private MissionId missionId;
+
+	@Column(name = "is_bookmarked", nullable = false)
+	private boolean bookmarked = false;
+
+	@Column(name="quiz_submitted_date", nullable = true)
+	private LocalDate quizSubmittedDate; // null = 아직 제출 안 함
 
 	@Embedded
 	@AttributeOverride(name = "value", column = @Column(name = "member_id", nullable = false))
@@ -181,6 +194,8 @@ public class StudyRecord {
 			return;
 		}
 
+		// 퀴즈 1번이라도 제출하면 날짜 기록
+		this.quizSubmittedDate = LocalDate.now();
 		// FAIL인 경우
 		if (attempt.getAttemptNo().isFirst()) {
 			//  1차 FAIL → 2차 기회 열어줌
@@ -190,6 +205,10 @@ public class StudyRecord {
 			quizProgressStatus = QuizProgressStatus.FAILED;
 			newsUnlocked = true;
 		}
+	}
+
+	public void setBookmarked(boolean bookmarked) {
+		this.bookmarked= bookmarked;
 	}
 
 	private QuizAttempt findAttemptOrThrow(Long attemptId) {

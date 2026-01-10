@@ -151,12 +151,13 @@ public class JwtTokenProvider {
 			throw BaseException.from(JwtErrorCode.INVALID_TOKEN);
 		}
 
-		JwtPrincipal principal = new JwtPrincipal(memberId, subject, "ACCESS");
+		String roleClaim = claims.get(CLAIM_ROLE, String.class);
+		String roleName = normalizeRoleName(roleClaim);
+		JwtPrincipal principal = new JwtPrincipal(memberId, subject, "ACCESS", roleName);
 
-		/**
-		 * 권한(Authorities) 구성
-		 */
-		List<SimpleGrantedAuthority> authorities = extractAuthorities(claims);
+		// 3) authorities 구성 (ROLE_PARENT)
+		List<SimpleGrantedAuthority> authorities =
+			Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + roleName));
 
 		// Authentication 생성 (credentials는 보통 null 처리(JWT는 이미 서명으로 신뢰성 확보)
 		// JWT는 무상태 기반 인증을 목표로 하는 경우가 많아 매 요청마다 UserDetailsService로 사용자 로딩을 강제할 필요가 없다.
@@ -167,25 +168,18 @@ public class JwtTokenProvider {
 		return new UsernamePasswordAuthenticationToken(principal, null, authorities);
 	}
 
-	// 권한 추출 로직
-	private List<SimpleGrantedAuthority> extractAuthorities(Claims claims) {
-		Object rolesObj = claims.get(CLAIM_ROLE);
 
-		String role = claims.get(CLAIM_ROLE, String.class);
-		if (role != null && !role.isBlank()) {
-			return Collections.singletonList(
-				new SimpleGrantedAuthority(normalizeRole(role))
-			);
+
+	/**
+	 * "ROLE_PARENT" / "PARENT" 둘 다 들어와도 "PARENT"로 통일
+	 */
+	private String normalizeRoleName(String role) {
+		if (role == null || role.isBlank()) return null;
+		String r = role.trim();
+		if (r.startsWith("ROLE_")) {
+			r = r.substring("ROLE_".length());
 		}
-
-		return Collections.emptyList();
+		return r.trim().toUpperCase(java.util.Locale.ROOT); // "PARENT" or "CHILD"
 	}
 
-	private String normalizeRole(String role) {
-		String trimmed = role.trim();
-		if (trimmed.startsWith("ROLE_")) {
-			return trimmed;
-		}
-		return "ROLE_" + trimmed;
-	}
 }
