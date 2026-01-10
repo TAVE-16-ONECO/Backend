@@ -124,6 +124,16 @@ public class SwaggerConfig {
 	}
 
 	@Bean
+	public GroupedOpenApi CategoryApi() {
+		return GroupedOpenApi.builder()
+			.group("Category")
+			.displayName("Category (카테고리)")
+			.packagesToScan("com.oneco.backend.category.presentation")
+			.pathsToMatch("/api/categories/**")
+			.build();
+	}
+
+	@Bean
 	public GroupedOpenApi HomeApi() {
 		return GroupedOpenApi.builder()
 			.group("Home")
