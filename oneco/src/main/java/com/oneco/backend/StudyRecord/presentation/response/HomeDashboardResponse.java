@@ -19,6 +19,7 @@ import com.oneco.backend.StudyRecord.application.port.dto.result.HomeDashboardRe
 public record HomeDashboardResponse(
 	// [Mission]
 	Long missionId,
+	String rewardTitle,
 	LocalDate startDate,
 	LocalDate endDate,
 
@@ -36,6 +37,7 @@ public record HomeDashboardResponse(
 		return new HomeDashboardResponse(
 			// [Mission]
 			result.missionResult().missionId(),
+			result.missionResult().rewardTitle(),
 			result.missionResult().startDate(),
 			result.missionResult().endDate(),
 
