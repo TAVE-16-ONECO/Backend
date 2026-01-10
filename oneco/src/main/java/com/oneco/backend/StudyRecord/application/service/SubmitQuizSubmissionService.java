@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.oneco.backend.StudyRecord.application.dto.command.SubmitQuizSubmissionCommand;
 import com.oneco.backend.StudyRecord.application.dto.result.AttemptSummary;
+import com.oneco.backend.StudyRecord.application.dto.result.NewsItemSummary;
 import com.oneco.backend.StudyRecord.application.dto.result.SubmitQuizSubmissionResult;
 import com.oneco.backend.StudyRecord.application.port.dto.QuizForGrading;
 import com.oneco.backend.StudyRecord.application.port.in.SubmitQuizSubmissionUseCase;
@@ -177,7 +178,7 @@ public class SubmitQuizSubmissionService implements SubmitQuizSubmissionUseCase 
 
 		// 뉴스 데이터 가져오기
 		Long dailyContentId = sr.getDailyContentId().getValue();
-		List<SubmitQuizSubmissionResult.NewsItemSummary> newsItems = dailyContentQueryPort.loadNewsItemSummary(
+		List<NewsItemSummary> newsItems = dailyContentQueryPort.loadNewsItemSummary(
 			dailyContentId);
 		log.info("뉴스 아이템 요약 조회 완료: {}", newsItems);
 

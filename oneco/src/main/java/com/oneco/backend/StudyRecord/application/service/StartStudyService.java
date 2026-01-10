@@ -16,7 +16,7 @@ import com.oneco.backend.StudyRecord.application.port.out.StudyRecordPersistence
 import com.oneco.backend.StudyRecord.domain.exception.constant.StudyErrorCode;
 import com.oneco.backend.StudyRecord.domain.studyRecord.StudyRecord;
 import com.oneco.backend.category.domain.category.CategoryId;
-import com.oneco.backend.content.domain.dailycontent.DailyContentId;
+import com.oneco.backend.dailycontent.domain.dailycontent.DailyContentId;
 import com.oneco.backend.global.exception.BaseException;
 import com.oneco.backend.member.domain.MemberId;
 import com.oneco.backend.mission.domain.mission.MissionId;
