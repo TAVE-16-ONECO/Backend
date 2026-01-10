@@ -123,6 +123,16 @@ public class SwaggerConfig {
 			.build();
 	}
 
+	@Bean
+	public GroupedOpenApi HomeApi() {
+		return GroupedOpenApi.builder()
+			.group("Home")
+			.displayName("Home (홈화면)")
+			.packagesToScan("com.oneco.backend.StudyRecord.presentation")
+			.pathsToMatch("/api/home/**")
+			.build();
+	}
+
 	// === 공통 에러 응답 자동 추가 ===
 	@Bean
 	public OperationCustomizer addGlobalResponses() {
