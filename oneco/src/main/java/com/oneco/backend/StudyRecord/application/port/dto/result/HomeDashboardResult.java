@@ -7,8 +7,9 @@ public record HomeDashboardResult(
 	// [Mission]
 	MissionResult missionResult,
 
-	// [경과 일수]
+	// [경과 일수, 진행률]
 	long elapsedDays,
+	long progressPercentage,
 
 	// [Category]
 	CategoryResult category,

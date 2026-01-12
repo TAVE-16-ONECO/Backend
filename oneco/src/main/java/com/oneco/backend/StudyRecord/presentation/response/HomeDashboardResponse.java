@@ -23,6 +23,10 @@ public record HomeDashboardResponse(
 	LocalDate startDate,
 	LocalDate endDate,
 
+	// [경과 일수, 진행률]
+	long elapsedDays,
+	long progressPercentage,
+
 	// [Category]
 	CategoryView category,
 
@@ -40,6 +44,10 @@ public record HomeDashboardResponse(
 			result.missionResult().rewardTitle(),
 			result.missionResult().startDate(),
 			result.missionResult().endDate(),
+
+			// [경과 일수, 진행률]
+			result.elapsedDays(),
+			result.progressPercentage(),
 
 			// [Category]
 			new CategoryView(
