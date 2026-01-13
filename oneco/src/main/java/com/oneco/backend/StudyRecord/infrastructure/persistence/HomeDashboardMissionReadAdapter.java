@@ -32,6 +32,7 @@ public class HomeDashboardMissionReadAdapter implements HomeDashboardMissionRead
 		).stream().findFirst().map(mission -> MissionResult.of(
 			mission.getId(),
 			mission.getCategoryId().getValue(),
+			mission.getReward().getTitle(),
 			mission.getPeriod().getStartDate(),
 			mission.getPeriod().getEndDate()
 		));
@@ -47,6 +48,7 @@ public class HomeDashboardMissionReadAdapter implements HomeDashboardMissionRead
 		).map(mission -> MissionResult.of(
 			mission.getId(),
 			mission.getCategoryId().getValue(),
+			mission.getReward().getTitle(),
 			mission.getPeriod().getStartDate(),
 			mission.getPeriod().getEndDate()
 		));
