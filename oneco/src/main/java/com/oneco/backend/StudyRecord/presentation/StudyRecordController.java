@@ -2,6 +2,7 @@ package com.oneco.backend.StudyRecord.presentation;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,11 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.oneco.backend.StudyRecord.application.dto.command.StartQuizAttemptCommand;
 import com.oneco.backend.StudyRecord.application.dto.command.StartStudyCommand;
 import com.oneco.backend.StudyRecord.application.dto.command.SubmitQuizSubmissionCommand;
+import com.oneco.backend.StudyRecord.application.dto.command.UpdateBookmarkCommand;
 import com.oneco.backend.StudyRecord.application.dto.result.StartQuizAttemptResult;
 import com.oneco.backend.StudyRecord.application.dto.result.StartStudyResult;
 import com.oneco.backend.StudyRecord.application.dto.result.SubmitQuizSubmissionResult;
 import com.oneco.backend.StudyRecord.application.port.in.StartQuizAttemptUseCase;
 import com.oneco.backend.StudyRecord.application.port.in.StartStudyUseCase;
+import com.oneco.backend.StudyRecord.application.port.in.StudyRecordBookmarkUseCase;
 import com.oneco.backend.StudyRecord.application.port.in.SubmitQuizSubmissionUseCase;
 import com.oneco.backend.global.response.DataResponse;
 import com.oneco.backend.global.security.jwt.JwtPrincipal;
@@ -24,7 +27,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -38,18 +40,18 @@ public class StudyRecordController {
 	private final StartStudyUseCase startStudyUseCase;
 	private final StartQuizAttemptUseCase startQuizAttemptUseCase;
 	private final SubmitQuizSubmissionUseCase submitQuizSubmissionUseCase;
-
+	private final StudyRecordBookmarkUseCase studyRecordBookmarkUseCase;
 	// 1) 마스터하기 (학습 시작)
 
 	/**
 	 * 요청 예시:
 	 * POST /api/study-records/start
 	 * Headers:
-	 *  Authorization: Bearer {JWT_TOKEN}
+	 * Authorization: Bearer {JWT_TOKEN}
 	 * Body:
 	 * {
-	 *  "dailyContentId": 123
-	 *  }
+	 * "dailyContentId": 123
+	 * }
 	 */
 	@Operation(
 		summary = "학습 시작(마스터하기)",
@@ -85,7 +87,7 @@ public class StudyRecordController {
 	 * 퀴즈 도전하기 요청 예시:
 	 * POST /api/study-records/{studyRecordId}/quiz-attempts
 	 * Headers:
-	 *  Authorization: Bearer {JWT_TOKEN}
+	 * Authorization: Bearer {JWT_TOKEN}
 	 */
 	//2) 퀴즈 도전하기(시도 생성)
 	@Operation(
@@ -110,14 +112,14 @@ public class StudyRecordController {
 	 * 퀴즈 제출하기 요청 예시:
 	 * POST /api/study-records/{studyRecordId}/quiz-attempts/{attemptId}/submissions
 	 * Headers:
-	 *  Authorization: Bearer {JWT_TOKEN}
+	 * Authorization: Bearer {JWT_TOKEN}
 	 * Body:
 	 * {
-	 *  "answers": {
-	 *       "1001": 1,
-	 *       "1002": 0,
-	 *       "1003": 2
-	 *   }
+	 * "answers": {
+	 * "1001": 1,
+	 * "1002": 0,
+	 * "1003": 2
+	 * }
 	 * }
 	 */
 	// 3) 퀴즈 제출하기
@@ -163,4 +165,28 @@ public class StudyRecordController {
 		return ResponseEntity.ok(DataResponse.from(result));
 	}
 
+	@Operation(summary = "공부 기록 북마크 설정", description = "자식 계정만 북마크를 설정할 수 있다.")
+	@PatchMapping("/{studyRecordId}/bookmark")
+	public ResponseEntity<DataResponse<Void>> updateBookmarkStatus(
+		@PathVariable Long studyRecordId,
+		@AuthenticationPrincipal JwtPrincipal jwtPrincipal,
+		@io.swagger.v3.oas.annotations.parameters.RequestBody(
+			required = true,
+			description = "북마크 설정 요청",
+			content = @Content(
+				examples = @ExampleObject(
+					name = "요청 예시",
+					value = """
+						{
+						  "isBookmarked": true
+						}
+						"""
+				)
+			)
+		)
+		@RequestBody @Valid UpdateBookmarkCommand request
+	) {
+		studyRecordBookmarkUseCase.updateBookmark(request.withPath(studyRecordId), jwtPrincipal);
+		return ResponseEntity.ok(DataResponse.ok());
+	}
 }

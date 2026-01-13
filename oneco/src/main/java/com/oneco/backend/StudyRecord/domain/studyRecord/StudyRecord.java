@@ -46,7 +46,7 @@ import lombok.NoArgsConstructor;
 		@UniqueConstraint(name = "uk_member_daily", columnNames = {"member_id", "daily_content_id"})
 	},
 	indexes = {
-		@Index(name ="idx_member_created_id",columnList = "member_id, created_at, id")
+		@Index(name = "idx_member_submitted_id", columnList = "member_id, quiz_submitted_date, id")
 	}
 
 )
@@ -67,7 +67,7 @@ public class StudyRecord extends BaseTimeEntity {
 	@Column(name = "is_bookmarked", nullable = false)
 	private boolean bookmarked = false;
 
-	@Column(name="quiz_submitted_date", nullable = true)
+	@Column(name = "quiz_submitted_date", nullable = true)
 	private LocalDate quizSubmittedDate; // null = 아직 제출 안 함
 
 	@Embedded
@@ -207,8 +207,8 @@ public class StudyRecord extends BaseTimeEntity {
 		}
 	}
 
-	public void setBookmarked(boolean bookmarked) {
-		this.bookmarked= bookmarked;
+	public void updateBookmarked(boolean bookmarked) {
+		this.bookmarked = bookmarked;
 	}
 
 	private QuizAttempt findAttemptOrThrow(Long attemptId) {

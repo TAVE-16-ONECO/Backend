@@ -11,9 +11,16 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum StudyErrorCode implements ErrorCode {
 
+	INVALID_CURSOR(HttpStatus.BAD_REQUEST, "STUDY_400_8", "유효하지 않은 커서입니다."),
+	// 저장된 북마크 여부와 동일한 값으로 변경 요청하는 경우
+	BOOKMARK_STATUS_UNCHANGED(HttpStatus.CONFLICT, "STUDY_409_0", "북마크 상태가 이미 해당 값으로 설정되어 있습니다."),
+	PARENT_CANNOT_BOOKMARK(HttpStatus.FORBIDDEN, "STUDY_403_0", "부모는 북마크 기능을 사용할 수 없습니다."),
+	INVALID_CHILD_ACCESS(HttpStatus.FORBIDDEN, "STUDY_403_1", "해당 자녀의 학습 기록에 접근할 수 없습니다."),
+	CHILD_NOT_CONNECTED_TO_PARENT(HttpStatus.NOT_FOUND, "STUDY_404_1", "해당 자녀는 부모와 연결되어 있지 않습니다."),
+	NO_CONNECTED_CHILDREN(HttpStatus.NOT_FOUND, "STUDY_404_0", "연결된 자녀가 없습니다."),
 	STUDY_RECORD_NOT_FOUND(HttpStatus.NOT_FOUND, "STUDY_404", "학습 기록을 찾을 수 없습니다."),
 	STUDY_RECORD_FORBIDDEN(HttpStatus.FORBIDDEN, "STUDY_403", "해당 학습 기록에 접근할 수 없습니다."),
-
+	INVALID_FAMILY_ROLE(HttpStatus.BAD_REQUEST, "STUDY_400_0", "유효하지 않은 가족 역할입니다."),
 	// 상태 전이가 불가능한 상황들(예: 아직 퀴즈 시작도 안 했는데 제출, 이미 종료인데 제출 등)
 	INVALID_STUDY_STATUS(HttpStatus.CONFLICT, "STUDY_409_1", "현재 상태에서는 요청을 처리할 수 없습니다."),
 	QUIZ_ALREADY_STARTED(HttpStatus.CONFLICT, "STUDY_409_2", "이미 퀴즈가 시작되었습니다."),

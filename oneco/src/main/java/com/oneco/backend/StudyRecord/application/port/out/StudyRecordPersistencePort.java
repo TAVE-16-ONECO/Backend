@@ -1,6 +1,9 @@
 package com.oneco.backend.StudyRecord.application.port.out;
 
+import java.time.LocalDate;
 import java.util.Optional;
+
+import org.springframework.data.domain.Slice;
 
 import com.oneco.backend.StudyRecord.domain.studyRecord.StudyRecord;
 
@@ -14,4 +17,17 @@ public interface StudyRecordPersistencePort {
 	Optional<StudyRecord> findByIdWithAttempts(Long studyRecordId);
 
 	StudyRecord save(StudyRecord studyRecord);
+
+	Slice<StudyRecord> findByLastStudyRecordIdAndMemberId(
+		Long memberId,
+		Long lastStudyRecordId,
+		LocalDate lastSubmittedDate,
+		int size);
+
+	Slice<StudyRecord> findBookmarkedByLastStudyRecordIdAndMemberId(
+		Long memberId,
+		Long lastStudyRecordId,
+		LocalDate lastSubmittedDate,
+		int size
+	);
 }

@@ -1,6 +1,10 @@
 package com.oneco.backend.StudyRecord.infrastructure.persistence;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.oneco.backend.StudyRecord.application.dto.result.NewsItemSummary;
 import com.oneco.backend.StudyRecord.application.dto.result.SubmitQuizSubmissionResult;
 import com.oneco.backend.StudyRecord.application.port.dto.DailyContentSnapshot;
+import com.oneco.backend.StudyRecord.application.port.dto.DailyContentSummary;
 import com.oneco.backend.StudyRecord.application.port.dto.DailyContentWithQuizzesSnapshot;
 import com.oneco.backend.StudyRecord.application.port.dto.QuizSnapshot;
 import com.oneco.backend.StudyRecord.application.port.out.DailyContentQueryPort;
@@ -65,6 +70,32 @@ public class DailyContentQueryAdapter implements DailyContentQueryPort {
 		return new DailyContentWithQuizzesSnapshot(content, quizzes);
 	}
 
+	@Override
+	@Transactional(readOnly = true)
+	public Map<Long, DailyContentSummary> findDailyContentSummariesByIds(List<Long> dailyContentIds){
+		List<DailyContent> dailyContents = dailyContentRepository.findAllWithNewsItemsByIdIn(dailyContentIds);
+		Map<Long, DailyContentSummary> map = new HashMap<>();
+		for(DailyContent dc:dailyContents){
+			var desc = dc.getDescription();
+			List<NewsItemSummary> newsSummaries = dc.getNewsItems().stream()
+				.map(ni-> new NewsItemSummary(
+					ni.getTitle(),
+					ni.getWebLink() == null ? null : ni.getWebLink().getUrl(),
+					ni.getImageFile() == null ? null : ni.getImageFile().getUrl()
+				))
+			.toList();
+
+			map.put(dc.getId(), new DailyContentSummary(
+				dc.getId(),
+				desc.getTitle(),
+				desc.getSummary(),
+				newsSummaries
+			));
+		}
+
+		return map;
+	}
+
 	private DailyContentSnapshot toDailyContentSnapshot(DailyContent dc) {
 		return new DailyContentSnapshot(
 			dc.getId(),
@@ -86,4 +117,5 @@ public class DailyContentQueryAdapter implements DailyContentQueryPort {
 			quiz.getOptions().getOptionTexts()
 		);
 	}
+
 }
