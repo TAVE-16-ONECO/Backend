@@ -175,9 +175,15 @@ public class GetHomeDashboardService implements GetHomeDashboardUseCase {
 			statusByDailyContentId
 		);
 
+		// progressPercentage 계산
+		// record에서 quizProgressStatus가 COMPLETED인 수 / 전체 학습일 수
+		long progressPercentage = calculateProgressPercentage(dailyContents, statusByDailyContentId);
+		log.info("진행률 계산 완료. progressPercentage = {}%", progressPercentage);
+
 		return new HomeDashboardResult(
-			mission, //
+			mission,
 			elapsedDays,
+			progressPercentage,
 			category,
 			dailyContent,
 			calendarDateResults
@@ -231,5 +237,17 @@ public class GetHomeDashboardService implements GetHomeDashboardUseCase {
 		// 순회 끝~
 
 		return calendarDateResults;
+	}
+
+	// 진행률 계산 메서드
+	private long calculateProgressPercentage(
+		List<DailyContentResult> dailyContents,
+		Map<Long, StudyStatusResult> statusByDailyContentId
+	) {
+		long totalStudyDays = dailyContents.size();
+		long completedDays = statusByDailyContentId.values().stream()
+			.filter(status -> status == StudyStatusResult.COMPLETED)
+			.count();
+		return totalStudyDays == 0 ? 0 : (completedDays * 100) / totalStudyDays;
 	}
 }

@@ -7,8 +7,9 @@ public record HomeDashboardResult(
 	// [Mission]
 	MissionResult missionResult,
 
-	// [경과 일수]
+	// [경과 일수, 진행률]
 	long elapsedDays,
+	long progressPercentage,
 
 	// [Category]
 	CategoryResult category,
@@ -29,16 +30,18 @@ public record HomeDashboardResult(
 	public record MissionResult(
 		Long missionId,
 		Long categoryId,
+		String rewardTitle,
 		LocalDate startDate,
 		LocalDate endDate
 	) {
 		public static MissionResult of(
 			Long missionId,
 			Long categoryId,
+			String rewardTitle,
 			LocalDate startDate,
 			LocalDate endDate
 		) {
-			return new MissionResult(missionId, categoryId, startDate, endDate);
+			return new MissionResult(missionId, categoryId, rewardTitle, startDate, endDate);
 		}
 	}
 

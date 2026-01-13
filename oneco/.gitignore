@@ -75,3 +75,8 @@ bin/
 
 # Gradle wrapper jar은 예외로 포함
 !gradle/wrapper/gradle-wrapper.jar
+
+# ========================
+# Codex PR 자동화 관련
+document/
+# ========================
