@@ -47,8 +47,6 @@ public class StudyRecordBookmarkService implements StudyRecordBookmarkUseCase {
 			return;
 		}
 		studyRecord.updateBookmarked(command.isBookmarked());
-
-		return;
 	}
 
 

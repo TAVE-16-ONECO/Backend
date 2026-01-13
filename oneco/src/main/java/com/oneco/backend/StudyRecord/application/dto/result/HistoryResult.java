@@ -10,8 +10,6 @@ public record HistoryResult(
 	boolean hasNext,
 	Long nextId,
 	LocalDate nextSubmittedDate,
-
-
 	// 부모인 경우 자녀 멤버들 정보
 	List<MemberItem> memberItems,
 	// 히스토리 아이템들

@@ -18,7 +18,7 @@ public class FamilyRelationQueryAdapter implements FamilyRelationQueryPort {
 
 	private final FamilyRelationJpaRepository familyRelationJpaRepository;
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<MemberItem> findChildIdsByParentId(Long parentId) {
 		return familyRelationJpaRepository.findAllConnectedChildrenByParentId(parentId);
 	}
