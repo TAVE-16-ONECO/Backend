@@ -32,7 +32,8 @@ public class StudyRecordBookmarkService implements StudyRecordBookmarkUseCase {
 	@Override
 	@Transactional
 	public void updateBookmark(UpdateBookmarkCommand command, JwtPrincipal principal) {
-		FamilyRole familyRole = parseRole(principal.familyRole());
+		FamilyRole familyRole = FamilyRole.parseRole(principal.familyRole());
+
 		if (familyRole != FamilyRole.CHILD) {
 			throw BaseException.from(StudyErrorCode.PARENT_CANNOT_BOOKMARK);
 		}
@@ -50,8 +51,5 @@ public class StudyRecordBookmarkService implements StudyRecordBookmarkUseCase {
 		return;
 	}
 
-	private FamilyRole parseRole(String raw) {
-		String role = raw.startsWith("ROLE_") ? raw.substring(5) : raw;
-		return FamilyRole.valueOf(role);
-	}
+
 }
