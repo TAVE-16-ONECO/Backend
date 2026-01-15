@@ -1,5 +1,6 @@
 package com.oneco.backend.family.infrastructure.persistence;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Component;
@@ -43,6 +44,11 @@ public class FamilyRelationPersistenceAdapter implements FamilyRelationPersisten
 	@Override
 	public boolean existsByMemberId(MemberId memberId) {
 		return repository.existsConnectedRelationByMemberId(memberId);
+	}
+
+	@Override
+	public List<FamilyRelation> findConnectedRelationsByMemberId(MemberId memberId) {
+		return repository.findConnectedRelationByMemberId(memberId);
 	}
 
 }

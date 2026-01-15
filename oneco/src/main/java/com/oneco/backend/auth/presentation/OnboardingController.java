@@ -17,11 +17,13 @@ import io.jsonwebtoken.Claims;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/onboarding")
+@Tag(name = "Onboarding", description = "온보딩 관련 API")
 public class OnboardingController {
 	private final OnboardingService onboardingService;
 
