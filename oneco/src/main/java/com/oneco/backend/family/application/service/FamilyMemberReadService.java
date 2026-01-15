@@ -1,6 +1,7 @@
 package com.oneco.backend.family.application.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,12 +28,12 @@ public class FamilyMemberReadService implements GetFamilyMembersUseCase {
 	private final MemberLookupPort memberLookupPort;
 
 	@Override
-	public FamilyMembersResult getFamilyMembers(MemberId memberId) {
+	public Optional<FamilyMembersResult> getFamilyMembers(MemberId memberId) {
 		List<FamilyRelation> relations = relationPort.findConnectedRelationsByMemberId(memberId);
 
-		// 가족 관계가 없는 경우 예외 처리
+		// 가족 관계가 없는 경우 빈 Optional 반환
 		if (relations.isEmpty()) {
-			throw BaseException.from(FamilyErrorCode.FAMILY_RELATION_NOT_FOUND);
+			return Optional.empty();
 		}
 
 		// 상대방 멤버 정보 조회 및 결과 생성
@@ -40,7 +41,7 @@ public class FamilyMemberReadService implements GetFamilyMembersUseCase {
 			.map(relation -> resolveCounterpart(relation, memberId))
 			.toList();
 
-		return FamilyMembersResult.of(members);
+		return Optional.of(FamilyMembersResult.of(members));
 	}
 
 	// 요청자의 상대방 멤버 정보를 조회하는 메서드
