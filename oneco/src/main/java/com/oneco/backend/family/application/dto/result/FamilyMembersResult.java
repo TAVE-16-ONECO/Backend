@@ -12,11 +12,11 @@ public record FamilyMembersResult(
 
 	public record FamilyMemberResult(
 		Long memberId,
-		String name,
+		String nickname,
 		String profileImageUrl
 	) {
-		public static FamilyMemberResult of(Long memberId, String name, String profileImageUrl) {
-			return new FamilyMemberResult(memberId, name, profileImageUrl);
+		public static FamilyMemberResult of(Long memberId, String nickname, String profileImageUrl) {
+			return new FamilyMemberResult(memberId, nickname, profileImageUrl);
 		}
 	}
 }

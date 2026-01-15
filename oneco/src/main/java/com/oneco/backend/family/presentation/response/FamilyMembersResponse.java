@@ -18,11 +18,11 @@ public record FamilyMembersResponse(
 
 	public record MemberResponse(
 		Long memberId,
-		String name,
+		String nickname,
 		String profileImageUrl
 	) {
 		public static MemberResponse from(FamilyMembersResult.FamilyMemberResult result) {
-			return new MemberResponse(result.memberId(), result.name(), result.profileImageUrl());
+			return new MemberResponse(result.memberId(), result.nickname(), result.profileImageUrl());
 		}
 	}
 

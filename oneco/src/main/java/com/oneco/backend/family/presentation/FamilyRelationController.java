@@ -147,15 +147,16 @@ public class FamilyRelationController {
 		return ResponseEntity.ok(DataResponse.from(response));
 	}
 
-	@GetMapping()
+	@GetMapping("/members")
 	@Operation(
 		summary = "연결된 가족 조회",
 		description = "현재 로그인한 사용자가 연결된 가족 정보를 반환한다."
 	)
 	@ApiResponses({
-		@ApiResponse(responseCode = "200", description = "연결된 가족 정보 반환")
+		@ApiResponse(responseCode = "200", description = "연결된 가족 정보 반환"),
+		@ApiResponse(responseCode = "404", description = "연결된 가족이 존재하지 않는 경우")
 	})
-	public ResponseEntity<DataResponse<FamilyMembersResponse>> getConnectedFamilyMember(
+	public ResponseEntity<DataResponse<FamilyMembersResponse>> getConnectedFamilyMembers(
 		@Parameter(hidden = true)
 		@AuthenticationPrincipal JwtPrincipal principal
 	) {
