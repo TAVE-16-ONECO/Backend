@@ -25,14 +25,14 @@ import io.swagger.v3.oas.models.responses.ApiResponse;
 
 @OpenAPIDefinition(
 	info = @Info(
-		title = "ONECO API DOCS",
-		version = "v1",
+		title = "ONECO API 명세서",
+		version = "v0",
 		description = "ONECO Service Public API Documentation",
 		license = @License(name = "Apache 2.0", url = "http://www.apache.org/licenses/LICENSE-2.0")
 	),
 	servers = {
-		@Server(url = "http://localhost:8080", description = "Local"),
-		@Server(url = "https://52.79.47.44.nip.io", description = "Production")
+		@Server(url = "https://www.oneco.site", description = "Production"),
+		@Server(url = "http://localhost:8080", description = "Local")
 	},
 	// ✅ 전역 기본 보안(원하면 아래 줄 삭제)
 	security = @SecurityRequirement(name = "AccessToken")

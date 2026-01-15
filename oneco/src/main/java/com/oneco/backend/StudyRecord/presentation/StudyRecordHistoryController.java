@@ -19,11 +19,13 @@ import com.oneco.backend.member.domain.FamilyRole;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/study-records/history")
+@Tag(name = "StudyRecord", description = "학습 기록 관련 API")
 public class StudyRecordHistoryController {
 
 	private final HistoryService historyService;
