@@ -1,5 +1,7 @@
 package com.oneco.backend.family.presentation;
 
+import java.util.Optional;
+
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -161,8 +163,8 @@ public class FamilyRelationController {
 		@Parameter(hidden = true)
 		@AuthenticationPrincipal JwtPrincipal principal
 	) {
-		FamilyMembersResult result = getFamilyMembersUseCase.getFamilyMembers(MemberId.of(principal.memberId()));
-		FamilyMembersResponse response = result == null ? null : FamilyMembersResponse.from(result);
+		Optional<FamilyMembersResult> result = getFamilyMembersUseCase.getFamilyMembers(MemberId.of(principal.memberId()));
+		FamilyMembersResponse response = result.map(FamilyMembersResponse::from).orElse(null);
 
 		return ResponseEntity.ok(DataResponse.from(response));
 	}
