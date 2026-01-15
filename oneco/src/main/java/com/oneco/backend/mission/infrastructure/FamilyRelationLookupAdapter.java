@@ -37,6 +37,8 @@ public class FamilyRelationLookupAdapter implements FamilyRelationLookupPort {
 	@Override
 	public FamilyRelationId findRelationIdByMemberId(MemberId memberId) {
 		return repository.findConnectedRelationByMemberId(memberId)
+			.stream()
+			.findFirst()
 			.map(relation -> FamilyRelationId.of(relation.getId()))
 			.orElseThrow(() -> BaseException.from(FamilyErrorCode.FAMILY_RELATION_NOT_FOUND));
 	}

@@ -1,5 +1,6 @@
 package com.oneco.backend.family.application.port.out;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.oneco.backend.family.domain.relation.FamilyRelation;
@@ -17,4 +18,6 @@ public interface FamilyRelationPersistencePort {
 	Optional<FamilyRelation> findByParentIdAndChildId(MemberId parentId, MemberId childId);
 
 	boolean existsByMemberId(MemberId memberId);
+
+	List<FamilyRelation> findConnectedRelationsByMemberId(MemberId memberId);
 }
