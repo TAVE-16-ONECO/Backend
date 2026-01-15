@@ -48,4 +48,18 @@ public interface DailyContentJpaRepository extends JpaRepository<DailyContent, L
 
 	// 카테고리의 모든 DailyContent를 순서대로 조회한다.
 	List<DailyContent> findAllByCategoryId_ValueOrderByDaySequence(Long categoryId);
+
+	// 여러 DailyContent를 NewsItems와 함께 조회한다.
+	// distinct를 사용하는 이유:
+	// - DailyContent와 NewsItems는 일대다 관계이므로
+	// - 조인 시 동일한 DailyContent가 여러 번 나타날 수 있음
+	// - 이를 방지하기 위해 distinct를 사용하여 중복을 제거함
+	@Query("""
+		select distinct dc
+		from DailyContent dc
+		left join fetch dc.newsItems ni
+		where dc.id in :dailyContentIds
+		"""
+	)
+	List<DailyContent> findAllWithNewsItemsByIdIn(@Param("dailyContentIds") List<Long> dailyContentIds);
 }

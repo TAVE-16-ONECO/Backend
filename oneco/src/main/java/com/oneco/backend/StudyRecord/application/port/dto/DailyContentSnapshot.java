@@ -9,4 +9,4 @@ public record DailyContentSnapshot(
 	String summary,
 	String keyword,
 	String imageUrl
-) { }
+) { } 

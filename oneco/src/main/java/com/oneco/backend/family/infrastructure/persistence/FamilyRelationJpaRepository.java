@@ -6,8 +6,11 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.repository.query.Param;
+
 import jakarta.persistence.LockModeType;
 
+import com.oneco.backend.StudyRecord.application.dto.result.MemberItem;
 import com.oneco.backend.family.domain.relation.FamilyRelation;
 import com.oneco.backend.member.domain.MemberId;
 
@@ -38,4 +41,14 @@ public interface FamilyRelationJpaRepository extends JpaRepository<FamilyRelatio
 		"where (f.parentId = :memberId or f.childId = :memberId) " +
 		"and f.status = 'CONNECTED'")
 	boolean existsConnectedRelationByMemberId(MemberId memberId);
+
+	// 부모 ID를 통해서 연결된 자녀 목록 조회
+	@Query("""
+		select new com.oneco.backend.StudyRecord.application.dto.result.MemberItem(m.id, m.name)
+			from FamilyRelation f
+			join Member m on m.id = f.childId.value
+			where f.parentId = :parentId
+			and f.status = 'CONNECTED'
+	""")
+	List<MemberItem> findAllConnectedChildrenByParentId(@Param("parentId") Long parentId);
 }
