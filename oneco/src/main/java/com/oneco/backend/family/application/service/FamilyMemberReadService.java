@@ -30,9 +30,9 @@ public class FamilyMemberReadService implements GetFamilyMembersUseCase {
 	public FamilyMembersResult getFamilyMembers(MemberId memberId) {
 		List<FamilyRelation> relations = relationPort.findConnectedRelationsByMemberId(memberId);
 
-		// 가족 관계가 없는 경우 예외 처리
+		// 가족 관계가 없는 경우 null 반환
 		if (relations.isEmpty()) {
-			throw BaseException.from(FamilyErrorCode.FAMILY_RELATION_NOT_FOUND);
+			return null;
 		}
 
 		// 상대방 멤버 정보 조회 및 결과 생성
