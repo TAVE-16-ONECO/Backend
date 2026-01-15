@@ -62,84 +62,14 @@ import io.swagger.v3.oas.models.responses.ApiResponse;
 @Configuration
 public class SwaggerConfig {
 
-	// === 도메인/모듈별 Grouping (필요한 것만 유지/추가) ===
+	// === 단일 그룹으로 모든 API 노출 ===
 	@Bean
-	public GroupedOpenApi authApi() {
+	public GroupedOpenApi onecoApi() {
 		return GroupedOpenApi.builder()
-			.group("Auth")
-			.displayName("Auth (인증/인가)")
-			.packagesToScan("com.oneco.backend.auth.presentation")
-			.pathsToMatch("/api/auth/**")
-			.build();
-	}
-
-	// 온보딩 컨트롤러 패키지가 따로 있다면 활성화 추천
-	@Bean
-	public GroupedOpenApi onboardingApi() {
-		return GroupedOpenApi.builder()
-			.group("Onboarding")
-			.displayName("Onboarding (신규 가입)")
-			.packagesToScan("com.oneco.backend.onboarding.presentation")
-			.pathsToMatch("/api/onboarding/**")
-			.build();
-	}
-
-	@Bean
-	public GroupedOpenApi memberApi() {
-		return GroupedOpenApi.builder()
-			.group("Member")
-			.displayName("Member (회원)")
-			.packagesToScan("com.oneco.backend.member.presentation")
-			.pathsToMatch("/api/members/**")
-			.build();
-	}
-
-	@Bean
-	public GroupedOpenApi familyApi() {
-		return GroupedOpenApi.builder()
-			.group("Family")
-			.displayName("Family (가족)")
-			.packagesToScan("com.oneco.backend.family.presentation")
-			.pathsToMatch("/api/family/**")
-			.build();
-	}
-
-	@Bean
-	public GroupedOpenApi missionApi() {
-		return GroupedOpenApi.builder()
-			.group("Mission")
-			.displayName("Mission (미션)")
-			.packagesToScan("com.oneco.backend.mission.presentation")
-			.pathsToMatch("/api/missions/**")
-			.build();
-	}
-	@Bean
-	public GroupedOpenApi StudyRecordApi() {
-		return GroupedOpenApi.builder()
-			.group("StudyRecord")
-			.displayName("StudyRecord (학습기록)")
-			.packagesToScan("com.oneco.backend.StudyRecord.presentation")
-			.pathsToMatch("/api/study-records/**")
-			.build();
-	}
-
-	@Bean
-	public GroupedOpenApi CategoryApi() {
-		return GroupedOpenApi.builder()
-			.group("Category")
-			.displayName("Category (카테고리)")
-			.packagesToScan("com.oneco.backend.category.presentation")
-			.pathsToMatch("/api/categories/**")
-			.build();
-	}
-
-	@Bean
-	public GroupedOpenApi HomeApi() {
-		return GroupedOpenApi.builder()
-			.group("Home")
-			.displayName("Home (홈화면)")
-			.packagesToScan("com.oneco.backend.StudyRecord.presentation")
-			.pathsToMatch("/api/home/**")
+			.group("ONECO")
+			.displayName("ONECO API")
+			.packagesToScan("com.oneco.backend")
+			.pathsToMatch("/api/**")
 			.build();
 	}
 
