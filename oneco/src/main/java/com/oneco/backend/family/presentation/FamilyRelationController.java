@@ -1,5 +1,7 @@
 package com.oneco.backend.family.presentation;
 
+import java.util.Optional;
+
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.oneco.backend.family.application.dto.command.AcceptInvitationCommand;
 import com.oneco.backend.family.application.dto.command.DisconnectFamilyRelationCommand;
 import com.oneco.backend.family.application.dto.command.IssueInvitationCommand;
+import com.oneco.backend.family.application.dto.result.FamilyMembersResult;
 import com.oneco.backend.family.application.port.in.AcceptInvitationUseCase;
 import com.oneco.backend.family.application.port.in.DisconnectFamilyRelationUseCase;
 import com.oneco.backend.family.application.port.in.ExistsFamilyRelationUseCase;
+import com.oneco.backend.family.application.port.in.GetFamilyMembersUseCase;
 import com.oneco.backend.family.application.port.in.IssueInvitationUseCase;
 import com.oneco.backend.family.presentation.request.AcceptInvitationRequest;
+import com.oneco.backend.family.presentation.response.FamilyMembersResponse;
 import com.oneco.backend.family.presentation.response.FamilyRelationResponse;
 import com.oneco.backend.family.presentation.response.InvitationCodeResponse;
 import com.oneco.backend.family.presentation.response.FamilyRelationExistsResponse;
@@ -45,6 +50,7 @@ public class FamilyRelationController {
 	private final IssueInvitationUseCase issueInvitationUseCase;
 	private final AcceptInvitationUseCase acceptInvitationUseCase;
 	private final ExistsFamilyRelationUseCase existsFamilyRelationUseCase;
+	private final GetFamilyMembersUseCase getFamilyMembersUseCase;
 
 	@GetMapping("/invitations/code")
 	@Operation(
@@ -140,6 +146,25 @@ public class FamilyRelationController {
 		FamilyRelationExistsResponse response = FamilyRelationExistsResponse.of(
 			existsFamilyRelationUseCase.existsFamilyRelation(MemberId.of(principal.memberId()))
 		);
+
+		return ResponseEntity.ok(DataResponse.from(response));
+	}
+
+	@GetMapping("/members")
+	@Operation(
+		summary = "연결된 가족 조회",
+		description = "현재 로그인한 사용자가 연결된 가족 정보를 반환한다.\n" +
+			"가족 관계가 없으면 data는 null로 응답한다."
+	)
+	@ApiResponses({
+		@ApiResponse(responseCode = "200", description = "연결된 가족 정보 반환")
+	})
+	public ResponseEntity<DataResponse<FamilyMembersResponse>> getConnectedFamilyMembers(
+		@Parameter(hidden = true)
+		@AuthenticationPrincipal JwtPrincipal principal
+	) {
+		Optional<FamilyMembersResult> result = getFamilyMembersUseCase.getFamilyMembers(MemberId.of(principal.memberId()));
+		FamilyMembersResponse response = result.map(FamilyMembersResponse::from).orElse(null);
 
 		return ResponseEntity.ok(DataResponse.from(response));
 	}

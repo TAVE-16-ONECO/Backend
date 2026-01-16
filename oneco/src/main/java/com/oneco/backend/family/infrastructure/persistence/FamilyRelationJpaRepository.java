@@ -34,7 +34,7 @@ public interface FamilyRelationJpaRepository extends JpaRepository<FamilyRelatio
 	@Query("select f from FamilyRelation f " +
 		"where (f.parentId = :memberId or f.childId = :memberId) " +
 		"and f.status = 'CONNECTED'")
-	Optional<FamilyRelation> findConnectedRelationByMemberId(MemberId memberId);
+	List<FamilyRelation> findConnectedRelationByMemberId(MemberId memberId);
 
 	// 멤버가 연결된 가족 관계를 갖고 있는지 여부 확인
 	@Query("select (count(f) > 0) from FamilyRelation f " +
