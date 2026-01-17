@@ -15,7 +15,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: none     # prod는 절대 update/create 금지
+      ddl-auto: ${HIBERNATE_DDL_AUTO:none}
     properties:
       hibernate:
         show_sql: false
