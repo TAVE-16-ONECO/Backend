@@ -6,7 +6,6 @@ import java.time.LocalDate;
 public record CreateMissionCommand(
 	Long requesterId,
 	Long recipientId,
-	Long familyRelationId,
 	Long categoryId,
 	LocalDate startDate,
 	LocalDate endDate,
