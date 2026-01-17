@@ -23,6 +23,7 @@ import com.oneco.backend.mission.presentation.request.ApproveMissionRequest;
 import com.oneco.backend.mission.presentation.request.CreateMissionRequest;
 import com.oneco.backend.mission.presentation.request.MissionCursorRequest;
 import com.oneco.backend.mission.presentation.response.MissionCountResponse;
+import com.oneco.backend.mission.presentation.response.MissionDetailResponse;
 import com.oneco.backend.mission.presentation.response.MissionExistsResponse;
 import com.oneco.backend.mission.presentation.response.MissionResponse;
 
@@ -172,6 +173,27 @@ public class MissionController {
 	) {
 		MemberId memberId = MemberId.of(principal.memberId());
 		MissionExistsResponse response = missionReadService.existsInProgressMission(memberId);
+		return ResponseEntity.ok(DataResponse.from(response));
+	}
+
+	// missionId로 미션 단건 조회(미션 상세 조회용)
+	// 미션의 categoryTitle, rewardTitle, startDate, endDate를 포함한다.
+	@GetMapping("/{missionId}")
+	@Operation(
+		summary = "미션 단건 조회",
+		description = "미션 ID로 미션의 세부 정보를 조회한다."
+	)
+	@ApiResponses({
+		@ApiResponse(responseCode = "200", description = "미션 단건 조회 성공")
+	})
+	public ResponseEntity<DataResponse<MissionDetailResponse>> getMissionById(
+		@Parameter(description = "미션 ID", required = true)
+		@PathVariable Long missionId,
+		@Parameter(hidden = true)
+		@AuthenticationPrincipal JwtPrincipal principal
+	) {
+		MemberId memberId = MemberId.of(principal.memberId());
+		MissionDetailResponse response = missionReadService.getMissionDetailById(memberId, missionId);
 		return ResponseEntity.ok(DataResponse.from(response));
 	}
 }
