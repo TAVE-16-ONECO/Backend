@@ -20,6 +20,7 @@
 
 ## ⚙️ 인프라 아키텍처 
 ![system_architecture.png](docs/imgs/oneco-system-arch.png)
+[단일 EC2에서 운영하기: 컨테이너 분리와 SSH→SSM 전환 개발 스토리 보러가기](https://goodjunseon-tech-blog.tistory.com/12)
 
 ## 🔁 소프트웨어 아키텍처
 ![oneco-software-arch.png](docs/imgs/oneco-software-arch.png)
@@ -50,7 +51,7 @@
 ---
 
 ## 시스템 아키텍처 [구현 예정]
-### [[아키텍처] 최소 1회 전송(At-least-once)을 보장하는 알림 시스템](docs/Notification_System_Architecture.md)
+### 최소 1회 전송(At-least-once)을 보장하는 알림 시스템
 ![Notification_Architecture.png](docs/imgs/Notification_Architecture.png)
-
+[누락 없이 알림을 보내기 위한 Redis 큐 & 워커 설계 보러가기 ](https://gimini.tistory.com/60)
 
