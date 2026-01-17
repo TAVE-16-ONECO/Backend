@@ -45,9 +45,13 @@ public class CreateMissionService implements CreateMissionUseCase {
 		// recipientId 받아오기
 		MemberId recipientId = MemberId.of(requireNonNull(command.recipientId(), "recipient_id null 입니다."));
 
-		// FamilyRelation 받아오기 (요청자와 수신자가 연결된 관계인지 확인)
-		FamilyRelationId relationId = familyRelationLookupPort.findConnectedRelationIdBetween(requesterId, recipientId)
-			.orElseThrow(() -> BaseException.from(MissionErrorCode.INVALID_FAMILY_RELATION_MEMBERS));
+		// FamilyRelation 받아오기
+		FamilyRelationId relationId = FamilyRelationId.of(requireNonNull(command.familyRelationId(), "FamilyRelationId가 null 입니다."));
+
+		// requesterId와 recipientId가 서로 FamilyRelation에 속하는지 검증한다.
+		if (!familyRelationLookupPort.isMembersOfRelation(relationId, requesterId, recipientId)) {
+			throw BaseException.from(MissionErrorCode.INVALID_FAMILY_RELATION_MEMBERS);
+		}
 
 		// CategoryId 받아오기
 		CategoryId categoryId = CategoryId.of(requireNonNull(command.categoryId(), "CategoryId가 null 입니다."));

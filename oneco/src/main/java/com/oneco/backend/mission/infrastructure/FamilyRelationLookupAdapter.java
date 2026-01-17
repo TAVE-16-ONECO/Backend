@@ -1,7 +1,5 @@
 package com.oneco.backend.mission.infrastructure;
 
-import java.util.Optional;
-
 import org.springframework.stereotype.Component;
 
 import com.oneco.backend.family.domain.relation.FamilyRelation;
@@ -43,14 +41,5 @@ public class FamilyRelationLookupAdapter implements FamilyRelationLookupPort {
 			.findFirst()
 			.map(relation -> FamilyRelationId.of(relation.getId()))
 			.orElseThrow(() -> BaseException.from(FamilyErrorCode.FAMILY_RELATION_NOT_FOUND));
-	}
-
-	@Override
-	public Optional<FamilyRelationId> findConnectedRelationIdBetween(MemberId requesterId, MemberId recipientId) {
-		return repository.findConnectedRelationByMemberId(requesterId)
-			.stream()
-			.filter(relation -> isMembersMatched(relation, requesterId, recipientId))
-			.findFirst()
-			.map(relation -> FamilyRelationId.of(relation.getId()));
 	}
 }
