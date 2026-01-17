@@ -50,7 +50,7 @@
 ---
 
 ## 시스템 아키텍처 [구현 예정]
-### [[아키텍처] 최소 1회 전송(At-least-once)을 보장하는 알림 시스템](docs/Notification_System_Architecture.md)
+### 최소 1회 전송(At-least-once)을 보장하는 알림 시스템
 ![Notification_Architecture.png](docs/imgs/Notification_Architecture.png)
-
+[누락 없이 알림을 보내기 위한 Redis 큐 & 워커 설계 보러가기 ](https://gimini.tistory.com/60)
 
