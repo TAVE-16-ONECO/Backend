@@ -7,15 +7,19 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.oneco.backend.global.exception.BaseException;
 import com.oneco.backend.family.domain.relation.FamilyRelationId;
 import com.oneco.backend.global.response.CursorResponse;
 import com.oneco.backend.member.domain.MemberId;
+import com.oneco.backend.mission.application.port.out.CategoryLookupPort;
 import com.oneco.backend.mission.application.port.out.FamilyRelationLookupPort;
 import com.oneco.backend.mission.application.port.out.MissionPersistencePort;
 import com.oneco.backend.mission.domain.mission.Mission;
 import com.oneco.backend.mission.domain.mission.MissionStatus;
+import com.oneco.backend.mission.domain.exception.MissionErrorCode;
 import com.oneco.backend.mission.presentation.response.MissionCountResponse;
 import com.oneco.backend.mission.presentation.response.MissionExistsResponse;
+import com.oneco.backend.mission.presentation.response.MissionDetailResponse;
 import com.oneco.backend.mission.presentation.response.MissionResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -27,6 +31,7 @@ public class MissionReadService {
 
 	private final MissionPersistencePort missionPort;
 	private final FamilyRelationLookupPort familyRelationPort;
+	private final CategoryLookupPort categoryLookupPort;
 
 	// 현재 진행중인 미션을 조회한다.
 	// 순서는 미션 생성 시점 기준으로 페이징 처리한다.(createdAt)
@@ -65,10 +70,7 @@ public class MissionReadService {
 	}
 
 	private MissionResponse toMissionResponse(Mission mission) {
-		// 임시로 missionTitle을 categoryId 값으로 설정
-		// todo: 나중에 카테고리 제목을 가져오는 로직으로 변경
-		// todo: 카테고리 도메인에서 제목을 가져오는 로직이 필요하다.
-		String missionTitle = String.valueOf(mission.getCategoryId().getValue());
+		String missionTitle = categoryLookupPort.getCategoryTitle(mission.getCategoryId()).getValue();
 
 		// rewardTitle이 null일 수 있으므로 조건부로 처리
 		String rewardTitle = mission.getReward() == null ? null : mission.getReward().getTitle();
@@ -114,5 +116,26 @@ public class MissionReadService {
 		// 진행중인 미션 존재 여부 확인
 		boolean exists = missionPort.existsByFamilyRelationAndInProgressStatus(relationId, inProgressStatuses);
 		return new MissionExistsResponse(exists);
+	}
+
+	public MissionDetailResponse getMissionDetailById(MemberId memberId, Long missionId) {
+		Mission mission = missionPort.findById(missionId);
+		FamilyRelationId relationId = familyRelationPort.findRelationIdByMemberId(memberId);
+
+		if (!mission.getFamilyRelationId().equals(relationId)) {
+			throw BaseException.from(MissionErrorCode.INVALID_FAMILY_RELATION_MEMBERS);
+		}
+
+		String categoryTitle = categoryLookupPort.getCategoryTitle(mission.getCategoryId()).getValue();
+		String rewardTitle = mission.getReward() == null ? null : mission.getReward().getTitle();
+
+		return MissionDetailResponse.of(
+			mission.getId(),
+			categoryTitle,
+			rewardTitle,
+			mission.getPeriod().getStartDate(),
+			mission.getPeriod().getEndDate(),
+			mission.getStatus().name()
+		);
 	}
 }
