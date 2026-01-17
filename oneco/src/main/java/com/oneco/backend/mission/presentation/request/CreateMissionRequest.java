@@ -11,7 +11,6 @@ import com.oneco.backend.mission.application.dto.CreateMissionCommand;
 
 public record CreateMissionRequest(
 	@NotNull @Positive Long recipientId,
-	@NotNull @Positive Long familyRelationId,
 	@NotNull @Positive Long categoryId,
 
 	// Mission Period
@@ -27,7 +26,6 @@ public record CreateMissionRequest(
 		return new CreateMissionCommand(
 			requesterId,
 			recipientId,
-			familyRelationId,
 			categoryId,
 			startDate,
 			endDate,
