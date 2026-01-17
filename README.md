@@ -20,6 +20,7 @@
 
 ## ⚙️ 인프라 아키텍처 
 ![system_architecture.png](docs/imgs/oneco-system-arch.png)
+[단일 EC2에서 운영하기: 컨테이너 분리와 SSH→SSM 전환 개발 스토리 보러가기](https://goodjunseon-tech-blog.tistory.com/12)
 
 ## 🔁 소프트웨어 아키텍처
 ![oneco-software-arch.png](docs/imgs/oneco-software-arch.png)
