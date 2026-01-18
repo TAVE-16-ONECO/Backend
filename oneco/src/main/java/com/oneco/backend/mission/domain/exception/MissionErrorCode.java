@@ -11,6 +11,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum MissionErrorCode implements ErrorCode {
 
+	MEMBER_NOT_FOUND(
+		HttpStatus.NOT_FOUND,
+		"요청한 멤버를 찾을 수 없습니다.",
+		"MISSION_ERROR_404_MEMBER_NOT_FOUND"
+	),
 	TODAY_DATE_CANNOT_BE_NULL(
 		HttpStatus.BAD_REQUEST,
 		"'오늘' 날짜는 null일 수 없습니다.",

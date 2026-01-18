@@ -1,57 +1,57 @@
-<h1 align="center">ONECO | TAVE-16</h1>
-<h3 align="center">하루 10분, 똑똑해지는 경제 습관</h3>
+<h1 align="center">ONECO_v1</h1>
 
+<p align="center">
+  <img alt="oneco-logo.png" height="250" src="docs/imgs/oneco-logo.png" width="250"/>
+</p>
 
+<h3 align="center">부모-자녀 페어링 기반 경제·금융 키워드 교육 서비스</h3>
 
----
-
-## 목차
-- [프로젝트 소개](#프로젝트-소개)
-- [기술 스택](#기술-스택)
-- [전체 아키텍처 구조](#전체-아키텍처-구조)
-- [ERD 구조](#erd-구조)
-- [아키텍처 상세 설명](#아키텍처-상세-설명)
-  - [1. [아키텍처] 최소 1회 전송(At-least-once)을 보장하는 알림 시스템](#1-아키텍처-최소-1회-전송at-least-once을-보장하는-알림-시스템)
+<p align="center">
+    <a href="https://oneco.io.kr/"> 원코 바로가기 </a>
+</p>
 
 ---
 
-## 프로젝트 소개
-**OneCo(원코)** 는 ‘One Day, One Economy’의 줄임말로,
-하루에 하나씩 경제 키워드를 배우며 경제 감각을 키우는 학습 서비스입니다.
-뉴스나 교과서 대신, 이해하기 쉬운 AI 설명과 퀴즈로 구성된 콘텐츠를 매일 10분씩 제공하여,
-누구나 가볍게 경제를 이해하고 자신의 생각을 확장할 수 있도록 돕습니다.
+## 💿 ERD 설계
+
+![erd_oneco.png](docs/imgs/oneco-erd.png)
 
 ---
 
-## 주요 기능
-1. 오늘의 경제 키워드와 관련 뉴스를 매일 원하는 시간에 푸시 알림으로 제공
-2. AI가 쉽게 설명해주는 경제 개념 학습 콘텐츠 제공
-3. 퀴즈를 통한 학습 효과 극대화 및 복습 기능 제공
+## ⚙️ 인프라 아키텍처 
+![system_architecture.png](docs/imgs/oneco-system-arch.png)
+[단일 EC2에서 운영하기: 컨테이너 분리와 SSH→SSM 전환 개발 스토리 보러가기](https://goodjunseon-tech-blog.tistory.com/12)
+
+## 🔁 소프트웨어 아키텍처
+![oneco-software-arch.png](docs/imgs/oneco-software-arch.png)
+
+## 🚀 도메인 아키텍처
+
+### DailyContent 도메인
+
+![DailyContent_Domain_Architecture.png](docs/imgs/oneco-domain-dailycontent.png)
+[DailyContent 도메인 개발 스토리 보러가기](https://gimini.tistory.com/46)
+
+### Mission 도메인
+![Mission_Domain_Architecture.png](docs/imgs/oneco-domain-mission.png)
+[Mission 도메인 개발 스토리 보러가기]
+
+### StudyRecord 도메인
+![StudyRecord_Domain_Architecture.png](docs/imgs/oneco-domain-studyrecord.png)
+[StudyRecord 도메인 개발 스토리 보러가기]
+
+### Family 도메인
+![Family_Domain_Architecture.png](docs/imgs/oneco-domain-family.png)
+[Family 도메인 개발 스토리 보러가기]
+
+### Category 도메인
+![Category_Domain_Architecture.png](docs/imgs/oneco-domain-category.png)
+[Category 도메인 개발 스토리 보러가기]
 
 ---
 
-## 기술 스택
-
-[![My Skills](https://skillicons.dev/icons?i=java,spring,mysql,redis&theme=dark)](https://skillicons.dev)  
-[![My Skills](https://skillicons.dev/icons?i=aws,git,github,githubactions&theme=dark)](https://skillicons.dev)  
-[![My Skills](https://skillicons.dev/icons?i=idea,postman,notion,discord&theme=dark)](https://skillicons.dev)
-
----
-
-## ERD 구조
-![erd_oneco.png](docs/imgs/erd_oneco.png)
-
----
-
-## 전체 아키텍처 구조
-![system_architecture.png](docs/imgs/system_architecture.png)
-
-
-
----
-
-## 아키텍처 상세 설명
-### [[아키텍처] 최소 1회 전송(At-least-once)을 보장하는 알림 시스템](docs/Notification_System_Architecture.md)
+## 시스템 아키텍처 [구현 예정]
+### 최소 1회 전송(At-least-once)을 보장하는 알림 시스템
 ![Notification_Architecture.png](docs/imgs/Notification_Architecture.png)
-
+[누락 없이 알림을 보내기 위한 Redis 큐 & 워커 설계 보러가기 ](https://gimini.tistory.com/60)
 

@@ -8,7 +8,11 @@ public record MissionDetailResponse(
 	String rewardTitle,
 	LocalDate startDate,
 	LocalDate endDate,
-	String missionStatus
+	String missionStatus,
+	Long memberId,
+	Long recipientId,
+	Long requesterId,
+	String nickname
 ) {
 	public static MissionDetailResponse of(
 		Long missionId,
@@ -16,8 +20,13 @@ public record MissionDetailResponse(
 		String rewardTitle,
 		LocalDate startDate,
 		LocalDate endDate,
-		String missionStatus
+		String missionStatus,
+		Long memberId,
+		Long recipientId,
+		Long requesterId,
+		String nickname
 	) {
-		return new MissionDetailResponse(missionId, categoryTitle, rewardTitle, startDate, endDate, missionStatus);
+		return new MissionDetailResponse(missionId, categoryTitle, rewardTitle, startDate, endDate, missionStatus,
+			memberId, recipientId, requesterId, nickname);
 	}
 }
