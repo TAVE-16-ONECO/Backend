@@ -10,7 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.oneco.backend.global.exception.BaseException;
 import com.oneco.backend.family.domain.relation.FamilyRelationId;
 import com.oneco.backend.global.response.CursorResponse;
+import com.oneco.backend.member.domain.Member;
 import com.oneco.backend.member.domain.MemberId;
+import com.oneco.backend.member.infrastructure.persistence.MemberJpaRepository;
 import com.oneco.backend.mission.application.port.out.CategoryLookupPort;
 import com.oneco.backend.mission.application.port.out.FamilyRelationLookupPort;
 import com.oneco.backend.mission.application.port.out.MissionPersistencePort;
@@ -32,6 +34,7 @@ public class MissionReadService {
 	private final MissionPersistencePort missionPort;
 	private final FamilyRelationLookupPort familyRelationPort;
 	private final CategoryLookupPort categoryLookupPort;
+	private final MemberJpaRepository memberJpaRepository;
 
 	// 현재 진행중인 미션을 조회한다.
 	// 순서는 미션 생성 시점 기준으로 페이징 처리한다.(createdAt)
@@ -129,13 +132,21 @@ public class MissionReadService {
 		String categoryTitle = categoryLookupPort.getCategoryTitle(mission.getCategoryId()).getValue();
 		String rewardTitle = mission.getReward() == null ? null : mission.getReward().getTitle();
 
+		// 닉네임 조회
+		Member member = memberJpaRepository.findById(memberId.getValue())
+			.orElseThrow(() -> BaseException.from(MissionErrorCode.MEMBER_NOT_FOUND));
 		return MissionDetailResponse.of(
 			mission.getId(),
 			categoryTitle,
 			rewardTitle,
+
 			mission.getPeriod().getStartDate(),
 			mission.getPeriod().getEndDate(),
-			mission.getStatus().name()
+			mission.getStatus().name(),
+			memberId.getValue(),
+			mission.getRecipientId().getValue(),
+			mission.getRequesterId().getValue(),
+			member.getNickname()
 		);
 	}
 }
