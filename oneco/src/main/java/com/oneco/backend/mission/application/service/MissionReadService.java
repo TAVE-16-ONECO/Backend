@@ -132,8 +132,8 @@ public class MissionReadService {
 		String categoryTitle = categoryLookupPort.getCategoryTitle(mission.getCategoryId()).getValue();
 		String rewardTitle = mission.getReward() == null ? null : mission.getReward().getTitle();
 
-		// 닉네임 조회
-		Member member = memberJpaRepository.findById(memberId.getValue())
+		// 요청자 닉네임 조회
+		Member recipient = memberJpaRepository.findById(mission.getRecipientId().getValue())
 			.orElseThrow(() -> BaseException.from(MissionErrorCode.MEMBER_NOT_FOUND));
 		return MissionDetailResponse.of(
 			mission.getId(),
@@ -146,7 +146,7 @@ public class MissionReadService {
 			memberId.getValue(),
 			mission.getRecipientId().getValue(),
 			mission.getRequesterId().getValue(),
-			member.getNickname()
+			recipient.getNickname()
 		);
 	}
 }
