@@ -131,7 +131,7 @@ public class MissionReadService {
 
 		String categoryTitle = categoryLookupPort.getCategoryTitle(mission.getCategoryId()).getValue();
 		String rewardTitle = mission.getReward() == null ? null : mission.getReward().getTitle();
-
+		String rewardMessage = mission.getReward() == null? null : mission.getReward().getMessage();
 		// 요청자 닉네임 조회
 		Member recipient = memberJpaRepository.findById(mission.getRecipientId().getValue())
 			.orElseThrow(() -> BaseException.from(MissionErrorCode.MEMBER_NOT_FOUND));
@@ -139,7 +139,7 @@ public class MissionReadService {
 			mission.getId(),
 			categoryTitle,
 			rewardTitle,
-
+			rewardMessage,
 			mission.getPeriod().getStartDate(),
 			mission.getPeriod().getEndDate(),
 			mission.getStatus().name(),

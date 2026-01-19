@@ -6,6 +6,7 @@ public record MissionDetailResponse(
 	Long missionId,
 	String categoryTitle,
 	String rewardTitle,
+	String rewardMessage,
 	LocalDate startDate,
 	LocalDate endDate,
 	String missionStatus,
@@ -18,6 +19,7 @@ public record MissionDetailResponse(
 		Long missionId,
 		String categoryTitle,
 		String rewardTitle,
+		String rewardMessage,
 		LocalDate startDate,
 		LocalDate endDate,
 		String missionStatus,
@@ -26,7 +28,7 @@ public record MissionDetailResponse(
 		Long requesterId,
 		String recipientNickname
 	) {
-		return new MissionDetailResponse(missionId, categoryTitle, rewardTitle, startDate, endDate, missionStatus,
+		return new MissionDetailResponse(missionId, categoryTitle, rewardTitle,rewardMessage, startDate, endDate, missionStatus,
 			memberId, recipientId, requesterId, recipientNickname);
 	}
 }
