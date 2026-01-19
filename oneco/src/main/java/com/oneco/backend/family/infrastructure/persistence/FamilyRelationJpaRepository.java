@@ -47,7 +47,7 @@ public interface FamilyRelationJpaRepository extends JpaRepository<FamilyRelatio
 		select new com.oneco.backend.StudyRecord.application.dto.result.MemberItem(m.id, m.name)
 			from FamilyRelation f
 			join Member m on m.id = f.childId.value
-			where f.parentId = :parentId
+			where f.parentId.value = :parentId
 			and f.status = 'CONNECTED'
 	""")
 	List<MemberItem> findAllConnectedChildrenByParentId(@Param("parentId") Long parentId);

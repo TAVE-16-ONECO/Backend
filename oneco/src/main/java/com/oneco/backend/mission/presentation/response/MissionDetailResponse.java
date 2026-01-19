@@ -13,7 +13,8 @@ public record MissionDetailResponse(
 	Long memberId,
 	Long recipientId,
 	Long requesterId,
-	String recipientNickname
+	String recipientNickname,
+	String requesterNickname
 ) {
 	public static MissionDetailResponse of(
 		Long missionId,
@@ -26,9 +27,10 @@ public record MissionDetailResponse(
 		Long memberId,
 		Long recipientId,
 		Long requesterId,
-		String recipientNickname
+		String recipientNickname,
+		String requesterNickname
 	) {
-		return new MissionDetailResponse(missionId, categoryTitle, rewardTitle,rewardMessage, startDate, endDate, missionStatus,
-			memberId, recipientId, requesterId, recipientNickname);
+		return new MissionDetailResponse(missionId, categoryTitle, rewardTitle, rewardMessage, startDate, endDate, missionStatus,
+			memberId, recipientId, requesterId, recipientNickname, requesterNickname);
 	}
 }
