@@ -80,7 +80,7 @@ public class MissionBatchService {
 		long successCount = 0; // 성공 처리 건수
 		long errorCount = 0; // 실패 처리 중 오류 발생 건수
 
-		// 1. 오늘이 시작일인 미션들을 조회한다.
+		// 1. 오늘이 시작일이면서 미션 상태가 APPROVAL_ACCEPTED인 미션들을 조회한다.
 		List<Mission> missionsToStart = missionPort.findAllMissionsStartingToday(today);
 
 		// =============================
