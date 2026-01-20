@@ -69,7 +69,7 @@ public class CreateMissionService implements CreateMissionUseCase {
 		Reward reward = Reward.of(title, command.message());
 
 		// Mission 생성시 필요한 값: FamilyRelationId, CategoryId, Period, Reward(nullable)
-		Mission mission = Mission.create(requesterId, recipientId, relationId, categoryId, period, reward);
+		Mission mission = Mission.of(requesterId, recipientId, relationId, categoryId, period, reward);
 
 		// 3. 저장
 		missionPort.save(mission);
