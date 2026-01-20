@@ -39,7 +39,7 @@ public class MissionApprovalService implements ApproveMissionUseCase {
 			// 미션 승인 상태일 경우
 			mission.acceptApproval();
 
-			// 미션 시작일과 요청 수락일이 같다면 즉시 미션 진행 상태로 변경
+			// 미션 시작일이 오늘(요청 수락일)과 같거나 이전이라면 즉시 미션 진행 상태로 변경
 			LocalDate startDate = mission.getPeriod().getStartDate();
 			LocalDate today = LocalDate.now();
 
