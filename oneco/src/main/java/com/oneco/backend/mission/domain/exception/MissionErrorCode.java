@@ -120,6 +120,11 @@ public enum MissionErrorCode implements ErrorCode {
 		HttpStatus.BAD_REQUEST,
 		"미션 ID가 유효하지 않습니다.",
 		"MISSION_ERROR_400_INVALID_MISSION_ID"
+	),
+	LATE_MISSION_APPROVAL(
+		HttpStatus.BAD_REQUEST,
+		"미션 종료일이 지난 후에는 승인할 수 없습니다.",
+		"MISSION_ERROR_400_LATE_MISSION_APPROVAL"
 	);
 
 	private final HttpStatus httpStatus;

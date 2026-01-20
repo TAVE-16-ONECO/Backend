@@ -106,7 +106,7 @@ public class Mission extends BaseTimeEntity {
 	}
 
 	// 미션 생성 메서드
-	public static Mission create(
+	public static Mission of(
 		MemberId requesterId,
 		MemberId recipientId,
 		FamilyRelationId familyRelationId,
