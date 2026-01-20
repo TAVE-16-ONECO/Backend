@@ -44,7 +44,7 @@ public interface FamilyRelationJpaRepository extends JpaRepository<FamilyRelatio
 
 	// 부모 ID를 통해서 연결된 자녀 목록 조회
 	@Query("""
-		select new com.oneco.backend.StudyRecord.application.dto.result.MemberItem(m.id, m.name)
+		select new com.oneco.backend.StudyRecord.application.dto.result.MemberItem(m.id, m.nickname)
 			from FamilyRelation f
 			join Member m on m.id = f.childId.value
 			where f.parentId.value = :parentId
