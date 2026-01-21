@@ -43,12 +43,15 @@ public class GetHomeDashboardService implements GetHomeDashboardUseCase {
 	//
 	// 목표:
 	// - 홈 화면에서 "대시보드" 구성을 위한 데이터를 한 번에 조회하여 반환한다.
-	//   1) 미션/카테고리(키워드) 정보
+	//   1) 미션의 기본 정보
+	//   2) 카테고리(키워드) 정보
 	//   2) 오늘 학습해야 할 DailyContent 1건
-	//   3) 캘린더 뷰(미션 기간의 평일 날짜별 조개 상태를 한 번에 내려준다.
+	//   3) 캘린더 뷰(미션 기간의 평일 날짜별 조개 상태를 한 번에 내려준다.)
+	//   4) 미션 진행률(%) 정보 (자녀의 학습 완료 일수 / 전체 학습일 수)
+	//   5) 오늘이 미션의 몇 번째 학습일인가 (elapsedDays)
 	//
 	// 전체 흐름:
-	// 1) memberId로 최신 진행중 미션 1건 조회
+	// 1) memberId로 최신 진행중 미션 1건 조회 (MissionResult에 childId 포함)
 	//    - 없으면 홈 대시보드 구성이 불가하므로 예외
 	//
 	// 2) 미션의 categoryId로 카테고리 정보 조회
@@ -63,7 +66,7 @@ public class GetHomeDashboardService implements GetHomeDashboardUseCase {
 	//    - 여기서는 사용자가 했는지 여부보다 "오늘 해야 할 콘텐츠가 무엇인지"가 핵심
 	//
 	// 5) 캘린더 상태 계산을 위해 StudyRecord 목록 조회
-	//    - 조건: (memberId, missionId, categoryId)
+	//    - 조건: (childId, missionId, categoryId)  // 부모가 요청해도 자녀 기록 조회
 	//    - StudyRecord는 dailyContentId + quizProgressStatus를 통해 "학습 상태"를 결정하는 근거
 	//
 	// 6) records를 dailyContentId 기준으로 요약(Map)한다.
@@ -90,6 +93,7 @@ public class GetHomeDashboardService implements GetHomeDashboardUseCase {
 
 	@Override
 	public HomeDashboardResult getHomeDashboard(Long memberId, Long missionId) {
+		log.info("[getHomeDashboard 시작] - (Long) memberId: {}, (Long) missionId: {}", memberId, missionId);
 
 		MissionResult mission;
 
@@ -105,26 +109,43 @@ public class GetHomeDashboardService implements GetHomeDashboardUseCase {
 				.orElseThrow(() -> BaseException.from(MissionErrorCode.MISSION_NOT_FOUND));
 		}
 
+		log.info("[미션 조회 완료] - missionId: {}, childId: {}, categoryId: {}, rewardTitle: {}, startDate: {}, endDate: {}",
+			mission.missionId(),
+			mission.childId(),
+			mission.categoryId(),
+			mission.rewardTitle(),
+			mission.startDate(),
+			mission.endDate()
+		);
+
+
 		// 2. 미션의 categoryId로 카테고리 정보(CategoryResult) 조회
 		CategoryResult category = homeDashboardCategoryReadPort.findById(mission.categoryId())
 			.orElseThrow(() -> BaseException.from(CategoryErrorCode.INVALID_CATEGORY_ID,
 				"Invalid categoryId: " + mission.categoryId()));
-		log.info("미션의 categoryId로 카테고리 정보(CategoryResult) 조회 완료. categoryId = {}, categoryTitle= {}",
-			category.categoryId(), category.categoryTitle());
+
+		log.info("[카테고리 조회 완료] - categoryId: {}, categoryTitle : {}",
+			category.categoryId(),
+			category.categoryTitle()
+		);
 
 		// 3. today 기준 "오늘이 미션의 몇 번째 학습일인가(daySequence)" 계산
 		LocalDate today = LocalDate.now();
-		log.info("오늘 날짜 today = {}", today);
 
 		// elapsedDays(시작한지 몇 번째 날인가) = 오늘에 해당하는 daySequence (1부터 시작)
-		log.info("미션 기간: startDate = {}, endDate = {}", mission.startDate(), mission.endDate());
+		log.info("[elapsedDays 계산 시작] - startDate: {}, endDate: {}, today: {}",
+			mission.startDate(),
+			mission.endDate(),
+			today
+		);
 
 		int elapsedDays = MissionDateCalculator.openedDaySequenceExcludeWeekend(
 			mission.startDate(),
 			mission.endDate(),
 			today
 		);
-		log.info("오늘이 미션의 몇번째 학습일인가(daySequence) 계산 완료. elapsedDays = {}", elapsedDays);
+
+		log.info("[elapsedDays 계산 종료] - elapsedDays = {}", elapsedDays);
 
 		// 4. (categoryId, elapsedDays)로 "오늘의 DailyContent" 1건 조회
 		DailyContentResult dailyContent = homeDashboardDailyContentReadPort.findByCategoryIdAndDaySequence(
@@ -132,9 +153,16 @@ public class GetHomeDashboardService implements GetHomeDashboardUseCase {
 			elapsedDays
 		);
 
+		log.info("[DailyContent 조회 완료] - dailyContentId: {}, contentKeyword: {}",
+			dailyContent.dailyContentId(),
+			dailyContent.contentKeyword()
+		);
+
+		Long studyMemberId = mission.childId();
+
 		// 5. 캘린더 상태 계산을 위해 StudyRecord 목록 조회
 		List<StudyRecord> records = repository.findByMemberIdAndMissionIdAndCategoryId(
-			memberId,
+			studyMemberId,
 			mission.missionId(),
 			mission.categoryId()
 		);
@@ -178,8 +206,9 @@ public class GetHomeDashboardService implements GetHomeDashboardUseCase {
 		// progressPercentage 계산
 		// record에서 quizProgressStatus가 COMPLETED인 수 / 전체 학습일 수
 		long progressPercentage = calculateProgressPercentage(dailyContents, statusByDailyContentId);
-		log.info("진행률 계산 완료. progressPercentage = {}%", progressPercentage);
+		log.info("[진행률 계산 완료] - progressPercentage={}%", progressPercentage);
 
+		log.info("[getHomeDashboard 종료]");
 		return new HomeDashboardResult(
 			mission,
 			elapsedDays,
