@@ -61,7 +61,7 @@ public class HomeDashboardMissionReadAdapter implements HomeDashboardMissionRead
 
 	// FamilyRelation -> ChildId 추출한다.
 	private Long extractChildId(Long familyRelationId) {
-		return familyRelationJpaRepository.findById(familyRelationId)
+		return familyRelationJpaRepository.findById(familyRelationId) // DB 조회 1번
 			.map(relation -> relation.getChildId().getValue())
 			.orElseThrow(() -> BaseException.from(FamilyErrorCode.FAMILY_RELATION_NOT_FOUND));
 	}

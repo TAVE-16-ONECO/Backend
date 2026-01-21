@@ -158,11 +158,9 @@ public class GetHomeDashboardService implements GetHomeDashboardUseCase {
 			dailyContent.contentKeyword()
 		);
 
-		Long studyMemberId = mission.childId();
-
 		// 5. 캘린더 상태 계산을 위해 StudyRecord 목록 조회
 		List<StudyRecord> records = repository.findByMemberIdAndMissionIdAndCategoryId(
-			studyMemberId,
+			mission.childId(),
 			mission.missionId(),
 			mission.categoryId()
 		);
