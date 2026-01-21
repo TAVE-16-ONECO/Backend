@@ -24,7 +24,7 @@ public final class MissionDateCalculator {
 		LocalDate today
 	) {
 
-		log.info("openedDaySequenceExcludeWeekend 호출 startDate={}, endDate={}, today={}",
+		log.info("[openedDaySequenceExcludeWeekend 시작] - startDate={}, endDate={}, today={}",
 			startDate, endDate, today);
 
 		if (today == null) {
@@ -37,7 +37,7 @@ public final class MissionDateCalculator {
 
 		// 2) 미션 시작 전이면 진행 일수는 0이다.
 		if (effectiveEnd.isBefore(startDate)) {
-			log.info("오늘 날짜가 미션 시작일 이전이므로 진행 일수는 0으로 처리합니다. startDate={}, effectiveEnd={}",
+			log.info("today가 startDate 과거이므로 진행 일수는 0으로 처리 startDate={}, effectiveEnd={}",
 				startDate, effectiveEnd);
 			return 0;
 		}
@@ -65,8 +65,8 @@ public final class MissionDateCalculator {
 			cursor = cursor.plusDays(1);
 		}
 
-		log.info("평일 일수 weekdays={}", weekdays);
-		log.info("openedDaySequenceExcludeWeekend 호출 끝");
+		log.info("평일 일수 weekdays: {}", weekdays);
+		log.info("[openedDaySequenceExcludeWeekend 종료]");
 		return (int)weekdays;
 
 	}

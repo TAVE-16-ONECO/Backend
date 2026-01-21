@@ -22,6 +22,7 @@ import com.oneco.backend.StudyRecord.application.port.in.StudyRecordBookmarkUseC
 import com.oneco.backend.StudyRecord.application.port.in.SubmitQuizSubmissionUseCase;
 import com.oneco.backend.global.response.DataResponse;
 import com.oneco.backend.global.security.jwt.JwtPrincipal;
+import com.oneco.backend.member.domain.FamilyRole;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -78,7 +79,9 @@ public class StudyRecordController {
 		)
 		@RequestBody @Valid StartStudyCommand command
 	) {
-		StartStudyResult result = startStudyUseCase.start(command, principal.memberId());
+		String role = principal.familyRole();
+		FamilyRole familyRole = FamilyRole.valueOf(role);
+		StartStudyResult result = startStudyUseCase.start(command, principal.memberId(), familyRole);
 
 		return ResponseEntity.ok(DataResponse.from(result));
 	}

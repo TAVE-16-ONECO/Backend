@@ -29,6 +29,7 @@ public record HomeDashboardResult(
 
 	public record MissionResult(
 		Long missionId,
+		Long childId,
 		Long categoryId,
 		String rewardTitle,
 		LocalDate startDate,
@@ -36,12 +37,13 @@ public record HomeDashboardResult(
 	) {
 		public static MissionResult of(
 			Long missionId,
+			Long childId,
 			Long categoryId,
 			String rewardTitle,
 			LocalDate startDate,
 			LocalDate endDate
 		) {
-			return new MissionResult(missionId, categoryId, rewardTitle, startDate, endDate);
+			return new MissionResult(missionId, childId, categoryId, rewardTitle, startDate, endDate);
 		}
 	}
 
