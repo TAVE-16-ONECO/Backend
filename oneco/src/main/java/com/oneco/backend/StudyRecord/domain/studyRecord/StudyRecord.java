@@ -187,6 +187,9 @@ public class StudyRecord extends BaseTimeEntity {
 		// 자식 엔티티가 “제출 가능 상태/quizId mismatch/옵션 인덱스” 등 검증 + result 계산까지 수행
 		attempt.submit(answers, correctCount);
 
+		// 퀴즈 1번이라도 제출하면 날짜 기록
+		this.quizSubmittedDate = LocalDate.now();
+
 		// 루트가 “전체 진행 상태”를 업데이트 (총 2회 규칙 적용)
 		if (attempt.getAttemptResult() == AttemptResult.PASS) {
 			quizProgressStatus = QuizProgressStatus.PASSED;
@@ -194,8 +197,6 @@ public class StudyRecord extends BaseTimeEntity {
 			return;
 		}
 
-		// 퀴즈 1번이라도 제출하면 날짜 기록
-		this.quizSubmittedDate = LocalDate.now();
 		// FAIL인 경우
 		if (attempt.getAttemptNo().isFirst()) {
 			//  1차 FAIL → 2차 기회 열어줌
