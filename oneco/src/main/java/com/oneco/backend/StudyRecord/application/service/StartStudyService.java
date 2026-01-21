@@ -18,6 +18,7 @@ import com.oneco.backend.StudyRecord.domain.studyRecord.StudyRecord;
 import com.oneco.backend.category.domain.category.CategoryId;
 import com.oneco.backend.dailycontent.domain.dailycontent.DailyContentId;
 import com.oneco.backend.global.exception.BaseException;
+import com.oneco.backend.member.domain.FamilyRole;
 import com.oneco.backend.member.domain.MemberId;
 import com.oneco.backend.mission.domain.mission.MissionId;
 
@@ -35,13 +36,39 @@ public class StartStudyService implements StartStudyUseCase {
 
 	@Override
 	@Transactional
-	public StartStudyResult start(StartStudyCommand command, Long memberId) {
+	public StartStudyResult start(StartStudyCommand command, Long memberId, FamilyRole familyRole) {
 		Long dailyContentId = command.dailyContentId();
 
 		// 1) DailyContent 로드 (본문/키워드/이미지/+ categoryId/daySequence 포함)
 		DailyContentSnapshot dailyContent = dailyContentQueryPort.loadDailyContentSnapshot(dailyContentId);
 		log.info("로드된 DailyContentSnapshot: {}", dailyContent);
 
+		//  부모면: 검증만 하고 StudyRecord 생성/조회/저장 없이 바로 반환
+		if (familyRole == FamilyRole.PARENT) {
+			log.info("부모 요청: StudyRecord 생성 없이 열람 처리. memberId={}, dailyContentId={}", memberId, dailyContentId);
+
+			ActiveMissionSnapshot activeMission =
+				missionQueryPort.findActiveMission(memberId, dailyContent.categoryId())
+					.orElseThrow(() -> BaseException.from(StudyErrorCode.INVALID_STUDY_STATUS, "활성 미션이 없습니다."));
+			log.info("로드된 ActiveMissionSnapshot: {}", activeMission);
+
+			if (!activeMission.active()) {
+				throw BaseException.from(StudyErrorCode.INVALID_STUDY_STATUS, "미션이 active가 아닙니다.");
+			}
+
+			if (dailyContent.daySequence() > activeMission.openedDaySequence()) {
+				throw BaseException.from(
+					StudyErrorCode.INVALID_STUDY_STATUS,
+					"콘텐츠가 아직 열리지 않았습니다. contentDay=" + dailyContent.daySequence()
+						+ ", openedDay=" + activeMission.openedDaySequence()
+				);
+			}
+
+			//  StudyRecord 관련 값은 null/기본값 처리
+			return mapStartStudyResultForParent(dailyContent);
+		}
+
+		//  자녀면: 기존 로직대로 진행
 		// 2) 이미 StudyRecord가 존재하면 그대로 반환
 		Optional<StudyRecord> existing = studyRecordPersistencePort.findByMemberIdAndDailyContentId(memberId,
 			dailyContentId);
@@ -93,6 +120,24 @@ public class StartStudyService implements StartStudyUseCase {
 		log.info("저장된 StudyRecord: {}", saved);
 
 		return mapStartStudyResult(saved, dailyContent);
+	}
+
+	private StartStudyResult mapStartStudyResultForParent(DailyContentSnapshot dailyContent) {
+		return new StartStudyResult(
+			null, // studyRecordId 없음
+			dailyContent.dailyContentId(),
+			dailyContent.categoryId(),
+			dailyContent.daySequence(),
+			null,  // quizProgressStatus (빠른 처리: null)
+			false, // newsUnlocked 기본값
+			new StartStudyResult.DailyContentCard(
+				dailyContent.title(),
+				dailyContent.bodyText(),
+				dailyContent.summary(),
+				dailyContent.keyword(),
+				dailyContent.imageUrl()
+			)
+		);
 	}
 
 	private StartStudyResult mapStartStudyResult(StudyRecord studyRecord, DailyContentSnapshot dailyContent) {
