@@ -20,7 +20,10 @@
 
 ## ⚙️ 인프라 아키텍처 
 ![system_architecture.png](docs/imgs/oneco-system-arch.png)
-[단일 EC2에서 운영하기: 컨테이너 분리와 SSH→SSM 전환 개발 스토리 보러가기](https://goodjunseon-tech-blog.tistory.com/12)
+- [단일 EC2에서 운영하기: 컨테이너 분리와 SSH→SSM 전환 개발 스토리 보러가기](https://goodjunseon-tech-blog.tistory.com/12)
+
+## 📡 CDN 아키텍처
+![oneco-cdn-arch.png](docs/imgs/oneco-cdn-arch.png)
 
 ## 🔁 소프트웨어 아키텍처
 ![oneco-software-arch.png](docs/imgs/oneco-software-arch.png)
@@ -49,6 +52,9 @@
 [Category 도메인 개발 스토리 보러가기]
 
 ---
+
+## 트러블 슈팅 | 성능 개선 
+- [문제 해결: S3 이미지 렌더링 속도 개선 843ms → 298ms](https://goodjunseon-tech-blog.tistory.com/13)
 
 ## 시스템 아키텍처 [구현 예정]
 ### 최소 1회 전송(At-least-once)을 보장하는 알림 시스템
